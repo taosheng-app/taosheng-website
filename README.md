@@ -13,12 +13,24 @@
 
 | 项目 | 版本 | 用途 |
 |---|---|---|
-| Astro | 6.3 | 静态站点生成，零 JS 优先 |
-| Tailwind CSS | 4.3 | 样式，通过 `@tailwindcss/vite` 接入 |
-| Alpine.js | 3.x（`^3.15.12`） | 语言切换、移动端菜单、更新弹窗 |
-| sharp | 0.34 | 由 `logo.svg` 生成各尺寸图标（仅开发时使用） |
+| Astro | 6.3.7（锁定） | 静态站点生成，零 JS 优先 |
+| Tailwind CSS | 4.3.5 | 样式，通过 `@tailwindcss/vite` 接入 |
+| Alpine.js | 3.17.5 | 语言切换、移动端菜单、更新弹窗 |
+| sharp | 0.34.5 | 由 `logo.svg` 生成各尺寸图标（仅开发时使用） |
+
+包管理统一用 **npm**，锁文件是 `package-lock.json`，克隆后执行 `npm ci` 即可复现相同依赖。
 
 运行环境要求 **Node.js >= 22.12.0**（见 `package.json` 的 `engines` 字段）。
+
+### 为什么锁死两个版本
+
+`package.json` 里 `astro` 写的是精确版本 `6.3.7`，并用 `overrides` 把 `vite` 固定到 `7.3.3`。原因是当前 Astro 6.4 会引入 Vite 8（rolldown 内核），而 Tailwind 4.3 的 Vite 插件在 Vite 8 下构建会直接失败：
+
+```
+[@tailwindcss/vite:generate:build] Missing field `tsconfigPaths` on BindingViteResolvePluginConfig.resolveOptions
+```
+
+这是上游兼容性问题，不是本项目配置错误。等 Tailwind 支持 Vite 8 后，去掉 `overrides` 并放开 `astro` 版本即可；升级时务必跑一次 `npm run build` 验证。
 
 ## 快速开始
 
@@ -117,7 +129,7 @@ zh: { download: { faq6Q: '会很耗电吗？', faq6A: '……'     } },
 - **仓库链接**：`src/layouts/Layout.astro` 顶部集中定义了 `REPO`、`RELEASES`、`README`、`CHANGELOG`、`CARDS`、`LICENSE` 六个常量，其余页面引用它们。App 仓库若迁到组织下，只改这里即可。
 - **页面元信息**：`Layout.astro` 的 `Props` 支持 `title / description / keywords` 及对应的 `titleEn / descEn / keywordsEn`，各页面在 frontmatter 里传入。
 - **canonical**：默认值是 `'/'`，属于占位。**部署前**必须换成实际域名的绝对地址，否则 canonical 与 `og:url` 都会指向相对路径。
-- **未使用的依赖**：`package.json` 里仍列着 `@alpinejs/collapse`，但移动端菜单已改用核心的 `x-transition`（Alpine 3.17 下该插件会让菜单展开高度停在 0）。确认无其他引用后可执行 `npm uninstall @alpinejs/collapse` 清掉。
+- **不要引入 `@alpinejs/collapse`**：移动端菜单用的是 Alpine 核心的 `x-transition`。该插件在 Alpine 3.17 下会让菜单展开高度停在 `0px`（按钮 `aria-expanded` 变成 true，但菜单不可见），已从依赖中移除，别再加回来。
 - **图标**：修改 `public/logo.svg` 后重新生成 PNG：
 
 ```bash

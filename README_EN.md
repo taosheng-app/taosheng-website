@@ -13,12 +13,24 @@ Built with [Astro](https://astro.build) as a fully static site: no backend, no d
 
 | Layer | Version | Role |
 |---|---|---|
-| Astro | 6.3 | Static site generation, JS-light by default |
-| Tailwind CSS | 4.3 | Styling, wired in through `@tailwindcss/vite` |
-| Alpine.js | 3.x (`^3.15.12`) | Language switching, mobile menu, update modal |
-| sharp | 0.34 | Renders `logo.svg` into PNG icons (dev only) |
+| Astro | 6.3.7 (pinned) | Static site generation, JS-light by default |
+| Tailwind CSS | 4.3.5 | Styling, wired in through `@tailwindcss/vite` |
+| Alpine.js | 3.17.5 | Language switching, mobile menu, update modal |
+| sharp | 0.34.5 | Renders `logo.svg` into PNG icons (dev only) |
+
+**npm** is the only package manager here; the lockfile is `package-lock.json`, so `npm ci` reproduces the exact tree.
 
 Requires **Node.js >= 22.12.0** (see `engines` in `package.json`).
+
+### Why two versions are pinned
+
+`astro` is pinned to the exact version `6.3.7`, and an `overrides` entry holds `vite` at `7.3.3`. Astro 6.4 pulls in Vite 8 (the rolldown core), where Tailwind 4.3's Vite plugin fails outright:
+
+```
+[@tailwindcss/vite:generate:build] Missing field `tsconfigPaths` on BindingViteResolvePluginConfig.resolveOptions
+```
+
+That is an upstream incompatibility, not a misconfiguration here. Once Tailwind supports Vite 8, drop the `overrides` entry and loosen `astro` — and always run `npm run build` to confirm.
 
 ## Getting started
 
@@ -117,7 +129,7 @@ These are the spots that cover day-to-day updates:
 - **Repository links** — `REPO`, `RELEASES`, `README`, `CHANGELOG`, `CARDS` and `LICENSE` are defined once at the top of `src/layouts/Layout.astro` and reused everywhere. If the app repo ever moves under the org, this is the only file to touch.
 - **Page metadata** — the `Props` interface in `Layout.astro` accepts `title / description / keywords` plus `titleEn / descEn / keywordsEn`; each page passes them in from its frontmatter.
 - **canonical** — defaults to `'/'`, a placeholder. **Before deploying**, replace it with your absolute domain, otherwise both canonical and `og:url` stay relative.
-- **Unused dependency** — `package.json` still lists `@alpinejs/collapse`, but the mobile menu now uses core `x-transition` (under Alpine 3.17 the plugin left the menu stuck at `height: 0`). Once you confirm nothing else references it, run `npm uninstall @alpinejs/collapse`.
+- **Do not add `@alpinejs/collapse`** — the mobile menu uses core `x-transition`. Under Alpine 3.17 that plugin leaves the menu at `height: 0px` (the button flips `aria-expanded` to true but nothing appears). The dependency has been removed; don't bring it back.
 - **Icons** — after editing `public/logo.svg`, regenerate the PNGs:
 
 ```bash

@@ -14,14 +14,16 @@
     "preview:prod": "wrangler pages deploy dist --project-name=taosheng-website"
   },
   "dependencies": {
-    "@alpinejs/collapse": "^3.15.12",
     "@tailwindcss/vite": "^4.3.0",
     "@types/alpinejs": "^3.13.11",
     "alpinejs": "^3.15.12",
-    "astro": "^6.3.7",
+    "astro": "6.3.7",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "sharp": "^0.34.5"
+  },
+  "overrides": {
+    "vite": "7.3.3"
   }
 }
