@@ -4,7 +4,7 @@ The bilingual marketing site for **TaoSheng** — an open-source personal memory
 
 Built with [Astro](https://astro.build) as a fully static site: no backend, no database, no user accounts.
 
-- This repo: <https://github.com/taosheng-app/TaoSheng-Website> (private)
+- This repo: <https://github.com/taosheng-app/taosheng-website> (private)
 - App repo: <https://github.com/0xCoach/TaoSheng>
 
 > 中文版本：[README.md](./README.md)

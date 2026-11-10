@@ -4,7 +4,7 @@
 
 站点基于 [Astro](https://astro.build) 构建，纯静态输出，无后端、无数据库、无账号体系。
 
-- 仓库：<https://github.com/taosheng-app/TaoSheng-Website>（私有）
+- 仓库：<https://github.com/taosheng-app/taosheng-website>（私有）
 - App 仓库：<https://github.com/0xCoach/TaoSheng>
 
 > English version: [README_EN.md](./README_EN.md)
