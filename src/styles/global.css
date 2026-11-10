@@ -26,6 +26,9 @@
   --color-brand-800: #923816;
   --color-brand-900: #762f15;
   --color-brand-950: #3f1605;
+  /* App 界面里的浅橙底（记忆页回顾卡片），比 brand-100 更偏桃、更淡 */
+  --color-brand-tint: #fce8dc;
+  --color-brand-tint-strong: #f9ddcc;
 
   --font-sans: "Inter", "Inter var", system-ui, -apple-system, "Segoe UI", "PingFang SC",
     "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
