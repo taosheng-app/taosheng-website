@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import { MODELSCOPE_RELEASES } from '../config/release';
 
 import askShot from '../assets/ask.jpg';
 import configShot from '../assets/config.jpg';
@@ -94,6 +95,26 @@ const waveform = Array.from({ length: 26 }, (_, i) => {
               <path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path>
             </svg>
             <span x-text="$store.i18n.t('index.viewSource')">查看源码</span>
+          </a>
+
+          <a
+            class="group inline-flex items-center justify-center gap-1.5 rounded-full px-2 py-1 text-sm font-medium text-primary-950/50 underline decoration-primary-950/20 underline-offset-4 transition-colors duration-300 hover:text-primary-950 hover:decoration-primary-950/45 sm:ml-1.5 sm:px-1"
+            href={MODELSCOPE_RELEASES}
+            rel="noopener noreferrer"
+            target="_blank"
+            title="国内下载镜像"
+          >
+            <span x-text="$store.i18n.t('index.mirror')">国内镜像：魔搭</span>
+            <svg
+              class="h-3 w-3 shrink-0 transition-transform duration-300 ease-out-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2.2"
+              aria-hidden="true"
+            >
+              <path d="M7 17L17 7M17 7H9M17 7v8" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
           </a>
         </div>
 

@@ -1,6 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Check from '../components/Check.astro';
+import { FALLBACK_RELEASE, MODELSCOPE_RELEASES, formatReleaseDate } from '../config/release';
+
+const fallbackVersion = FALLBACK_RELEASE.version;
+const fallbackDateZh = formatReleaseDate(FALLBACK_RELEASE.publishedAt, 'zh');
 
 const REPO = 'https://github.com/0xCoach/TaoSheng';
 const RELEASES = `${REPO}/releases/latest`;
@@ -74,7 +78,33 @@ const rows = [
             <p class="text-sm text-primary-950/60" x-text="$store.i18n.t('download.apkDesc')">编译好的正式签名安装包，下载后直接装，不用搭开发环境。</p>
           </div>
 
-          <a class="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-transparent bg-primary-950 px-6 py-4 text-base font-semibold text-primary-50 shadow-[0_1px_2px_rgba(20,16,12,0.18),0_14px_30px_-16px_rgba(20,16,12,0.55)] transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(20,16,12,0.18),0_22px_44px_-18px_rgba(240,123,46,0.6)]" href={RELEASES} rel="noopener noreferrer" target="_blank" x-text="$store.i18n.t('download.apkBtn')">下载 v0.2.20</a>
+          <div class="flex flex-col gap-3">
+            <a
+              class="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-transparent bg-primary-950 px-6 py-4 text-base font-semibold text-primary-50 shadow-[0_1px_2px_rgba(20,16,12,0.18),0_14px_30px_-16px_rgba(20,16,12,0.55)] transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(20,16,12,0.18),0_22px_44px_-18px_rgba(240,123,46,0.6)]"
+              href={RELEASES}
+              rel="noopener noreferrer"
+              target="_blank"
+              x-text="$store.i18n.t('download.apkBtn', { version: $store.release.version })"
+            >下载 v{fallbackVersion}</a>
+
+            <div class="flex flex-col items-center gap-1.5">
+              <p
+                class="text-xs tabular-nums text-primary-950/45"
+                x-text="$store.i18n.t('download.apkMeta', { version: $store.release.version, date: $store.release.date($store.i18n.lang) })"
+              >最新版本 v{fallbackVersion} · {fallbackDateZh} 更新</p>
+              <a
+                class="group inline-flex items-center gap-1.5 text-xs font-medium text-primary-950/55 underline decoration-primary-950/20 underline-offset-4 transition-colors hover:text-primary-950 hover:decoration-primary-950/45"
+                href={MODELSCOPE_RELEASES}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <span x-text="$store.i18n.t('download.apkMirror')">国内打不开 GitHub？用魔搭镜像下载</span>
+                <svg class="h-3 w-3 transition-transform duration-300 ease-out-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                  <path d="M7 17L17 7M17 7H9M17 7v8" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
 
           <div class="flex flex-col gap-4">
             <p class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('download.apkFeatures')">包含内容：</p>
@@ -109,7 +139,7 @@ const rows = [
             <p class="text-sm text-primary-950/60" x-text="$store.i18n.t('download.srcDesc')">克隆仓库自己编译，改功能、换模型、接自己的服务都随你。</p>
           </div>
 
-          <a class="w-full inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3.5 text-base font-semibold transition border-primary-200 text-primary-950 hover:bg-primary-50 active:scale-95 hover:scale-105" href={README} rel="noopener noreferrer" target="_blank" x-text="$store.i18n.t('download.srcBtn')">查看编译说明</a>
+          <a class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary-900/12 bg-white/70 px-6 py-4 text-base font-semibold text-primary-950 backdrop-blur-sm transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:border-primary-900/20 hover:bg-white hover:shadow-[0_16px_34px_-20px_rgba(20,16,12,0.35)]" href={README} rel="noopener noreferrer" target="_blank" x-text="$store.i18n.t('download.srcBtn')">查看编译说明</a>
 
           <div class="flex flex-col gap-4">
             <p class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('download.srcFeatures')">包含以上全部，以及：</p>

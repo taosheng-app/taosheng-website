@@ -1,5 +1,9 @@
 ---
 import '../styles/global.css';
+import { FALLBACK_RELEASE, formatReleaseDate } from '../config/release';
+
+const fallbackVersion = FALLBACK_RELEASE.version;
+const fallbackDateZh = formatReleaseDate(FALLBACK_RELEASE.publishedAt, 'zh');
 
 interface Props {
   title?: string;
@@ -320,7 +324,10 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
                   <path d="M12 3.5v11m0 0l-4-4m4 4l4-4M4 16.5v2A2.5 2.5 0 006.5 21h11a2.5 2.5 0 002.5-2.5v-2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
               </div>
-              <p class="font-medium text-xs text-center text-primary-950/70" x-text="$store.i18n.t('footer.updateCard.version')">当前版本 v0.2.20 · 2026-11-10</p>
+              <p
+                class="font-medium text-xs text-center text-primary-950/70"
+                x-text="$store.i18n.t('footer.updateCard.version', { version: $store.release.version, date: $store.release.date($store.i18n.lang) })"
+              >当前版本 v{fallbackVersion} · {fallbackDateZh}</p>
               <a class="items-center inline-flex gap-1.5 duration-200 hover:text-primary-950 text-primary-950/70 transition-colors text-xs" href={RELEASES} rel="noopener noreferrer" target="_blank">
                 <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
                 <span x-text="$store.i18n.t('footer.updateCard.action')">查看 Releases</span>
@@ -444,6 +451,7 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
     <script>
       import Alpine from 'alpinejs';
       import { translations } from '../i18n/translations';
+      import { FALLBACK_RELEASE, formatReleaseDate } from '../config/release';
 
       if (!window.Alpine) {
         Alpine.store('i18n', {
@@ -457,7 +465,7 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
             this.lang = this.lang === 'en' ? 'zh' : 'en';
             localStorage.setItem('lang', this.lang);
           },
-          t(key) {
+          t(key, vars) {
             const keys = key.split('.');
             let result = translations[this.lang];
             for (const k of keys) {
@@ -467,8 +475,38 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
                 return key;
               }
             }
-            return result;
+            if (typeof result !== 'string' || !vars) return result;
+            return result.replace(/\{(\w+)\}/g, (match, name) =>
+              name in vars ? String(vars[name]) : match
+            );
           }
+        });
+
+        Alpine.store('release', {
+          version: FALLBACK_RELEASE.version,
+          publishedAt: FALLBACK_RELEASE.publishedAt,
+          live: false,
+          init() {
+            this.refresh();
+          },
+          async refresh() {
+            try {
+              const res = await fetch('/api/latest-release', {
+                headers: { accept: 'application/json' },
+              });
+              if (!res.ok) return;
+              const data = await res.json();
+              if (!data || !data.version) return;
+              this.version = String(data.version);
+              if (data.publishedAt) this.publishedAt = data.publishedAt;
+              this.live = true;
+            } catch {
+              // 取不到就保持兜底版本号，不打扰页面。
+            }
+          },
+          date(lang) {
+            return formatReleaseDate(this.publishedAt, lang);
+          },
         });
 
         window.Alpine = Alpine;
