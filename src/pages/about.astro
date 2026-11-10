@@ -16,29 +16,29 @@ const REPO = 'https://github.com/0xCoach/TaoSheng';
     <div class="px-4 lg:max-w-7xl lg:px-8 max-w-2xl mx-auto sm:px-6">
       <!-- Header -->
       <div class="flex flex-col gap-4 text-center pb-16 sm:pb-20">
-        <h1 class="font-medium tracking-tight sm:text-5xl text-4xl" x-text="$store.i18n.t('about.title')">关于涛声</h1>
+        <h1 class="text-headline text-balance" x-text="$store.i18n.t('about.title')">关于涛声</h1>
         <p class="text-base text-primary-950/60 max-w-2xl mx-auto" x-text="$store.i18n.t('about.subtitle')">一部安卓手机就够的开源个人记忆工具。</p>
       </div>
 
       <!-- Main Content -->
-      <div class="max-w-3xl mx-auto">
+      <div class="mx-auto max-w-[42rem]">
         <!-- Project Intro -->
         <div class="flex flex-col gap-6 mb-16">
           <div class="flex items-center gap-4">
             <img x-bind:alt="$store.i18n.t('about.brand')" class="h-16 w-16 rounded-2xl" src="/logo.png" />
             <div>
-              <h2 class="font-medium text-2xl tracking-tight text-primary-950" x-text="$store.i18n.t('about.brand')">涛声 TaoSheng</h2>
+              <h2 class="text-2xl font-bold tracking-[-0.025em] text-primary-950" x-text="$store.i18n.t('about.brand')">涛声 TaoSheng</h2>
               <p class="text-sm text-primary-950/60" x-text="$store.i18n.t('about.brandSub')">TaoSheng · 替你听，替你记，替你想</p>
             </div>
           </div>
-          <p class="text-lg leading-relaxed text-primary-950/70" x-text="$store.i18n.t('about.intro')">每天你说几千句话，还记得几句？市面上的方案要么得买录音硬件，要么把声音全部传到别人的服务器上。涛声让手机在后台安静地听，有人说话才录，隔一阵子统一转成文字、认出是谁说的，再交给大模型整理成一件件事。它的代码几乎全部由 AI 完成：Claude 负责架构与界面，Codex 负责录音、转写、数据库和推送，近百张任务卡与交付说明都公开在仓库里。</p>
+          <p class="text-[1.05rem] leading-[1.9] text-primary-950/[0.72]" x-text="$store.i18n.t('about.intro')">每天你说几千句话，还记得几句？市面上的方案要么得买录音硬件，要么把声音全部传到别人的服务器上。涛声让手机在后台安静地听，有人说话才录，隔一阵子统一转成文字、认出是谁说的，再交给大模型整理成一件件事。它的代码几乎全部由 AI 完成：Claude 负责架构与界面，Codex 负责录音、转写、数据库和推送，近百张任务卡与交付说明都公开在仓库里。</p>
         </div>
 
         <!-- Goals -->
         <div class="mb-16">
-          <h2 class="font-medium text-2xl tracking-tight mb-8 text-primary-950" x-text="$store.i18n.t('about.goalsTitle')">设计原则</h2>
+          <h2 class="text-2xl font-bold tracking-[-0.025em] mb-8 text-primary-950" x-text="$store.i18n.t('about.goalsTitle')">设计原则</h2>
           <div class="grid gap-6 sm:grid-cols-2">
-            <div class="flex flex-col gap-3 p-6 bg-white border border-primary-900/10 rounded-2xl">
+            <div class="flex flex-col gap-3 rounded-2xl border border-primary-900/8 bg-white p-6 transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:border-brand-300/60 hover:shadow-[0_20px_44px_-26px_rgba(20,16,12,0.28)]">
               <div class="flex items-center gap-3">
                 <svg class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                   <path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -47,7 +47,7 @@ const REPO = 'https://github.com/0xCoach/TaoSheng';
               </div>
               <p class="text-sm text-primary-950/70" x-text="$store.i18n.t('about.goal1Desc')">人声检测、声纹和本地转写都在手机完成，声音不必出设备。</p>
             </div>
-            <div class="flex flex-col gap-3 p-6 bg-white border border-primary-900/10 rounded-2xl">
+            <div class="flex flex-col gap-3 rounded-2xl border border-primary-900/8 bg-white p-6 transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:border-brand-300/60 hover:shadow-[0_20px_44px_-26px_rgba(20,16,12,0.28)]">
               <div class="flex items-center gap-3">
                 <svg class="h-6 w-6 text-primary-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"></path>
@@ -56,7 +56,7 @@ const REPO = 'https://github.com/0xCoach/TaoSheng';
               </div>
               <p class="text-sm text-primary-950/70" x-text="$store.i18n.t('about.goal2Desc')">MIT 许可，源码、任务卡和踩过的坑全部公开，可自行审计和编译。</p>
             </div>
-            <div class="flex flex-col gap-3 p-6 bg-white border border-primary-900/10 rounded-2xl">
+            <div class="flex flex-col gap-3 rounded-2xl border border-primary-900/8 bg-white p-6 transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:border-brand-300/60 hover:shadow-[0_20px_44px_-26px_rgba(20,16,12,0.28)]">
               <div class="flex items-center gap-3">
                 <svg class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                   <path d="M11.42 15.17l-5.384-3.19a1.5 1.5 0 010-2.565l5.384-3.19a1.5 1.5 0 011.56 0l5.384 3.19a1.5 1.5 0 010 2.565l-5.384 3.19a1.5 1.5 0 01-1.56 0z" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -65,7 +65,7 @@ const REPO = 'https://github.com/0xCoach/TaoSheng';
               </div>
               <p class="text-sm text-primary-950/70" x-text="$store.i18n.t('about.goal3Desc')">转写和整理模型都能换，支持任意 OpenAI 兼容接口和局域网自建模型。</p>
             </div>
-            <div class="flex flex-col gap-3 p-6 bg-white border border-primary-900/10 rounded-2xl">
+            <div class="flex flex-col gap-3 rounded-2xl border border-primary-900/8 bg-white p-6 transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:border-brand-300/60 hover:shadow-[0_20px_44px_-26px_rgba(20,16,12,0.28)]">
               <div class="flex items-center gap-3">
                 <svg class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                   <path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -79,7 +79,7 @@ const REPO = 'https://github.com/0xCoach/TaoSheng';
 
         <!-- Tech Stack -->
         <div class="mb-16">
-          <h2 class="font-medium text-2xl tracking-tight mb-8 text-primary-950" x-text="$store.i18n.t('about.techTitle')">技术栈</h2>
+          <h2 class="text-2xl font-bold tracking-[-0.025em] mb-8 text-primary-950" x-text="$store.i18n.t('about.techTitle')">技术栈</h2>
           <div class="flex flex-col gap-4">
             <div class="flex items-center gap-4 p-4 bg-white border border-primary-900/10 rounded-xl">
               <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-orange-500/10">
@@ -91,8 +91,8 @@ const REPO = 'https://github.com/0xCoach/TaoSheng';
               </div>
             </div>
             <div class="flex items-center gap-4 p-4 bg-white border border-primary-900/10 rounded-xl">
-              <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-blue-500/10">
-                <span class="text-lg font-bold text-blue-600">S</span>
+              <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-primary-900/[0.06]">
+                <span class="text-lg font-bold text-primary-700">S</span>
               </div>
               <div>
                 <div class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('about.asr')">SenseVoice · sherpa-onnx</div>
@@ -100,8 +100,8 @@ const REPO = 'https://github.com/0xCoach/TaoSheng';
               </div>
             </div>
             <div class="flex items-center gap-4 p-4 bg-white border border-primary-900/10 rounded-xl">
-              <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-green-500/10">
-                <span class="text-lg font-bold text-green-600">V</span>
+              <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-primary-900/[0.06]">
+                <span class="text-lg font-bold text-primary-700">V</span>
               </div>
               <div>
                 <div class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('about.vad')">Silero VAD · CAM++</div>
@@ -109,8 +109,8 @@ const REPO = 'https://github.com/0xCoach/TaoSheng';
               </div>
             </div>
             <div class="flex items-center gap-4 p-4 bg-white border border-primary-900/10 rounded-xl">
-              <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-purple-500/10">
-                <span class="text-lg font-bold text-purple-600">R</span>
+              <div class="flex items-center justify-center h-10 w-10 rounded-lg bg-primary-900/[0.06]">
+                <span class="text-lg font-bold text-primary-700">R</span>
               </div>
               <div>
                 <div class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('about.llm')">Room · LLM</div>
@@ -122,8 +122,8 @@ const REPO = 'https://github.com/0xCoach/TaoSheng';
 
         <!-- Project Structure -->
         <div class="mb-16">
-          <h2 class="font-medium text-2xl tracking-tight mb-8 text-primary-950" x-text="$store.i18n.t('about.structureTitle')">项目结构</h2>
-          <div class="bg-white border border-primary-900/10 p-6 rounded-2xl">
+          <h2 class="text-2xl font-bold tracking-[-0.025em] mb-8 text-primary-950" x-text="$store.i18n.t('about.structureTitle')">项目结构</h2>
+          <div class="rounded-2xl border border-primary-900/8 bg-white p-6 transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:border-brand-300/60 hover:shadow-[0_20px_44px_-26px_rgba(20,16,12,0.28)]">
             <pre class="text-sm text-primary-950/70 overflow-x-auto"><code x-cloak x-show="$store.i18n.lang === 'zh'">app/src/main/java/app/resound/
 ├── capture/     收音服务、人声切段、守护、语音输入
 ├── audio/       音频来源（手机麦 / 外接麦）、编码
@@ -161,7 +161,7 @@ README.md        Setup guide and full architecture</code></pre>
         <!-- CTA -->
         <div class="text-center">
           <div class="flex flex-col gap-6 items-center">
-            <h2 class="font-medium text-2xl tracking-tight text-primary-950" x-text="$store.i18n.t('about.ctaTitle')">一起把涛声做得更好</h2>
+            <h2 class="text-2xl font-bold tracking-[-0.025em] text-primary-950" x-text="$store.i18n.t('about.ctaTitle')">一起把涛声做得更好</h2>
             <p class="text-base text-primary-950/70 max-w-lg" x-text="$store.i18n.t('about.ctaDesc')">涛声由 AI 协作开发，代码、任务卡和踩过的坑都公开。欢迎提 Issue、参与讨论或提交 PR。</p>
             <div class="flex flex-col sm:flex-row gap-3">
               <a class="inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3 text-base font-semibold transition bg-primary-900 hover:bg-primary-800 border-transparent text-white shadow-lg hover:shadow-xl active:scale-95 hover:scale-105" href={REPO} rel="noopener noreferrer" target="_blank">
