@@ -92,7 +92,7 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
       />
     </noscript>
   </head>
-  <body class="flex flex-col antialiased bg-primary-50 min-h-screen pt-16 sm:pt-20 text-primary-950 transition duration-150" data-page-meta={pageMeta}>
+  <body class="flex flex-col antialiased bg-primary-50 min-h-screen pt-20 text-primary-950" data-page-meta={pageMeta}>
 
     <!-- Header / Navbar -->
     <header
@@ -101,7 +101,6 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
       @scroll.window.passive="scrolled = window.scrollY > 8"
       @resize.window="if (window.innerWidth >= 640) open = false"
       @pageshow.window="open = false"
-      x-effect="document.body.classList.toggle('overflow-hidden', open)"
       :class="open
         ? 'bg-primary-50'
         : (scrolled
@@ -109,13 +108,12 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
           : 'bg-primary-50/0 backdrop-blur-0')"
     >
       <div
-        class="mx-auto flex max-w-2xl items-center justify-between px-4 transition-all duration-500 ease-out-expo sm:px-6 lg:max-w-7xl lg:px-8"
-        :class="scrolled ? 'py-2.5' : 'py-4'"
+        class="mx-auto flex h-20 max-w-2xl items-center justify-between px-4 sm:px-6 lg:max-w-7xl lg:px-8"
       >
         <div class="flex">
           <a class="items-center flex gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-950 rounded-md" href="/">
             <span class="sr-only" x-text="$store.i18n.t('header.brand')">涛声</span>
-            <img alt="TaoSheng" class="w-auto h-8 rounded-lg" src="/logo.png" />
+            <img alt="TaoSheng" class="h-8 w-8 shrink-0 rounded-lg" height="32" src="/logo.png" width="32" />
             <span class="text-primary-950 font-semibold text-xl" x-text="$store.i18n.t('header.brand')">涛声</span>
           </a>
         </div>
@@ -167,7 +165,7 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
         x-show="open"
       >
         <div
-          class="mx-auto max-w-2xl px-4 pb-24 pt-28 sm:px-6"
+          class="mx-auto max-w-2xl px-4 pb-24 pt-24 sm:px-6"
           x-transition:enter="transition duration-300 ease-out-expo"
           x-transition:enter-start="opacity-0 translate-y-2"
           x-transition:enter-end="opacity-100 translate-y-0"
@@ -234,7 +232,7 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
         <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-[minmax(210px,1.3fr)_repeat(3,minmax(0,1fr))_auto] lg:gap-x-8 lg:items-start xl:gap-x-12">
             <div class="flex flex-col gap-6 sm:col-span-2 lg:col-span-1">
               <div class="flex h-10 items-center gap-3">
-                <img alt="TaoSheng" class="h-10 rounded-lg w-10" src="/logo.png" />
+                <img alt="TaoSheng" class="h-10 w-10 shrink-0 rounded-lg" height="40" src="/logo.png" width="40" />
                 <span class="text-primary-950 text-xl font-bold" x-text="$store.i18n.t('footer.brand')">涛声 TaoSheng</span>
               </div>
               <p class="text-sm text-primary-950/70 leading-relaxed max-w-xs" x-text="$store.i18n.t('footer.desc')">替你听，替你记，替你想。开源的个人记忆工具，数据只在你自己的手机里。</p>
