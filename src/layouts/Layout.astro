@@ -126,7 +126,8 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
       </div>
 
       <!-- Collapsible Mobile Menu -->
-      <div class="max-w-2xl lg:max-w-7xl lg:px-8 mx-auto px-4 sm:px-6" id="website-menu" x-cloak x-collapse x-collapse.duration.500ms x-show="open">
+      <div class="max-w-2xl lg:max-w-7xl lg:px-8 mx-auto px-4 sm:px-6" id="website-menu" x-cloak x-show="open"
+        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
         <div class="grid lg:grid-cols-2 gap-16 grid-cols-1 lg:pt-12 pb-24 pt-6">
           <div class="items-center justify-center bg-primary-500/10 hidden lg:flex px-6 py-8 rounded-3xl">
             <p class="text-xl text-primary-950/70 italic leading-loose max-w-sm">
@@ -193,7 +194,7 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
     <footer aria-labelledby="footer-heading" class="py-16 bg-primary-500/10 lg:mt-20 lg:py-20 mt-16" id="footer">
       <h2 class="sr-only" id="footer-heading">Footer</h2>
       <div class="max-w-2xl lg:max-w-7xl lg:px-8 mx-auto px-4 sm:px-6">
-        <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.3fr)_repeat(3,minmax(0,1fr))_auto] lg:gap-x-12 lg:items-start">
+        <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-[minmax(210px,1.3fr)_repeat(3,minmax(0,1fr))_auto] lg:gap-x-8 lg:items-start xl:gap-x-12">
             <div class="flex flex-col gap-6 sm:col-span-2 lg:col-span-1">
               <div class="flex h-10 items-center gap-3">
                 <img alt="TaoSheng" class="h-10 rounded-lg w-10" src="/logo.png" />
@@ -218,15 +219,15 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
                     <span class="group-hover:underline" x-text="$store.i18n.t('footer.issues')">问题反馈</span>
                     <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
                   </a></li>
-                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={`${REPO}/discussions`} rel="noopener noreferrer" target="_blank">
-                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.discussions')">社区讨论</span>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={`${REPO}/issues`} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.discussions')">提问与讨论</span>
                     <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
                   </a></li>
                   <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={`${REPO}/pulls`} rel="noopener noreferrer" target="_blank">
                     <span class="group-hover:underline" x-text="$store.i18n.t('footer.pullRequests')">代码贡献</span>
                     <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
                   </a></li>
-                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={`${REPO}/stargazers`} rel="noopener noreferrer" target="_blank">
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={REPO} rel="noopener noreferrer" target="_blank">
                     <span class="group-hover:underline" x-text="$store.i18n.t('footer.stargazers')">点个 Star</span>
                     <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
                   </a></li>
@@ -407,12 +408,9 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
     <!-- i18n Alpine.js Client Bootloader -->
     <script>
       import Alpine from 'alpinejs';
-      import collapse from '@alpinejs/collapse';
       import { translations } from '../i18n/translations';
 
       if (!window.Alpine) {
-        Alpine.plugin(collapse);
-
         Alpine.store('i18n', {
           lang: 'zh',
           init() {

@@ -48,7 +48,7 @@ const RELEASES = `${REPO}/releases/latest`;
           </a>
 
           <!-- GitHub Discussions -->
-          <a class="flex flex-col gap-4 p-6 bg-white border border-primary-900/10 rounded-2xl hover:border-primary-600/30 transition-colors group" href={`${REPO}/discussions`} rel="noopener noreferrer" target="_blank">
+          <a class="flex flex-col gap-4 p-6 bg-white border border-primary-900/10 rounded-2xl hover:border-primary-600/30 transition-colors group" href={`${REPO}/issues`} rel="noopener noreferrer" target="_blank">
             <div class="flex items-center gap-3">
               <div class="flex items-center justify-center h-12 w-12 rounded-xl bg-blue-500/10">
                 <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -56,13 +56,13 @@ const RELEASES = `${REPO}/releases/latest`;
                 </svg>
               </div>
               <div>
-                <h3 class="font-medium text-primary-950 group-hover:underline" x-text="$store.i18n.t('contact.discussionsTitle')">GitHub Discussions</h3>
-                <p class="text-sm text-primary-950/60" x-text="$store.i18n.t('contact.discussionsSub')">参与社区讨论</p>
+                <h3 class="font-medium text-primary-950 group-hover:underline" x-text="$store.i18n.t('contact.discussionsTitle')">提问与交流</h3>
+                <p class="text-sm text-primary-950/60" x-text="$store.i18n.t('contact.discussionsSub')">在 Issues 里提问</p>
               </div>
             </div>
             <p class="text-sm text-primary-950/70" x-text="$store.i18n.t('contact.discussionsDesc')">提问、分享用法，或交流模型服务商和自定义技能的搭配。</p>
             <div class="flex items-center gap-1.5 text-sm text-primary-600 mt-auto">
-              <span x-text="$store.i18n.t('contact.discussionsLink')">参与讨论</span>
+              <span x-text="$store.i18n.t('contact.discussionsLink')">去提问</span>
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
