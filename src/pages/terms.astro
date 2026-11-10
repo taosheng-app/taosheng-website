@@ -1,0 +1,187 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="使用条款 · 涛声 TaoSheng"
+  titleEn="Terms of Use — TaoSheng"
+  description="涛声使用条款：MIT 开源许可、软件按现状提供、第三方服务由用户自行配置并承担费用，录音使用须遵守当地法律。"
+  descEn="TaoSheng terms of use: MIT licensed, provided as is, third-party services configured and paid for by you, and recording subject to local law."
+  keywords="涛声,使用条款,MIT 许可,免责声明,录音合规"
+  keywordsEn="TaoSheng,terms of use,MIT license,disclaimer,recording compliance"
+>
+  <div class="px-4 lg:px-8 mx-auto sm:px-6 max-w-3xl py-16 sm:py-20">
+    <div class="flex flex-col gap-4 text-center pb-16 sm:pb-20">
+      <h1 class="font-medium tracking-tight sm:text-5xl text-4xl" x-text="$store.i18n.t('terms.title')">涛声使用条款</h1>
+      <p class="text-base text-primary-950/60" x-text="$store.i18n.t('terms.lastModified')">最后修改时间：2026年11月10日</p>
+    </div>
+
+    <div class="max-w-none prose prose-primary">
+      <!-- Intro -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <p class="mb-6 text-lg">Welcome to <strong>TaoSheng</strong>, an open-source personal memory tool for Android. By downloading, compiling, installing or using this software, you agree to these terms. TaoSheng is free software released under the MIT License; these terms explain what that means in practice, on top of the license itself.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <p class="mb-6 text-lg">欢迎使用 <strong>涛声</strong>——一款开源的个人记忆工具。您下载、编译、安装或使用本软件，即表示已阅读并同意本条款。涛声是采用 MIT 许可发布的自由软件，本条款在许可之外，说明实际使用中的权利与边界。</p>
+      </div>
+
+      <!-- Section 1 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">1. Service Description</h2>
+        <p class="mb-4">TaoSheng is an <strong>on-device personal memory tool</strong> that listens in the background, transcribes speech, recognizes speakers and uses an LLM to organize events and memories.</p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>Requires Android 10 or later on an arm64 device; primarily tested on a Xiaomi 14 Pro;</li>
+          <li>On-device transcription is optional; cloud ASR and LLM digest require keys you provide;</li>
+          <li>Backup, push channels and custom skills are optional features you configure yourself;</li>
+          <li>This is an early validation release and is being actively developed.</li>
+        </ul>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">一、服务说明</h2>
+        <p class="mb-4">涛声是一款 <strong>本机运行的个人记忆工具</strong>：后台收音、转写文字、认出说话人，并由大模型整理成事件与记忆。</p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>需要 Android 10 及以上、arm64 架构的手机，主要在小米 14 Pro 上实测；</li>
+          <li>本地转写可选；云端转写与大模型整理需要你自己填写密钥；</li>
+          <li>备份、推送通道与自定义技能均为你自行配置的可选功能；</li>
+          <li>当前为早期验证版，功能仍在持续迭代。</li>
+        </ul>
+      </div>
+
+      <!-- Section 2 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">2. Your Rights and Obligations</h2>
+        <p class="mb-4"><strong>You may:</strong></p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>Use the app for free, with no account and no subscription;</li>
+          <li>Choose on-device or third-party services, and change them at any time;</li>
+          <li>Export, back up, delete or permanently remove your own data at any time;</li>
+          <li>Stop using the app and uninstall it whenever you like.</li>
+        </ul>
+        <p class="mb-4"><strong>You should:</strong></p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>Comply with local laws and inform people around you before recording conversations where required;</li>
+          <li>Safeguard your own API keys, backup credentials and exported files;</li>
+          <li>Verify the signing certificate fingerprint and SHA-256 checksum before installing an APK;</li>
+          <li>Not redistribute modified builds in a way that misleads others about their origin or safety.</li>
+        </ul>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">二、用户权利与义务</h2>
+        <p class="mb-4"><strong>您享有以下权利：</strong></p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>免费使用，无需注册账号、无需订阅；</li>
+          <li>自由选择本地或第三方服务，随时更换；</li>
+          <li>随时导出、备份、删除或彻底清除自己的数据；</li>
+          <li>随时停止使用并卸载本软件。</li>
+        </ul>
+        <p class="mb-4"><strong>您需要遵守以下义务：</strong></p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>遵守当地法律，在需要时于录音前告知身边的人；</li>
+          <li>妥善保管自己的 API Key、备份凭据与导出文件；</li>
+          <li>安装前核对签名证书指纹与安装包 SHA-256 校验值；</li>
+          <li>分发修改版时，不得让他人误以为它是官方原版或已被官方认可。</li>
+        </ul>
+      </div>
+
+      <!-- Section 3 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">3. Open Source License</h2>
+        <p class="mb-4">TaoSheng is released under the <a class="text-primary-600 hover:underline" href="https://github.com/0xCoach/TaoSheng/blob/main/LICENSE" rel="noopener noreferrer" target="_blank">MIT License</a>. You may use, copy, modify, merge, publish, distribute, sublicense and sell copies of the software, provided you include the copyright notice and the permission notice in all copies or substantial portions.</p>
+        <p class="mb-6">Third-party components (sherpa-onnx, Silero VAD, CAM++ / 3D-Speaker, SenseVoice, pyannote segmentation, Qualcomm QNN runtime and others) remain under their own licenses; see <a class="text-primary-600 hover:underline" href="https://github.com/0xCoach/TaoSheng/tree/main/docs/third-party" rel="noopener noreferrer" target="_blank">docs/third-party</a>. The TaoSheng name and logo are not covered by the code license.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">三、开源许可与知识产权</h2>
+        <p class="mb-4">涛声采用 <a class="text-primary-600 hover:underline" href="https://github.com/0xCoach/TaoSheng/blob/main/LICENSE" rel="noopener noreferrer" target="_blank">MIT 许可</a> 发布。您可以自由使用、复制、修改、合并、发布、分发、再许可乃至出售本软件的副本，只需在所有副本或实质性部分中保留版权声明与许可声明。</p>
+        <p class="mb-6">第三方组件（sherpa-onnx、Silero VAD、CAM++ / 3D-Speaker、SenseVoice、pyannote segmentation、高通 QNN 运行库等）各自遵循其原始许可，详见 <a class="text-primary-600 hover:underline" href="https://github.com/0xCoach/TaoSheng/tree/main/docs/third-party" rel="noopener noreferrer" target="_blank">docs/third-party</a>。「涛声」名称与图标不在代码许可范围内。</p>
+      </div>
+
+      <!-- Section 4 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">4. Third-Party Services</h2>
+        <p class="mb-4">Cloud ASR, LLM providers, push channels and backup targets are services you choose and configure yourself. <strong>Please note:</strong></p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>Their availability, quality, security and privacy practices are the provider's responsibility;</li>
+          <li>Fees are billed to your own account; we do not collect or process payments;</li>
+          <li>We do not relay, store or review content sent to them, and are not liable for it;</li>
+          <li>You should read and comply with each provider's terms and privacy policy.</li>
+        </ul>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">四、第三方服务</h2>
+        <p class="mb-4">云端转写、大模型服务商、推送通道与备份目标都是您自行选择并配置的服务。<strong>请注意：</strong></p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>其可用性、质量、安全性与隐私实践由对应服务商负责；</li>
+          <li>费用由您自己的账号承担，我们不收取、也不经手任何费用；</li>
+          <li>我们不中转、不存储、不查看发往这些服务的内容，也不为其承担责任；</li>
+          <li>您应自行阅读并遵守各服务商的条款与隐私政策。</li>
+        </ul>
+      </div>
+
+      <!-- Section 5 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">5. Disclaimer</h2>
+        <p class="mb-4">To the extent permitted by law, the software is provided <strong>“as is”</strong>, without warranty of any kind. In particular, we are not responsible for:</p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>Missed recordings caused by OS battery policies, vendor background restrictions or device failures;</li>
+          <li>Inaccurate transcripts, speaker labels or AI-generated summaries — always verify important items against the original audio;</li>
+          <li>Data loss caused by user operations, uninstalling without a backup, or third-party service failures;</li>
+          <li>Any indirect, incidental or consequential damages arising from use of the software.</li>
+        </ul>
+        <p class="mb-6">TaoSheng is a personal memory aid, not a medical, legal, financial or professional recording system.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">五、免责声明</h2>
+        <p class="mb-4">在法律允许范围内，本软件按 <strong>「现状」</strong> 提供，不作任何明示或暗示的保证。我们尤其不对以下情况负责：</p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>因系统电池策略、厂商后台限制或设备故障导致的漏录；</li>
+          <li>转写、说话人标注或 AI 整理的误差——要紧的事请对照原录音核实；</li>
+          <li>因用户操作、未备份即卸载、或第三方服务故障造成的数据丢失；</li>
+          <li>使用本软件产生的任何间接、附带或后果性损失。</li>
+        </ul>
+        <p class="mb-6">涛声是个人记忆辅助工具，不是医疗、法律、金融或专业取证录音系统。</p>
+      </div>
+
+      <!-- Section 6 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">6. Privacy Protection</h2>
+        <p class="mb-6">We take privacy seriously. For details on what is stored on your phone, how long audio is kept and when data may leave the device, please read the <a class="text-primary-600 hover:underline" href="/privacy">TaoSheng Privacy Policy</a>.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">六、隐私保护</h2>
+        <p class="mb-6">我们高度重视隐私保护。关于数据保存在哪里、原录音保留多久、以及什么情况下数据会离开设备，请参阅 <a class="text-primary-600 hover:underline" href="/privacy">《涛声隐私政策》</a>。</p>
+      </div>
+
+      <!-- Section 7 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">7. Lawful Use</h2>
+        <p class="mb-4">Recording and storing other people's conversations is legally restricted in many countries and regions. You are solely responsible for complying with applicable law and for obtaining consent where required.</p>
+        <p class="mb-6">TaoSheng deliberately keeps a persistent foreground-service notification and respects the system microphone indicator. It must not be modified or used as a covert surveillance or hidden recording tool, nor used to infringe on the rights of others.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">七、合规使用</h2>
+        <p class="mb-4">录音与保存他人对话在很多国家和地区受法律约束。您需自行确保符合适用法律，并在需要时取得对方同意。</p>
+        <p class="mb-6">涛声刻意保留前台服务常驻通知，并遵循系统麦克风指示灯；不得将本软件改造或用于隐蔽监听、偷录，或用于侵犯他人权益的目的。</p>
+      </div>
+
+      <!-- Section 8 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">8. Changes to These Terms</h2>
+        <p class="mb-6">We may update these terms as the project evolves. Important changes will be announced in the repository README or release notes. If you disagree, you may stop using and uninstall the software; continued use of a newer version means you accept the updated terms.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">八、条款变更</h2>
+        <p class="mb-6">随着项目演进，我们可能会更新本条款；重要变更会在仓库 README 或版本发布说明中告知。如不同意，您可以停止使用并卸载本软件；继续使用更新后的版本，即视为您接受更新后的条款。</p>
+      </div>
+
+      <!-- Section 9 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">9. Contact</h2>
+        <p class="mb-6">Questions about these terms are welcome as a <a class="text-primary-600 hover:underline" href="https://github.com/0xCoach/TaoSheng/issues" rel="noopener noreferrer" target="_blank">GitHub Issue</a> or a <a class="text-primary-600 hover:underline" href="https://github.com/0xCoach/TaoSheng/discussions" rel="noopener noreferrer" target="_blank">Discussion</a>. The project is maintained on a personal basis, so replies may take a little while.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">九、联系我们</h2>
+        <p class="mb-6">对本条款有任何疑问，欢迎通过 <a class="text-primary-600 hover:underline" href="https://github.com/0xCoach/TaoSheng/issues" rel="noopener noreferrer" target="_blank">GitHub Issue</a> 或 <a class="text-primary-600 hover:underline" href="https://github.com/0xCoach/TaoSheng/discussions" rel="noopener noreferrer" target="_blank">Discussions</a> 提出。项目由个人维护，回复可能不及时，敬请谅解。</p>
+      </div>
+    </div>
+  </div>
+</Layout>

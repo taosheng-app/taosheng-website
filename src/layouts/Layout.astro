@@ -1,0 +1,480 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  canonical?: string;
+  titleEn?: string;
+  descEn?: string;
+  keywordsEn?: string;
+}
+
+// Static fallbacks are Chinese; the client-side i18n store swaps in English.
+// Replace `canonical` with your absolute domain when deploying to production.
+const {
+  title = '涛声 TaoSheng · 替你听，替你记，替你想',
+  description = '涛声是开源的个人记忆工具：一部安卓手机全天收音、本地转写、声纹认人，AI 自动整理成待办、约定和记忆。不用买硬件、不用注册账号，数据只在你自己的手机里。',
+  keywords = '涛声,TaoSheng,个人记忆,本地转写,声纹认人,AI 整理,安卓,开源,MIT,SenseVoice',
+  canonical = '/',
+  titleEn = 'TaoSheng — It listens, remembers, and thinks for you',
+  descEn = 'TaoSheng is an open-source personal memory tool for Android: all-day listening, on-device transcription, speaker recognition, and AI-organized todos, promises and memories. No hardware, no account, your data stays on your phone.',
+  keywordsEn = 'TaoSheng,personal memory,on-device transcription,voiceprint,AI notes,Android,open source,MIT,SenseVoice',
+} = Astro.props;
+
+const pageMeta = JSON.stringify({
+  zh: { title, description, keywords },
+  en: { title: titleEn, description: descEn, keywords: keywordsEn },
+});
+
+const REPO = 'https://github.com/0xCoach/TaoSheng';
+const RELEASES = `${REPO}/releases/latest`;
+const README = `${REPO}/blob/main/README.md`;
+const CHANGELOG = `${REPO}/blob/main/CHANGELOG.md`;
+const CARDS = `${REPO}/tree/main/docs/任务卡`;
+const LICENSE = `${REPO}/blob/main/LICENSE`;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN" :lang="$store.i18n.lang === 'zh' ? 'zh-CN' : 'en'" x-data>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
+    <link href="/favicon-256.png" rel="icon" sizes="256x256" type="image/png" />
+    <link href="/favicon-32.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="/site.webmanifest" rel="manifest" />
+    <meta name="theme-color" content="#F07B2E" />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content="index, follow" />
+    <link href={canonical} rel="canonical" />
+
+    <title>{title}</title>
+
+    <meta content="website" property="og:type" />
+    <meta content={canonical} property="og:url" />
+    <meta content={title} property="og:title" />
+    <meta content={description} property="og:description" />
+    <meta content="/og-cover.jpg" property="og:image" />
+    <meta content="涛声 TaoSheng" property="og:site_name" />
+    <meta content="zh_CN" property="og:locale" />
+    <meta content="summary_large_image" name="twitter:card" />
+    <meta content={title} name="twitter:title" />
+    <meta content={description} name="twitter:description" />
+    <meta content="/og-cover.jpg" name="twitter:image" />
+
+    <!-- Google Fonts for Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="flex flex-col antialiased bg-primary-50 min-h-screen pt-16 sm:pt-20 text-primary-950 transition duration-150" data-page-meta={pageMeta}>
+
+    <!-- Header / Navbar -->
+    <header :class="{ 'bg-primary-500/10 ': open, 'bg-primary-50/80 ': !(open) }" class="fixed backdrop-blur-sm left-0 right-0 top-0 transition z-50" x-data="{ open: false }">
+      <div class="items-center flex justify-between lg:max-w-7xl lg:px-8 max-w-2xl mx-auto px-4 py-4 sm:px-6">
+        <div class="flex">
+          <a class="items-center flex gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-950 rounded-md" href="/">
+            <span class="sr-only" x-text="$store.i18n.t('header.brand')">涛声</span>
+            <img alt="TaoSheng" class="w-auto h-8 rounded-lg" src="/logo.png" />
+            <span class="text-primary-950 font-semibold text-xl" x-text="$store.i18n.t('header.brand')">涛声</span>
+          </a>
+        </div>
+
+        <div class="items-center flex -mr-2 sm:space-x-5 space-x-2">
+          <a class="text-base font-medium text-primary-950 hover:text-primary-600 transition-colors hidden sm:inline-flex" href="/" x-text="$store.i18n.t('nav.home')">首页</a>
+          <a class="text-base font-medium text-primary-950 hover:text-primary-600 transition-colors hidden sm:inline-flex" href="/about" x-text="$store.i18n.t('nav.about')">关于</a>
+          <a class="text-base font-medium text-primary-950 hover:text-primary-600 transition-colors hidden sm:inline-flex" href="/download" x-text="$store.i18n.t('nav.download')">下载</a>
+          <a class="text-base font-medium text-primary-950 hover:text-primary-600 transition-colors hidden sm:inline-flex" href="/contact" x-text="$store.i18n.t('nav.contact')">联系</a>
+          <!-- Download button -->
+          <a class="items-center justify-center rounded-full font-semibold gap-2 transition bg-primary-900 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-900 focus:outline-none hidden hover:bg-primary-800 px-5 py-2.5 shadow-sm sm:inline-flex text-sm text-white" href={RELEASES} rel="noopener noreferrer" target="_blank">
+            <span x-text="$store.i18n.t('header.download')">下载 APK</span>
+          </a>
+
+          <!-- Language Toggle -->
+          <button class="items-center justify-center rounded-full inline-flex transition focus-visible:ring-2 focus:outline-none h-14 hover:bg-primary-500/10 ring-primary-950 text-primary-950 w-14 gap-1" type="button" @click="$store.i18n.toggle()" aria-label="Toggle language">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="text-xs font-semibold" x-text="$store.i18n.lang === 'en' ? 'EN' : '中'">中</span>
+          </button>
+
+          <!-- Mobile Menu Toggle Button -->
+          <button
+            type="button"
+            class="text-primary-950 hover:bg-primary-500/10 ring-primary-950 sm:hidden inline-flex h-14 w-14 items-center justify-center rounded-full transition focus:outline-none focus-visible:ring-2"
+            @click="open = !open"
+            @mousedown="if (open) $event.preventDefault()"
+            aria-controls="website-menu"
+            aria-expanded="false"
+            :aria-expanded="open.toString()"
+          >
+            <span class="sr-only">Toggle menu</span>
+            <svg x-cloak class="h-8 w-8" :class="{ 'hidden': open, 'block': !(open) }" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 8H5V10H19V8ZM19 14H5V16H19V14Z"></path>
+            </svg>
+            <svg x-cloak class="h-8 w-8" :class="{ 'block': open, 'hidden': !(open) }" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12.0007 10.5865L16.9504 5.63672L18.3646 7.05093L13.4149 12.0007L18.3646 16.9504L16.9504 18.3646L12.0007 13.4149L7.05093 18.3646L5.63672 16.9504L10.5865 12.0007L5.63672 7.05093L7.05093 5.63672L12.0007 10.5865Z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Collapsible Mobile Menu -->
+      <div class="max-w-2xl lg:max-w-7xl lg:px-8 mx-auto px-4 sm:px-6" id="website-menu" x-cloak x-collapse x-collapse.duration.500ms x-show="open">
+        <div class="grid lg:grid-cols-2 gap-16 grid-cols-1 lg:pt-12 pb-24 pt-6">
+          <div class="items-center justify-center bg-primary-500/10 hidden lg:flex px-6 py-8 rounded-3xl">
+            <p class="text-xl text-primary-950/70 italic leading-loose max-w-sm">
+              <span class="font-medium" x-text="$store.i18n.t('header.brand')">涛声</span>
+              <span x-text="' · ' + $store.i18n.t('mobileMenu.quote')"> · 手机本来就随身，说过的话不该转头就忘。</span>
+            </p>
+          </div>
+          <nav class="flex flex-col divide-primary-900/10 divide-y gap-1">
+            <a class="font-medium text-primary-950 text-3xl tracking-tight sm:text-4xl focus-visible:outline-none group inline-flex py-6 sm:py-8 transition" href="/">
+              <div class="items-center flex flex-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-primary-950 justify-between rounded-3xl">
+                <div class="items-center flex gap-6">
+                  <span class="text-xs">01</span>
+                  <span class="group-hover:underline" x-text="$store.i18n.t('mobileMenu.home')">首页</span>
+                </div>
+                <svg class="text-primary-600 h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path>
+                </svg>
+              </div>
+            </a>
+            <a class="font-medium text-primary-950 text-3xl tracking-tight sm:text-4xl focus-visible:outline-none group inline-flex py-6 sm:py-8 transition" href="/about">
+              <div class="items-center flex flex-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-primary-950 justify-between rounded-3xl">
+                <div class="items-center flex gap-6">
+                  <span class="text-xs">02</span>
+                  <span class="group-hover:underline" x-text="$store.i18n.t('mobileMenu.about')">关于</span>
+                </div>
+                <svg class="text-primary-600 h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path>
+                </svg>
+              </div>
+            </a>
+            <a class="font-medium text-primary-950 text-3xl tracking-tight sm:text-4xl focus-visible:outline-none group inline-flex py-6 sm:py-8 transition" href="/download">
+              <div class="items-center flex flex-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-primary-950 justify-between rounded-3xl">
+                <div class="items-center flex gap-6">
+                  <span class="text-xs">03</span>
+                  <span class="group-hover:underline" x-text="$store.i18n.t('mobileMenu.download')">下载</span>
+                </div>
+                <svg class="text-primary-600 h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path>
+                </svg>
+              </div>
+            </a>
+            <a class="font-medium text-primary-950 text-3xl tracking-tight sm:text-4xl focus-visible:outline-none group inline-flex py-6 sm:py-8 transition" href="/contact">
+              <div class="items-center flex flex-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-primary-950 justify-between rounded-3xl">
+                <div class="items-center flex gap-6">
+                  <span class="text-xs">04</span>
+                  <span class="group-hover:underline" x-text="$store.i18n.t('mobileMenu.contact')">联系</span>
+                </div>
+                <svg class="text-primary-600 h-6 w-6 sm:h-8 sm:w-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"></path>
+                </svg>
+              </div>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Slot Content -->
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer aria-labelledby="footer-heading" class="py-16 bg-primary-500/10 lg:mt-20 lg:py-20 mt-16" id="footer">
+      <h2 class="sr-only" id="footer-heading">Footer</h2>
+      <div class="max-w-2xl lg:max-w-7xl lg:px-8 mx-auto px-4 sm:px-6">
+        <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.3fr)_repeat(3,minmax(0,1fr))_auto] lg:gap-x-12 lg:items-start">
+            <div class="flex flex-col gap-6 sm:col-span-2 lg:col-span-1">
+              <div class="flex h-10 items-center gap-3">
+                <img alt="TaoSheng" class="h-10 rounded-lg w-10" src="/logo.png" />
+                <span class="text-primary-950 text-xl font-bold" x-text="$store.i18n.t('footer.brand')">涛声 TaoSheng</span>
+              </div>
+              <p class="text-sm text-primary-950/70 leading-relaxed max-w-xs" x-text="$store.i18n.t('footer.desc')">替你听，替你记，替你想。开源的个人记忆工具，数据只在你自己的手机里。</p>
+            </div>
+
+              <div class="flex flex-col gap-4">
+                <h3 class="flex h-10 items-center text-sm text-primary-950 font-semibold tracking-wider uppercase" x-text="$store.i18n.t('footer.community')">社区</h3>
+                <ul class="flex flex-col gap-2.5" role="list">
+                  <li>
+                    <button class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors cursor-pointer" type="button" aria-controls="update-modal" aria-haspopup="dialog" data-modal-target="update-modal">
+                      <span class="group-hover:underline" x-text="$store.i18n.t('footer.updateModal.title')">获取最新版涛声</span>
+                    </button>
+                  </li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={REPO} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.github')">GitHub 仓库</span>
+                    <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={`${REPO}/issues`} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.issues')">问题反馈</span>
+                    <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={`${REPO}/discussions`} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.discussions')">社区讨论</span>
+                    <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={`${REPO}/pulls`} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.pullRequests')">代码贡献</span>
+                    <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={`${REPO}/stargazers`} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.stargazers')">点个 Star</span>
+                    <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                  </a></li>
+                </ul>
+              </div>
+
+              <div class="flex flex-col gap-4">
+                <h3 class="flex h-10 items-center text-sm text-primary-950 font-semibold tracking-wider uppercase" x-text="$store.i18n.t('footer.resources')">资源</h3>
+                <ul class="flex flex-col gap-2.5" role="list">
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={RELEASES} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.downloadApk')">下载安装包</span>
+                    <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={README} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.docs')">使用说明</span>
+                    <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={CHANGELOG} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.changelog')">更新日志</span>
+                    <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={README} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.roadmap')">产品路线图</span>
+                    <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={CARDS} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.taskCards')">任务卡</span>
+                    <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                  </a></li>
+                </ul>
+              </div>
+
+              <div class="flex flex-col gap-4">
+                <h3 class="flex h-10 items-center text-sm text-primary-950 font-semibold tracking-wider uppercase" x-text="$store.i18n.t('footer.legal')">协议</h3>
+                <ul class="flex flex-col gap-2.5" role="list">
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href="/privacy">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.privacy')">隐私政策</span>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href="/terms">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.terms')">使用条款</span>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={README} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.usage')">使用须知</span>
+                  </a></li>
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={LICENSE} rel="noopener noreferrer" target="_blank">
+                    <span class="group-hover:underline" x-text="$store.i18n.t('footer.license')">MIT 许可</span>
+                  </a></li>
+                </ul>
+              </div>
+
+          <div class="flex justify-center sm:col-span-2 lg:col-span-1 lg:justify-self-end">
+            <div class="items-center flex flex-col gap-3 rounded-2xl bg-white/70 p-5 ring-1 ring-primary-900/10 shadow-sm">
+              <div class="items-center flex justify-center h-16 rounded-2xl bg-primary-600/10 text-primary-600 w-16">
+                <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path d="M12 3.5v11m0 0l-4-4m4 4l4-4M4 16.5v2A2.5 2.5 0 006.5 21h11a2.5 2.5 0 002.5-2.5v-2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </div>
+              <p class="font-medium text-xs text-center text-primary-950/70" x-text="$store.i18n.t('footer.updateCard.version')">当前版本 v0.2.20 · 2026-11-10</p>
+              <a class="items-center inline-flex gap-1.5 duration-200 hover:text-primary-950 text-primary-950/70 transition-colors text-xs" href={RELEASES} rel="noopener noreferrer" target="_blank">
+                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
+                <span x-text="$store.i18n.t('footer.updateCard.action')">查看 Releases</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-primary-900/10 mt-12 pt-8">
+          <div class="flex flex-col gap-4">
+            <div class="items-center flex justify-center text-primary-950/60 text-sm text-center">
+              <p x-text="$store.i18n.t('footer.tagline')">MIT 开源 · 无需注册账号 · 数据只在你自己的手机里。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Modal: get the latest release -->
+    <div class="items-center justify-center inset-0 backdrop-blur-sm bg-black/60 fixed hidden px-4 z-[60]" id="update-modal" aria-labelledby="update-modal-title" aria-modal="true" role="dialog">
+      <div class="w-full max-w-sm bg-white p-6 relative rounded-3xl shadow-2xl">
+        <button class="items-center flex justify-center hover:bg-primary-500/10 absolute h-9 hover:text-primary-950 right-4 rounded-full text-primary-950/45 top-4 transition w-9 cursor-pointer" type="button" aria-label="Close" data-modal-close="update-modal">
+          <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+          </svg>
+        </button>
+        <div class="items-center flex flex-col gap-4 pt-2 text-center">
+          <div class="items-center flex flex-col gap-2">
+            <h3 class="text-primary-950 font-semibold text-xl" id="update-modal-title" x-text="$store.i18n.t('footer.updateModal.title')">获取最新版涛声</h3>
+            <p class="text-sm text-primary-950/60" x-text="$store.i18n.t('footer.updateModal.desc')">安装包在 GitHub Releases 发布，国内可用魔搭镜像下载。</p>
+          </div>
+          <div class="items-center flex flex-col gap-3 border border-primary-900/10 bg-primary-50 rounded-[28px] p-8 shadow-lg w-full">
+            <div class="items-center flex justify-center h-16 rounded-2xl bg-primary-600/10 text-primary-600 w-16">
+              <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M12 3.5v11m0 0l-4-4m4 4l4-4M4 16.5v2A2.5 2.5 0 006.5 21h11a2.5 2.5 0 002.5-2.5v-2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </div>
+            <a class="font-medium text-primary-950 underline-offset-4 hover:underline" href={RELEASES} rel="noopener noreferrer" target="_blank" x-text="$store.i18n.t('footer.updateModal.action')">打开 GitHub Releases</a>
+          </div>
+          <div class="space-y-1">
+            <p class="font-medium text-primary-950 text-base" x-text="$store.i18n.t('footer.updateModal.brand')">涛声 TaoSheng</p>
+            <p class="text-sm text-primary-950/65" x-text="$store.i18n.t('footer.updateModal.type')">MIT 开源 · Android 10+</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Logic Script -->
+    <script is:inline>
+      function initModals() {
+        const targets = document.querySelectorAll("[data-modal-target]");
+        const closes = document.querySelectorAll("[data-modal-close]");
+
+        const closeModal = (id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.classList.add("hidden");
+            el.classList.remove("flex");
+            document.body.style.overflow = "";
+            document.body.style.paddingRight = "";
+          }
+        };
+
+        const openModal = (id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+          el.classList.remove("hidden");
+          el.classList.add("flex");
+          document.body.style.overflow = "hidden";
+          if (scrollBarWidth > 0) {
+            document.body.style.paddingRight = `${scrollBarWidth}px`;
+          }
+        };
+
+        targets.forEach(el => {
+          if (el.dataset.modalBound !== "true") {
+            el.dataset.modalBound = "true";
+            el.addEventListener("click", () => {
+              const target = el.getAttribute("data-modal-target");
+              if (target) openModal(target);
+            });
+          }
+        });
+
+        closes.forEach(el => {
+          if (el.dataset.modalBound !== "true") {
+            el.dataset.modalBound = "true";
+            el.addEventListener("click", () => {
+              const target = el.getAttribute("data-modal-close");
+              if (target) closeModal(target);
+            });
+          }
+        });
+
+        document.querySelectorAll('[role="dialog"][aria-modal="true"]').forEach(el => {
+          if (el.dataset.modalOverlayBound !== "true") {
+            el.dataset.modalOverlayBound = "true";
+            el.addEventListener("click", (e) => {
+              if (e.target === el && el.id) closeModal(el.id);
+            });
+          }
+        });
+
+        if (document.body.dataset.footerModalEscBound !== "true") {
+          document.body.dataset.footerModalEscBound = "true";
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+              document.querySelectorAll('[role="dialog"][aria-modal="true"]').forEach(modal => {
+                if (!modal.classList.contains("hidden") && modal.id) closeModal(modal.id);
+              });
+            }
+          });
+        }
+      }
+      document.addEventListener("DOMContentLoaded", initModals);
+      document.addEventListener("astro:page-load", initModals);
+    </script>
+
+    <!-- i18n Alpine.js Client Bootloader -->
+    <script>
+      import Alpine from 'alpinejs';
+      import collapse from '@alpinejs/collapse';
+      import { translations } from '../i18n/translations';
+
+      if (!window.Alpine) {
+        Alpine.plugin(collapse);
+
+        Alpine.store('i18n', {
+          lang: 'zh',
+          init() {
+            const saved = localStorage.getItem('lang');
+            const browser = (navigator.language || '').toLowerCase();
+            this.lang = saved || (browser.startsWith('zh') ? 'zh' : 'en');
+          },
+          toggle() {
+            this.lang = this.lang === 'en' ? 'zh' : 'en';
+            localStorage.setItem('lang', this.lang);
+          },
+          t(key) {
+            const keys = key.split('.');
+            let result = translations[this.lang];
+            for (const k of keys) {
+              if (result && typeof result === 'object' && k in result) {
+                result = result[k];
+              } else {
+                return key;
+              }
+            }
+            return result;
+          }
+        });
+
+        window.Alpine = Alpine;
+        Alpine.start();
+
+        // Keep <title>, meta description and Open Graph tags in sync with the language.
+        const setMeta = (attr, value, content) => {
+          const el = document.querySelector(`meta[${attr}="${value}"]`);
+          if (el) el.setAttribute('content', content);
+        };
+
+        Alpine.effect(() => {
+          const lang = Alpine.store('i18n').lang;
+          document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+          const siteMeta = translations[lang].meta;
+          setMeta('property', 'og:site_name', siteMeta.ogSiteName);
+          setMeta('property', 'og:locale', siteMeta.ogLocale);
+
+          const raw = document.body && document.body.dataset.pageMeta;
+          if (!raw) return;
+          try {
+            const m = JSON.parse(raw)[lang];
+            if (!m) return;
+            if (m.title) {
+              document.title = m.title;
+              setMeta('property', 'og:title', m.title);
+              setMeta('name', 'twitter:title', m.title);
+            }
+            if (m.description) {
+              setMeta('name', 'description', m.description);
+              setMeta('property', 'og:description', m.description);
+              setMeta('name', 'twitter:description', m.description);
+            }
+            if (m.keywords) setMeta('name', 'keywords', m.keywords);
+          } catch (e) {
+            // Ignore malformed metadata; the server-rendered Chinese fallback stays.
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

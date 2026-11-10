@@ -1,0 +1,154 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const REPO = 'https://github.com/0xCoach/TaoSheng';
+const RELEASES = `${REPO}/releases/latest`;
+---
+
+<Layout>
+  <section class="relative overflow-hidden pb-16 pt-16 sm:pb-24 sm:pt-24">
+    <div class="absolute inset-x-0 top-0 -z-10 h-[520px] bg-[radial-gradient(circle_at_top_left,rgba(240,123,46,0.14),transparent_32%),linear-gradient(180deg,rgba(255,247,237,0.8),rgba(255,255,255,0))]" aria-hidden="true"></div>
+
+    <div class="mx-auto grid max-w-2xl items-center gap-12 px-4 sm:px-6 lg:max-w-7xl lg:grid-cols-[1fr_0.92fr] lg:px-8">
+      <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-5">
+          <p class="text-sm font-medium uppercase tracking-[0.18em] text-primary-600" x-text="$store.i18n.t('index.badge')">开源 · 本地优先</p>
+          <h1 class="max-w-4xl text-4xl font-semibold tracking-tight text-primary-950 sm:text-6xl lg:text-7xl">
+            <span x-text="$store.i18n.t('index.title')">说过的话，都替你记着</span>
+          </h1>
+          <p class="max-w-2xl text-lg leading-relaxed text-primary-950/70 sm:text-xl">
+            <span x-text="$store.i18n.t('index.subtitle')">一部安卓手机就够：全天收音 → 自动转写 → 认出谁在说 → AI 整理成待办、约定和记忆。不用买硬件，不用注册账号。</span>
+          </p>
+        </div>
+
+        <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+          <a class="inline-flex w-full items-center justify-center rounded-full bg-primary-900 px-7 py-3.5 text-base font-semibold text-white shadow-sm transition hover:bg-primary-800 sm:w-auto" href={RELEASES} rel="noopener noreferrer" target="_blank">
+            <span x-text="$store.i18n.t('index.download')">下载 APK</span>
+          </a>
+          <a class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary-900/10 bg-white px-7 py-3.5 text-base font-semibold text-primary-950 shadow-sm transition hover:border-primary-900/20 hover:bg-primary-50 sm:w-auto" href={REPO} rel="noopener noreferrer" target="_blank">
+            <svg class="h-5 w-5 text-primary-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path>
+            </svg>
+            <span x-text="$store.i18n.t('index.viewSource')">查看源码</span>
+          </a>
+        </div>
+
+        <p class="max-w-xl text-sm leading-6 text-primary-950/55" x-text="$store.i18n.t('index.workflowHint')">手机在后台安静地听，有人说话才录；要找的时候，打字问一句就能找回来。</p>
+      </div>
+
+      <div class="rounded-[2rem] border border-primary-900/10 bg-white p-4 shadow-2xl shadow-primary-900/10 sm:p-6">
+        <div class="rounded-[1.5rem] border border-primary-900/10 bg-primary-50/80 p-5">
+          <div class="mb-5 flex items-center justify-between">
+            <div>
+              <p class="text-sm font-semibold text-primary-950">TaoSheng</p>
+              <p class="text-xs text-primary-950/55" x-text="$store.i18n.t('index.workflowLocal')">今天 · 原话</p>
+            </div>
+            <div class="flex items-end gap-1.5" aria-hidden="true">
+              <span class="h-5 w-1.5 rounded-full bg-primary-400"></span>
+              <span class="h-8 w-1.5 rounded-full bg-primary-500"></span>
+              <span class="h-11 w-1.5 rounded-full bg-primary-600"></span>
+              <span class="h-7 w-1.5 rounded-full bg-primary-500"></span>
+              <span class="h-4 w-1.5 rounded-full bg-primary-400"></span>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="rounded-2xl bg-white p-4 ring-1 ring-primary-900/10">
+              <p class="text-sm leading-6 text-primary-950/72" x-text="$store.i18n.t('index.workflowRaw')">下周三之前把报价单发给老王，对了，钥匙放在玄关第二个抽屉了。</p>
+            </div>
+            <div class="flex items-center gap-3 rounded-2xl bg-primary-900 px-4 py-3 text-white">
+              <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/12">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </span>
+              <div>
+                <p class="text-sm font-semibold" x-text="$store.i18n.t('index.workflowDraft')">涛声整理出 1 条待办和 1 条记忆</p>
+                <p class="text-xs text-white/60" x-text="$store.i18n.t('index.step3Desc')">每条都能点回当时的原话。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-24">
+    <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <article class="rounded-2xl border border-primary-900/10 bg-white p-6 shadow-sm">
+          <div class="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600/10 text-primary-600">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <h2 class="text-lg font-semibold text-primary-950" x-text="$store.i18n.t('index.feat1Title')">全天收音</h2>
+          <p class="mt-3 text-sm leading-6 text-primary-950/65" x-text="$store.i18n.t('index.feat1Desc')">前台服务 + 守护，锁屏也一直在听；本机人声检测只在有人说话时录，安静不录，实测约 0.5%/小时。</p>
+        </article>
+        <article class="rounded-2xl border border-primary-900/10 bg-white p-6 shadow-sm">
+          <div class="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600/10 text-primary-600">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <h2 class="text-lg font-semibold text-primary-950" x-text="$store.i18n.t('index.feat2Title')">本地优先</h2>
+          <p class="mt-3 text-sm leading-6 text-primary-950/65" x-text="$store.i18n.t('index.feat2Desc')">SenseVoice 本地转写可完全离线，还能走骁龙 NPU 加速，声音不出手机；也可用豆包云端或自定义转写服务。</p>
+        </article>
+        <article class="rounded-2xl border border-primary-900/10 bg-white p-6 shadow-sm">
+          <div class="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600/10 text-primary-600">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <h2 class="text-lg font-semibold text-primary-950" x-text="$store.i18n.t('index.feat3Title')">认得出谁在说</h2>
+          <p class="mt-3 text-sm leading-6 text-primary-950/65" x-text="$store.i18n.t('index.feat3Desc')">本机 CAM++ 声纹认出「我」和熟人，多人会议自动分段；在原话上长按选「这是谁」，指定一次就学会。</p>
+        </article>
+        <article class="rounded-2xl border border-primary-900/10 bg-white p-6 shadow-sm">
+          <div class="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600/10 text-primary-600">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 12h3.75M9 16.5h3.75M4.5 5.25h15a1.5 1.5 0 011.5 1.5v12a1.5 1.5 0 01-1.5 1.5h-15a1.5 1.5 0 01-1.5-1.5v-12a1.5 1.5 0 011.5-1.5zM6.75 9.75h.008v.008H6.75V9.75z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <h2 class="text-lg font-semibold text-primary-950" x-text="$store.i18n.t('index.feat4Title')">整理成一件件事</h2>
+          <p class="mt-3 text-sm leading-6 text-primary-950/65" x-text="$store.i18n.t('index.feat4Desc')">大模型把原话变成事件、待办、约定和灵感；每日回顾、技能卡片和「问问」都带原话出处。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-24">
+    <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div class="grid gap-10 rounded-[2rem] bg-primary-950 p-6 text-white sm:p-10 lg:grid-cols-[0.78fr_1fr] lg:p-12">
+        <div>
+          <p class="text-sm font-medium uppercase tracking-[0.18em] text-primary-300" x-text="$store.i18n.t('index.openAuditable')">开源 · MIT 许可</p>
+          <h2 class="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" x-text="$store.i18n.t('index.whyTitle')">为什么选择涛声</h2>
+        </div>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div class="rounded-2xl bg-white/8 p-5 ring-1 ring-white/10">
+            <h3 class="font-semibold text-white" x-text="$store.i18n.t('index.benefit1Title')">不用买硬件</h3>
+            <p class="mt-2 text-sm leading-6 text-white/65" x-text="$store.i18n.t('index.benefit1Desc')">手机麦克风就够；蓝牙耳机挂根绳子，就是一个 AI 录音吊坠。</p>
+          </div>
+          <div class="rounded-2xl bg-white/8 p-5 ring-1 ring-white/10">
+            <h3 class="font-semibold text-white" x-text="$store.i18n.t('index.benefit2Title')">数据在你手里</h3>
+            <p class="mt-2 text-sm leading-6 text-white/65" x-text="$store.i18n.t('index.benefit2Desc')">不用注册账号，没有我们的服务器；密钥存系统安全区。</p>
+          </div>
+          <div class="rounded-2xl bg-white/8 p-5 ring-1 ring-white/10">
+            <h3 class="font-semibold text-white" x-text="$store.i18n.t('index.benefit3Title')">模型随你换</h3>
+            <p class="mt-2 text-sm leading-6 text-white/65" x-text="$store.i18n.t('index.benefit3Desc')">十多家服务商一键切换，也支持任意 OpenAI 兼容接口和局域网自建模型。</p>
+          </div>
+          <div class="rounded-2xl bg-white/8 p-5 ring-1 ring-white/10">
+            <h3 class="font-semibold text-white" x-text="$store.i18n.t('index.benefit4Title')">问一句就找回来</h3>
+            <p class="mt-2 text-sm leading-6 text-white/65" x-text="$store.i18n.t('index.benefit4Desc')">「上周我答应老王什么了？」每个答案都能点回当时的原话。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16 sm:pb-20">
+    <div class="mx-auto max-w-2xl px-4 text-center sm:px-6 lg:max-w-4xl lg:px-8">
+      <h2 class="text-3xl font-semibold tracking-tight text-primary-950 sm:text-5xl" x-text="$store.i18n.t('index.ctaTitle')">把说过的话，变成能找回来的记忆</h2>
+      <p class="mx-auto mt-5 max-w-2xl text-base leading-7 text-primary-950/65" x-text="$store.i18n.t('index.ctaDesc')">开源、免费、不用注册。一部 Android 10+ 手机就能开始。</p>
+      <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a class="inline-flex items-center justify-center rounded-full bg-primary-900 px-7 py-3.5 font-semibold text-white transition hover:bg-primary-800" href={RELEASES} rel="noopener noreferrer" target="_blank">
+          <span x-text="$store.i18n.t('index.ctaDownload')">下载 APK</span>
+        </a>
+        <a class="inline-flex items-center justify-center rounded-full border border-primary-900/10 bg-white px-7 py-3.5 font-semibold text-primary-950 shadow-sm hover:bg-primary-50" href={REPO} rel="noopener noreferrer" target="_blank">
+          <span x-text="$store.i18n.t('index.ctaSource')">GitHub 源码</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

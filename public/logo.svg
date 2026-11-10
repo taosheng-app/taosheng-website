@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 108 108">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#FFB067"/>
+      <stop offset="55%" stop-color="#F57A35"/>
+      <stop offset="100%" stop-color="#E8542A"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="35.2%" cy="27.8%" r="55.6%">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.26"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="round">
+      <rect x="0" y="0" width="108" height="108" rx="24"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#round)">
+    <rect x="0" y="0" width="108" height="108" fill="url(#bg)"/>
+    <rect x="0" y="0" width="108" height="108" fill="url(#glow)"/>
+    <circle cx="54" cy="54" r="27.5" fill="none" stroke="#FFFFFF" stroke-opacity="0.26" stroke-width="2.4"/>
+    <circle cx="54" cy="54" r="20.5" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="2.6"/>
+    <g fill="#FFFFFF">
+      <rect x="38.2" y="50.5" width="3.4" height="7" rx="1.7"/>
+      <rect x="42.9" y="47.25" width="3.4" height="13.5" rx="1.7"/>
+      <rect x="47.6" y="43" width="3.4" height="22" rx="1.7"/>
+      <rect x="52.3" y="46.5" width="3.4" height="15" rx="1.7"/>
+      <rect x="57" y="41.5" width="3.4" height="25" rx="1.7"/>
+      <rect x="61.7" y="48" width="3.4" height="12" rx="1.7"/>
+      <rect x="66.4" y="50.25" width="3.4" height="7.5" rx="1.7"/>
+    </g>
+  </g>
+</svg>

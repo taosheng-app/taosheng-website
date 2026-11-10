@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="页面未找到 · 涛声 TaoSheng"
+  titleEn="Page Not Found — TaoSheng"
+  description="页面不存在，请检查链接地址是否正确，或返回涛声官网首页继续浏览。"
+  descEn="This page does not exist. Check the URL or return to the TaoSheng homepage."
+>
+  <section class="py-16 sm:py-20">
+    <div class="px-4 lg:max-w-7xl lg:px-8 max-w-2xl mx-auto sm:px-6">
+      <div class="flex flex-col gap-8 items-start sm:gap-10">
+        <div class="flex flex-col gap-4 sm:gap-6">
+          <h1 class="font-medium lg:text-6xl sm:text-5xl text-4xl tracking-tight">
+            <div>404</div>
+            <div x-text="$store.i18n.t('notFound.title')">页面未找到</div>
+          </h1>
+          <p class="sm:text-xl text-lg text-primary-950/70" x-text="$store.i18n.t('notFound.desc')">请检查地址是否正确，或返回首页继续浏览。</p>
+        </div>
+        <a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 bg-primary-600 border border-transparent focus-visible:outline-offset-2 focus-visible:outline-primary-600 font-medium hover:bg-primary-700 justify-center px-5 py-3 rounded-full text-base text-white transition" href="/" x-text="$store.i18n.t('notFound.back')">返回首页</a>
+      </div>
+    </div>
+  </section>
+</Layout>

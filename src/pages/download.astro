@@ -1,0 +1,209 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Check from '../components/Check.astro';
+
+const REPO = 'https://github.com/0xCoach/TaoSheng';
+const RELEASES = `${REPO}/releases/latest`;
+const README = `${REPO}/blob/main/README.md`;
+
+const apkFeatures = [
+  '正式签名的 arm64 安装包',
+  '收音、转写与整理开箱即用',
+  'App 内检查更新，优先下差异包',
+  '魔搭国内镜像下载',
+  '本地转写模型可选下载',
+  '完整更新日志与 SHA-256 校验',
+];
+const srcFeatures = [
+  '完整的 Kotlin / Jetpack Compose 源码',
+  '近百张任务卡与交付说明公开',
+  '自定义整理技能（JSON + 提示词）',
+  '任意 OpenAI 兼容接口，含局域网自建',
+  '自己签名、自己分发',
+];
+const faqs = [
+  { q: '涛声是免费的吗？', a: '是的，App 采用 MIT 许可，免费开源。云端转写和大模型调用按你自己账号下服务商的价格计费；用本地转写可以省掉转写费用。' },
+  { q: '需要买录音硬件吗？', a: '不需要，手机麦克风就够。也支持领夹麦、蓝牙耳机等外接设备，插上自动切换，拔掉自动切回。' },
+  { q: '支持哪些手机？', a: 'Android 10 及以上、arm64 架构。主要在小米 14 Pro 上实测，其他品牌的后台保活策略差异较大，欢迎提 Issue 反馈机型表现。iOS 版在路线图上。' },
+  { q: '我的录音会上传到你们的服务器吗？', a: '不会，我们没有服务器。只有你主动开启云端转写、大模型整理、推送通道或备份时，数据才会发往你自己配置的第三方服务。' },
+  { q: '可以完全离线使用吗？', a: '转写可以，下载 SenseVoice 本地模型即可。整理需要大模型，但可以填局域网自建模型地址，让转写和整理全程不出你自己的设备。' },
+];
+
+const rows = [
+  { key: 'tableRow1', zh: '全天收音与人声检测', apk: true, src: true },
+  { key: 'tableRow2', zh: '本地 / 云端转写', apk: true, src: true },
+  { key: 'tableRow3', zh: '声纹认人与多人分段', apk: true, src: true },
+  { key: 'tableRow4', zh: 'AI 整理、问问、每日 / 每周回顾', apk: true, src: true },
+  { key: 'tableRow5', zh: '十种推送通道与增量备份', apk: true, src: true },
+  { key: 'tableRow6', zh: 'App 内检查更新', apk: true, src: false },
+  { key: 'tableRow7', zh: '修改源码与自定义技能', apk: false, src: true },
+  { key: 'tableRow8', zh: '自己签名分发', apk: false, src: true },
+  { key: 'tableRow9', zh: '需要 Android SDK 与 JDK 21', apk: false, src: true },
+];
+---
+
+<Layout
+  title="下载与获取 · 涛声 TaoSheng"
+  titleEn="Download & Get Started — TaoSheng"
+  description="涛声免费开源：可下载正式签名的 APK 直接使用，也可从源码自行编译。支持 Android 10+ arm64，采用 MIT 许可。"
+  descEn="TaoSheng is free and open source. Install the signed APK or build from source. Android 10+ arm64, MIT licensed."
+  keywords="涛声下载,TaoSheng APK,源码编译,Android 10,MIT 开源"
+  keywordsEn="TaoSheng download,APK,build from source,Android 10,MIT open source"
+>
+  <section class="py-16 sm:py-20">
+    <div class="px-4 lg:max-w-7xl lg:px-8 max-w-2xl mx-auto sm:px-6">
+      <!-- Header -->
+      <div class="flex flex-col gap-4 text-center pb-16 sm:pb-20">
+        <h1 class="font-medium tracking-tight sm:text-5xl text-4xl" x-text="$store.i18n.t('download.title')">获取涛声</h1>
+        <p class="text-base text-primary-950/60 max-w-2xl mx-auto" x-text="$store.i18n.t('download.subtitle')">免费、开源，两种方式都能用，选你顺手的那个。</p>
+      </div>
+
+      <!-- Two ways in -->
+      <div class="grid gap-8 lg:grid-cols-2 lg:gap-12 max-w-4xl mx-auto">
+        <!-- APK -->
+        <div class="flex flex-col gap-8 bg-white border border-primary-900/10 p-8 rounded-3xl">
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <h2 class="font-medium text-2xl tracking-tight" x-text="$store.i18n.t('download.apkTitle')">下载安装包</h2>
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-green-500/10 border border-green-200/20 text-green-700" x-text="$store.i18n.t('download.apkBadge')">最省事</span>
+            </div>
+            <div class="flex items-baseline gap-1">
+              <span class="font-medium text-5xl tracking-tight" x-text="$store.i18n.t('download.apkPrice')">¥0</span>
+              <span class="text-primary-950/60 text-sm" x-text="$store.i18n.t('download.apkPeriod')">永久免费</span>
+            </div>
+            <p class="text-sm text-primary-950/60" x-text="$store.i18n.t('download.apkDesc')">编译好的正式签名安装包，下载后直接装，不用搭开发环境。</p>
+          </div>
+
+          <a class="w-full inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3.5 text-base font-semibold transition bg-primary-900 hover:bg-primary-800 border-transparent text-white shadow-lg hover:shadow-xl active:scale-95 hover:scale-105" href={RELEASES} rel="noopener noreferrer" target="_blank" x-text="$store.i18n.t('download.apkBtn')">下载 v0.2.20</a>
+
+          <div class="flex flex-col gap-4">
+            <p class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('download.apkFeatures')">包含内容：</p>
+            <ul class="flex flex-col gap-3">
+              {apkFeatures.map((text, i) => (
+                <li class="flex items-start gap-3 text-sm">
+                  <svg class="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M4.5 12.75l6 6 9-13.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <span class="text-primary-950/70" x-text={`$store.i18n.t('download.apkF${i + 1}')`}>{text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Source -->
+        <div class="flex flex-col gap-8 bg-white border-2 border-primary-600 p-8 rounded-3xl relative shadow-xl">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+            <span class="inline-flex items-center gap-1.5 text-xs font-medium px-4 py-1.5 rounded-full bg-primary-600 text-white" x-text="$store.i18n.t('download.srcPopular')">完全可定制</span>
+          </div>
+
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <h2 class="font-medium text-2xl tracking-tight" x-text="$store.i18n.t('download.srcTitle')">源码自建</h2>
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-primary-600/10 border border-primary-200/20 text-primary-700" x-text="$store.i18n.t('download.srcBadge')">开发者</span>
+            </div>
+            <div class="flex items-baseline gap-1">
+              <span class="font-medium text-5xl tracking-tight" x-text="$store.i18n.t('download.srcPrice')">¥0</span>
+              <span class="text-primary-950/60 text-sm" x-text="$store.i18n.t('download.srcPeriod')">MIT 许可</span>
+            </div>
+            <p class="text-sm text-primary-950/60" x-text="$store.i18n.t('download.srcDesc')">克隆仓库自己编译，改功能、换模型、接自己的服务都随你。</p>
+          </div>
+
+          <a class="w-full inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3.5 text-base font-semibold transition border-primary-200 text-primary-950 hover:bg-primary-50 active:scale-95 hover:scale-105" href={README} rel="noopener noreferrer" target="_blank" x-text="$store.i18n.t('download.srcBtn')">查看编译说明</a>
+
+          <div class="flex flex-col gap-4">
+            <p class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('download.srcFeatures')">包含以上全部，以及：</p>
+            <ul class="flex flex-col gap-3">
+              {srcFeatures.map((text, i) => (
+                <li class="flex items-start gap-3 text-sm">
+                  <svg class="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M4.5 12.75l6 6 9-13.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <span class="text-primary-950/70" x-text={`$store.i18n.t('download.srcF${i + 1}')`}>{text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Comparison Table -->
+      <div class="mt-20 max-w-4xl mx-auto">
+        <h2 class="font-medium text-2xl tracking-tight text-center mb-10" x-text="$store.i18n.t('download.tableTitle')">两种方式的差别</h2>
+        <div class="overflow-hidden border border-primary-900/10 rounded-2xl">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-primary-500/5">
+                <th class="text-left p-4 text-sm font-medium text-primary-950" x-text="$store.i18n.t('download.tableFeature')">功能</th>
+                <th class="text-center p-4 text-sm font-medium text-primary-950 w-32" x-text="$store.i18n.t('download.tableApk')">安装包</th>
+                <th class="text-center p-4 text-sm font-medium text-primary-950 w-32" x-text="$store.i18n.t('download.tableSrc')">源码自建</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-primary-900/5">
+              {rows.map((row) => (
+                <tr>
+                  <td class="p-4 text-sm text-primary-950/70" x-text={`$store.i18n.t('download.${row.key}')`}>{row.zh}</td>
+                  <td class="p-4 text-center"><Check yes={row.apk} /></td>
+                  <td class="p-4 text-center"><Check yes={row.src} /></td>
+                </tr>
+              ))}
+              <tr>
+                <td class="p-4 text-sm text-primary-950/70" x-text="$store.i18n.t('download.tableRow10')">上手时间</td>
+                <td class="p-4 text-center text-sm text-primary-950/70" x-text="$store.i18n.t('download.tableTimeApk')">约 5 分钟</td>
+                <td class="p-4 text-center text-sm text-primary-950/70" x-text="$store.i18n.t('download.tableTimeSrc')">约 30 分钟</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Privacy by design -->
+      <div class="mt-20 max-w-4xl mx-auto">
+        <h2 class="font-medium text-2xl tracking-tight text-center mb-10" x-text="$store.i18n.t('download.securityTitle')">隐私保障</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="flex flex-col items-center gap-3 p-6 bg-white border border-primary-900/10 rounded-2xl">
+            <svg class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('download.sec1Title')">无账号、无服务器</span>
+            <span class="text-xs text-center text-primary-950/60" x-text="$store.i18n.t('download.sec1Desc')">不用注册，也没有我们的服务器。</span>
+          </div>
+          <div class="flex flex-col items-center gap-3 p-6 bg-white border border-primary-900/10 rounded-2xl">
+            <svg class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('download.sec2Title')">密钥存在本机</span>
+            <span class="text-xs text-center text-primary-950/60" x-text="$store.i18n.t('download.sec2Desc')">API Key 存系统安全区。</span>
+          </div>
+          <div class="flex flex-col items-center gap-3 p-6 bg-white border border-primary-900/10 rounded-2xl">
+            <svg class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('download.sec3Title')">原录音自动删</span>
+            <span class="text-xs text-center text-primary-950/60" x-text="$store.i18n.t('download.sec3Desc')">默认保留 3 天，1～365 天可设。</span>
+          </div>
+          <div class="flex flex-col items-center gap-3 p-6 bg-white border border-primary-900/10 rounded-2xl">
+            <svg class="h-8 w-8 text-green-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"></path>
+            </svg>
+            <span class="text-sm font-medium text-primary-950" x-text="$store.i18n.t('download.sec4Title')">开源可审计</span>
+            <span class="text-xs text-center text-primary-950/60" x-text="$store.i18n.t('download.sec4Desc')">源码全部公开，用之前可以先看。</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="mt-20 max-w-3xl mx-auto">
+        <h2 class="font-medium text-2xl tracking-tight text-center mb-10" x-text="$store.i18n.t('download.faqTitle')">常见问题</h2>
+        <div class="flex flex-col gap-4">
+          {faqs.map((faq, i) => (
+            <div class="bg-white border border-primary-900/10 p-6 rounded-2xl">
+              <h3 class="font-medium text-primary-950 mb-2" x-text={`$store.i18n.t('download.faq${i + 1}Q')`}>{faq.q}</h3>
+              <p class="text-sm text-primary-950/70" x-text={`$store.i18n.t('download.faq${i + 1}A')`}>{faq.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

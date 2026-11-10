@@ -1,0 +1,129 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="隐私政策 · 涛声 TaoSheng"
+  titleEn="Privacy Policy — TaoSheng"
+  description="涛声隐私政策：不要求注册账号、没有项目服务器、不收集任何个人数据，录音与转写只保存在你自己的手机里。"
+  descEn="TaoSheng privacy policy: no account, no project server, no data collection. Recordings and transcripts stay on your own phone."
+  keywords="涛声,隐私政策,本地存储,不收集数据,开源"
+  keywordsEn="TaoSheng,privacy policy,on-device storage,no data collection,open source"
+>
+  <div class="px-4 lg:px-8 mx-auto sm:px-6 max-w-3xl py-16 sm:py-20">
+    <div class="flex flex-col gap-4 text-center pb-16 sm:pb-20">
+      <h1 class="font-medium tracking-tight sm:text-5xl text-4xl" x-text="$store.i18n.t('privacy.title')">涛声隐私政策</h1>
+      <p class="text-base text-primary-950/60" x-text="$store.i18n.t('privacy.lastModified')">最后修改时间：2026年11月10日</p>
+    </div>
+
+    <div class="max-w-none prose prose-primary">
+      <!-- Intro -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <p class="mb-6 text-lg">
+          Welcome to <strong>TaoSheng</strong> (hereinafter "this software"). TaoSheng is an open-source, on-device personal memory tool. We have no server, require no account, and collect no personal data. This policy explains what stays on your phone and the only situations in which data can leave it.
+        </p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <p class="mb-6 text-lg">
+          欢迎使用 <strong>涛声</strong>（以下简称"本软件"）。涛声是一个开源、本机运行的个人记忆工具：没有我们的服务器、不用注册账号、不收集任何个人数据。本政策说明哪些内容留在你的手机里，以及在哪些情况下数据才可能离开设备。
+        </p>
+      </div>
+
+      <!-- Section 1 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">1. What We Collect</h2>
+        <p class="mb-4">Nothing. We do not operate a backend service for TaoSheng, and there is no telemetry, analytics, crash reporting or account system in the app.</p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>No registration, no email, no phone number, no device identifier;</li>
+          <li>No upload of recordings, transcripts, voiceprints, events or memories;</li>
+          <li>No reading or transmission of the API keys you enter;</li>
+          <li>No advertising, tracking SDKs or third-party analytics.</li>
+        </ul>
+        <p class="mb-6">The in-app update check and the optional model download only request public files from GitHub, ModelScope or the mirror you choose; those requests contain no data about your recordings or memory.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">一、我们收集的信息</h2>
+        <p class="mb-4">没有。涛声没有后端服务，App 内也不含任何遥测、统计上报、崩溃收集或账号系统。</p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>不要求注册，不收集邮箱、手机号、设备标识符；</li>
+          <li>不上传录音、转写文本、声纹、事件或记忆；</li>
+          <li>不读取、不传输你填写的任何 API Key；</li>
+          <li>不含广告、追踪 SDK 或第三方统计。</li>
+        </ul>
+        <p class="mb-6">App 内的「检查更新」与可选的「下载本地模型」只会向 GitHub、魔搭或你选择的镜像请求公开文件，这些请求不包含你的录音与记忆内容。</p>
+      </div>
+
+      <!-- Section 2 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">2. Where Data Lives and for How Long</h2>
+        <p class="mb-4">All memory data is stored in the app's private storage on your own phone:</p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>Audio segments, transcripts, voiceprint samples, events, todos and reviews;</li>
+          <li>API keys are kept in the Android Keystore, not in plain text;</li>
+          <li>Original recordings are deleted automatically after 3 days by default (configurable from 1 to 365 days; starred items can be kept);</li>
+          <li>Backups you enable are written to your own local folder, WebDAV, Nutstore or S3 account.</li>
+        </ul>
+        <p class="mb-6">You can use “delete the last N minutes”, “don't record this segment”, or delete individual lines at any time. Uninstalling the app removes its local data.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">二、数据存在哪里、保存多久</h2>
+        <p class="mb-4">所有记忆数据都保存在你自己手机上 App 的私有存储里：</p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>录音片段、原话转写、声纹样本、事件、待办与回顾；</li>
+          <li>API Key 存放在系统安全区（Android Keystore），不以明文保存；</li>
+          <li>原录音默认保留 3 天后自动删除（可设 1～365 天，标星内容可保留）；</li>
+          <li>你主动开启的备份写到本机文件夹、WebDAV、坚果云或 S3 等自己的账号下。</li>
+        </ul>
+        <p class="mb-6">你可以随时用「删除最近 N 分钟」「这段别记」，或删除单条原话。卸载 App 会一并清除本机数据。</p>
+      </div>
+
+      <!-- Section 3 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">3. Third-Party Services You Choose</h2>
+        <p class="mb-4">TaoSheng does not send anything anywhere by default. Data leaves your phone only when you explicitly enable and configure one of these optional integrations:</p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>Cloud transcription (e.g. Doubao, or a custom ASR endpoint): audio segments are sent to that provider;</li>
+          <li>LLM digest / Ask: transcripts and prompts are sent to the provider or self-hosted endpoint you configured;</li>
+          <li>Push channels: reviews, todos and daily memory documents are sent to the channel you added;</li>
+          <li>Backup: encrypted or plain backups go to the storage target you configured.</li>
+        </ul>
+        <p class="mb-6">We do not relay, store or inspect any of this content, and we are not a party to your relationship with those providers. Please read their privacy policies and terms. Choosing on-device transcription and a LAN self-hosted model keeps the whole pipeline on your own devices.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">三、你自己选择的第三方服务</h2>
+        <p class="mb-4">默认情况下涛声不会向任何地方发送数据。只有当你主动开启并配置以下可选能力时，数据才会离开手机：</p>
+        <ul class="mb-6 list-disc list-inside ml-4 space-y-2">
+          <li>云端转写（如豆包语音，或自定义转写服务）：录音片段发往该服务商；</li>
+          <li>大模型整理 / 问问：原话与提示词发往你配置的服务商或自建接口；</li>
+          <li>推送通道：回顾、待办与每日记忆文档发往你添加的通道；</li>
+          <li>备份：加密或明文备份写入你配置的存储目标。</li>
+        </ul>
+        <p class="mb-6">我们不中转、不存储、不查看这些内容，也不参与你与这些服务商之间的关系。请自行阅读其隐私政策与使用条款；选择本地转写 + 局域网自建模型，可以让全流程不出你自己的设备。</p>
+      </div>
+
+      <!-- Section 4 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">4. Deletion, Export and Uninstall</h2>
+        <p class="mb-4">You stay in control of your data. Recordings can be played back and exported (merged M4A with transcript and subtitles), whole reports can be copied, and any line can be starred or deleted. Deleting a voiceprint sample or a time range takes effect locally.</p>
+        <p class="mb-6">TaoSheng deliberately keeps a persistent notification and respects the system microphone indicator. It must not be turned into a covert recording tool. Recording conversations is subject to local law; comply with it and inform people around you when required.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">四、删除、导出与卸载</h2>
+        <p class="mb-4">数据始终由你掌控：录音可回放并导出（多段合成 M4A，附带原话与字幕），日报周报可整篇复制，每条原话可标星或删除；删除声纹样本或某个时间范围都会在本机立即生效。</p>
+        <p class="mb-6">涛声刻意保留常驻通知与系统麦克风指示灯，不会被改造成隐蔽录音工具。录音与保存他人对话在很多国家和地区受法律约束，请遵守当地法律，并在需要时告知身边的人。</p>
+      </div>
+
+      <!-- Section 5 -->
+      <div x-show="$store.i18n.lang === 'en'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">5. Policy Updates and Contact</h2>
+        <p class="mb-4">As the project evolves, this policy may be adjusted. Important changes will be announced in the repository README or release notes.</p>
+        <p class="mb-6">Questions about privacy are best raised as a <a class="text-primary-600 hover:underline" href="https://github.com/0xCoach/TaoSheng/issues" rel="noopener noreferrer" target="_blank">GitHub Issue</a> so the discussion stays public. Continued use of a newer version means you accept the updated policy. For the terms of use, see <a class="text-primary-600 hover:underline" href="/terms">TaoSheng Terms of Use</a>.</p>
+      </div>
+      <div x-show="$store.i18n.lang === 'zh'" x-cloak>
+        <h2 class="mb-6 font-medium mt-12 text-2xl">五、政策更新与联系我们</h2>
+        <p class="mb-4">随着项目演进，本政策可能会作适当调整；重要变更会在仓库 README 或版本发布说明中告知。</p>
+        <p class="mb-6">隐私问题欢迎通过 <a class="text-primary-600 hover:underline" href="https://github.com/0xCoach/TaoSheng/issues" rel="noopener noreferrer" target="_blank">GitHub Issue</a> 公开讨论。继续使用更新后的版本，即视为您接受更新后的内容。使用条款请参阅 <a class="text-primary-600 hover:underline" href="/terms">《涛声使用条款》</a>。</p>
+      </div>
+    </div>
+  </div>
+</Layout>

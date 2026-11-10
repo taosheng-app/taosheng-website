@@ -1,0 +1,14 @@
+{
+  "name": "涛声 TaoSheng",
+  "short_name": "涛声",
+  "description": "替你听，替你记，替你想。一部安卓手机就够的开源个人记忆工具。",
+  "icons": [
+    { "src": "/favicon-256.png", "sizes": "256x256", "type": "image/png" },
+    { "src": "/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafaf9",
+  "theme_color": "#F07B2E",
+  "lang": "zh-CN"
+}
