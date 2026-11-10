@@ -21,3 +21,6 @@ yarn-error.log*
 
 # jetbrains setting folder
 .idea/
+
+# wrangler 本地缓存（pages dev 产生）
+.wrangler/
