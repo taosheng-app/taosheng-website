@@ -99,6 +99,9 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
       class="fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-500"
       x-data="{ open: false, scrolled: false }"
       @scroll.window.passive="scrolled = window.scrollY > 8"
+      @resize.window="if (window.innerWidth >= 640) open = false"
+      @pageshow.window="open = false"
+      x-effect="document.body.classList.toggle('overflow-hidden', open)"
       :class="open
         ? 'bg-primary-50'
         : (scrolled
@@ -156,16 +159,19 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
         </div>
       </div>
 
-      <!-- Collapsible Mobile Menu -->
-      <div class="max-w-2xl lg:max-w-7xl lg:px-8 mx-auto px-4 sm:px-6" id="website-menu" x-cloak x-show="open"
-        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
-        <div class="grid lg:grid-cols-2 gap-16 grid-cols-1 lg:pt-12 pb-24 pt-6">
-          <div class="items-center justify-center bg-primary-500/10 hidden lg:flex px-6 py-8 rounded-3xl">
-            <p class="text-xl text-primary-950/70 italic leading-loose max-w-sm">
-              <span class="font-medium" x-text="$store.i18n.t('header.brand')">涛声</span>
-              <span x-text="' · ' + $store.i18n.t('mobileMenu.quote')"> · 手机本来就随身，说过的话不该转头就忘。</span>
-            </p>
-          </div>
+      <!-- Mobile Menu: 整屏不透明遮罩，背景直接铺满，进入动画只作用在内容上 -->
+      <div
+        id="website-menu"
+        class="fixed inset-0 -z-10 overflow-y-auto overscroll-contain bg-primary-50 sm:hidden"
+        x-cloak
+        x-show="open"
+      >
+        <div
+          class="mx-auto max-w-2xl px-4 pb-24 pt-28 sm:px-6"
+          x-transition:enter="transition duration-300 ease-out-expo"
+          x-transition:enter-start="opacity-0 translate-y-2"
+          x-transition:enter-end="opacity-100 translate-y-0"
+        >
           <nav class="flex flex-col divide-primary-900/10 divide-y gap-1">
             <a class="font-medium text-primary-950 text-3xl tracking-tight sm:text-4xl focus-visible:outline-none group inline-flex py-6 sm:py-8 transition" href="/">
               <div class="items-center flex flex-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-primary-950 justify-between rounded-3xl">
