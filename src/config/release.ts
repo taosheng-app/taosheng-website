@@ -12,7 +12,7 @@ export const FALLBACK_RELEASE = {
 
 /** 魔搭（ModelScope）上的发布仓，国内直连比 GitHub 快。 */
 export const MODELSCOPE_RELEASES =
-  'https://modelscope.cn/models/OpenRecode/TaoSheng-releases/files';
+  'https://modelscope.cn/models/OpenRecode/TaoSheng-releases';
 
 /** 把 ISO 时间格式化成站点两种语言下的日期。 */
 export function formatReleaseDate(iso, lang) {
