@@ -11,13 +11,18 @@ interface Props {
   keywordsEn?: string;
 }
 
+// 正式站点域名，canonical 与 og:url 都基于它生成绝对地址。
+const SITE_URL = 'https://taosheng.app';
+
+// 静态构建时 Astro.url.pathname 即当前页面的输出路径（如 /about/）。
+const pagePath = Astro.url.pathname.replace(/\/index\.html$/, '/');
+
 // Static fallbacks are Chinese; the client-side i18n store swaps in English.
-// Replace `canonical` with your absolute domain when deploying to production.
 const {
   title = '涛声 TaoSheng · 替你听，替你记，替你想',
   description = '涛声是开源的个人记忆工具：一部安卓手机全天收音、本地转写、声纹认人，AI 自动整理成待办、约定和记忆。不用买硬件、不用注册账号，数据只在你自己的手机里。',
   keywords = '涛声,TaoSheng,个人记忆,本地转写,声纹认人,AI 整理,安卓,开源,MIT,SenseVoice',
-  canonical = '/',
+  canonical = new URL(pagePath, SITE_URL).href,
   titleEn = 'TaoSheng — It listens, remembers, and thinks for you',
   descEn = 'TaoSheng is an open-source personal memory tool for Android: all-day listening, on-device transcription, speaker recognition, and AI-organized todos, promises and memories. No hardware, no account, your data stays on your phone.',
   keywordsEn = 'TaoSheng,personal memory,on-device transcription,voiceprint,AI notes,Android,open source,MIT,SenseVoice',

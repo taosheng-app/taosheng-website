@@ -128,7 +128,7 @@ These are the spots that cover day-to-day updates:
 - **Version number** — `v0.2.20` is hardcoded in `src/i18n/translations.ts` under `footer.version` and `download.apkBtn` (four places across both languages). Bump them together on release.
 - **Repository links** — `REPO`, `RELEASES`, `README`, `CHANGELOG`, `CARDS` and `LICENSE` are defined once at the top of `src/layouts/Layout.astro` and reused everywhere. If the app repo ever moves under the org, this is the only file to touch.
 - **Page metadata** — the `Props` interface in `Layout.astro` accepts `title / description / keywords` plus `titleEn / descEn / keywordsEn`; each page passes them in from its frontmatter.
-- **canonical** — defaults to `'/'`, a placeholder. **Before deploying**, replace it with your absolute domain, otherwise both canonical and `og:url` stay relative.
+- **canonical** — built from `SITE_URL` at the top of `Layout.astro` (`https://taosheng.app`) plus the current path; `og:url` follows it. Changing domains means editing that one constant.
 - **Do not add `@alpinejs/collapse`** — the mobile menu uses core `x-transition`. Under Alpine 3.17 that plugin leaves the menu at `height: 0px` (the button flips `aria-expanded` to true but nothing appears). The dependency has been removed; don't bring it back.
 - **Icons** — after editing `public/logo.svg`, regenerate the PNGs:
 
@@ -138,16 +138,17 @@ node -e "const sharp=require('sharp'),fs=require('fs');const svg=fs.readFileSync
 
 ## Deployment
 
-The output is plain static files and can be hosted anywhere.
-
-Cloudflare Pages:
+Production runs on **Cloudflare Pages** — project `taosheng-website`, live at **https://taosheng.app** (with `www` pointing at the same site). `.app` is an HSTS-preloaded TLD, so HTTPS is mandatory; Cloudflare issues the certificate automatically.
 
 ```bash
 npm run build
-npx wrangler pages deploy dist
+npx wrangler pages deploy dist --project-name=taosheng-website --branch=main
 ```
 
-`wrangler.toml` already declares `name = "taosheng-website"` and `pages_build_output_dir = "dist"`. If you connect the repo instead, use `npm run build` as the build command and `dist` as the output directory.
+- `wrangler.toml` already declares `name = "taosheng-website"` and `pages_build_output_dir = "dist"`.
+- Run `npx wrangler login` once before the first deploy.
+- The custom domain needs two **proxied CNAME** records in Cloudflare DNS: `@` and `www`, both pointing to `taosheng-website.pages.dev`. Without them the Pages domain stays `pending` and never goes live.
+- The `deploy` and `preview:prod` scripts in `package.json` wrap that command.
 
 ## Related
 

@@ -128,7 +128,7 @@ zh: { download: { faq6Q: '会很耗电吗？', faq6A: '……'     } },
 - **版本号**：`v0.2.20` 硬编码在 `src/i18n/translations.ts` 的 `footer.version` 与 `download.apkBtn`（中英共 4 处），发版时一起改。
 - **仓库链接**：`src/layouts/Layout.astro` 顶部集中定义了 `REPO`、`RELEASES`、`README`、`CHANGELOG`、`CARDS`、`LICENSE` 六个常量，其余页面引用它们。App 仓库若迁到组织下，只改这里即可。
 - **页面元信息**：`Layout.astro` 的 `Props` 支持 `title / description / keywords` 及对应的 `titleEn / descEn / keywordsEn`，各页面在 frontmatter 里传入。
-- **canonical**：默认值是 `'/'`，属于占位。**部署前**必须换成实际域名的绝对地址，否则 canonical 与 `og:url` 都会指向相对路径。
+- **canonical**：由 `Layout.astro` 顶部的 `SITE_URL`（`https://taosheng.app`）拼接当前页路径自动生成，`og:url` 同源。换域名只改这一个常量。
 - **不要引入 `@alpinejs/collapse`**：移动端菜单用的是 Alpine 核心的 `x-transition`。该插件在 Alpine 3.17 下会让菜单展开高度停在 `0px`（按钮 `aria-expanded` 变成 true，但菜单不可见），已从依赖中移除，别再加回来。
 - **图标**：修改 `public/logo.svg` 后重新生成 PNG：
 
@@ -138,16 +138,17 @@ node -e "const sharp=require('sharp'),fs=require('fs');const svg=fs.readFileSync
 
 ## 部署
 
-构建产物是纯静态文件，可部署到任意静态托管。
-
-Cloudflare Pages：
+生产环境跑在 **Cloudflare Pages**，项目名 `taosheng-website`，正式域名 **https://taosheng.app**（`www` 指向同一站点）。`.app` 属于 HSTS 预载顶级域，只能走 HTTPS，证书由 Cloudflare 自动签发。
 
 ```bash
 npm run build
-npx wrangler pages deploy dist
+npx wrangler pages deploy dist --project-name=taosheng-website --branch=main
 ```
 
-`wrangler.toml` 已声明 `name = "taosheng-website"`、`pages_build_output_dir = "dist"`，构建命令填 `npm run build`、输出目录填 `dist` 即可。
+- `wrangler.toml` 已声明 `name = "taosheng-website"`、`pages_build_output_dir = "dist"`。
+- 首次部署前执行 `npx wrangler login` 完成授权。
+- 自定义域名需要在 Cloudflare DNS 里加两条 **CNAME**（开启代理）：`@` 与 `www` 都指向 `taosheng-website.pages.dev`。记录缺失时 Pages 会一直停在 `pending`，站点不会生效。
+- `package.json` 里的 `deploy` 与 `preview:prod` 脚本封装了上面这条命令。
 
 ## 相关项目
 
