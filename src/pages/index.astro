@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import { MODELSCOPE_RELEASES } from '../config/release';
+import { APK_DOWNLOAD } from '../config/release';
 
 import askShot from '../assets/ask.jpg';
 import configShot from '../assets/config.jpg';
@@ -70,9 +70,7 @@ const waveform = Array.from({ length: 26 }, (_, i) => {
         <div class="reveal flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:items-center" style="--reveal-delay:180ms">
           <a
             class="group relative inline-flex w-full items-center justify-center overflow-hidden rounded-full bg-primary-950 px-7 py-4 text-base font-semibold text-primary-50 shadow-[0_1px_2px_rgba(20,16,12,0.18),0_14px_30px_-16px_rgba(20,16,12,0.55)] transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(20,16,12,0.18),0_22px_44px_-18px_rgba(240,123,46,0.6)] sm:w-auto"
-            href={RELEASES}
-            rel="noopener noreferrer"
-            target="_blank"
+            href={APK_DOWNLOAD}
           >
             <span class="relative z-10" x-text="$store.i18n.t('index.download')">下载 APK</span>
             <span
@@ -99,12 +97,12 @@ const waveform = Array.from({ length: 26 }, (_, i) => {
 
           <a
             class="group inline-flex items-center justify-center gap-1.5 rounded-full px-2 py-1 text-sm font-medium text-primary-950/50 underline decoration-primary-950/20 underline-offset-4 transition-colors duration-300 hover:text-primary-950 hover:decoration-primary-950/45 sm:ml-1.5 sm:px-1"
-            href={MODELSCOPE_RELEASES}
+            href={RELEASES}
             rel="noopener noreferrer"
             target="_blank"
-            title="国内下载镜像"
+            title="GitHub Releases"
           >
-            <span x-text="$store.i18n.t('index.mirror')">国内镜像：魔搭</span>
+            <span x-text="$store.i18n.t('index.releaseHistory')">GitHub 发布记录</span>
             <svg
               class="h-3 w-3 shrink-0 transition-transform duration-300 ease-out-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
               fill="none"
@@ -460,9 +458,7 @@ const waveform = Array.from({ length: 26 }, (_, i) => {
       <div class="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
         <a
           class="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-primary-950 px-7 py-4 font-semibold text-primary-50 shadow-[0_1px_2px_rgba(20,16,12,0.18),0_16px_34px_-18px_rgba(20,16,12,0.55)] transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(20,16,12,0.18),0_24px_46px_-18px_rgba(240,123,46,0.6)]"
-          href={RELEASES}
-          rel="noopener noreferrer"
-          target="_blank"
+          href={APK_DOWNLOAD}
         >
           <span class="relative z-10" x-text="$store.i18n.t('index.ctaDownload')">下载 APK</span>
           <span class="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-out-expo group-hover:translate-x-full" aria-hidden="true"></span>

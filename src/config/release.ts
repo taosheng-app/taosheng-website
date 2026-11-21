@@ -10,9 +10,7 @@ export const FALLBACK_RELEASE = {
   publishedAt: '2026-11-10T00:12:00Z',
 };
 
-/** 魔搭（ModelScope）上的发布仓，国内直连比 GitHub 快。 */
-export const MODELSCOPE_RELEASES =
-  'https://modelscope.cn/models/OpenRecode/TaoSheng-releases';
+export const APK_DOWNLOAD = '/api/download-apk';
 
 /** 把 ISO 时间格式化成站点两种语言下的日期。 */
 export function formatReleaseDate(iso, lang) {
