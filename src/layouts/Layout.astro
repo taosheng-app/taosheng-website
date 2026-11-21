@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { FALLBACK_RELEASE, formatReleaseDate } from '../config/release';
+import { APK_DOWNLOAD, FALLBACK_RELEASE, formatReleaseDate } from '../config/release';
 
 const fallbackVersion = FALLBACK_RELEASE.version;
 const fallbackDateZh = formatReleaseDate(FALLBACK_RELEASE.publishedAt, 'zh');
@@ -128,7 +128,7 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
           <a class="text-base font-medium text-primary-950 hover:text-primary-600 transition-colors hidden sm:inline-flex" href="/download" x-text="$store.i18n.t('nav.download')">下载</a>
           <a class="text-base font-medium text-primary-950 hover:text-primary-600 transition-colors hidden sm:inline-flex" href="/contact" x-text="$store.i18n.t('nav.contact')">联系</a>
           <!-- Download button -->
-          <a class="items-center justify-center rounded-full font-semibold gap-2 transition bg-primary-900 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-900 focus:outline-none hidden hover:bg-primary-800 px-5 py-2.5 shadow-sm sm:inline-flex text-sm text-white" href={RELEASES} rel="noopener noreferrer" target="_blank">
+          <a class="items-center justify-center rounded-full font-semibold gap-2 transition bg-primary-900 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-900 focus:outline-none hidden hover:bg-primary-800 px-5 py-2.5 shadow-sm sm:inline-flex text-sm text-white" href={APK_DOWNLOAD}>
             <span x-text="$store.i18n.t('header.download')">下载 APK</span>
           </a>
 
@@ -276,7 +276,7 @@ const LICENSE = `${REPO}/blob/main/LICENSE`;
               <div class="flex flex-col gap-4">
                 <h3 class="flex h-10 items-center text-sm text-primary-950 font-semibold tracking-wider uppercase" x-text="$store.i18n.t('footer.resources')">资源</h3>
                 <ul class="flex flex-col gap-2.5" role="list">
-                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={RELEASES} rel="noopener noreferrer" target="_blank">
+                  <li><a class="items-center inline-flex focus-visible:outline focus-visible:outline-2 duration-200 focus-visible:outline-primary-950 gap-1.5 group hover:text-primary-950 rounded-md text-primary-950/70 text-sm transition-colors" href={APK_DOWNLOAD}>
                     <span class="group-hover:underline" x-text="$store.i18n.t('footer.downloadApk')">下载安装包</span>
                     <svg class="h-3.5 w-3.5 group-hover:opacity-100 opacity-50 transition-opacity" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg>
                   </a></li>
