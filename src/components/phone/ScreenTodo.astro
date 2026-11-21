@@ -1,0 +1,63 @@
+---
+import Chrome from './Chrome.astro';
+interface Props { lang: 'zh' | 'en'; class?: string; on?: boolean }
+const { lang, class: cls, on } = Astro.props;
+const zh = lang === 'zh';
+const c = zh
+  ? {
+      title: '待办', tabs: [['待确认', '3'], ['进行中', ''], ['已完成', '']], all: '全部接受 3 条', none: '全部忽略',
+      g1: '今天 · 3 条',
+      items: [
+        ['下周三之前把报价单发给老王', '待办 · 我要做', '下周三 · 今天 14:32 提到', true],
+        ['小林明天下班前还充电宝', '待办 · 别人答应我', '明天 · 小林 · 今天 10:05 提到', true],
+        ['周六早上去买排骨', '待办 · 我要做', '周六 08:00 · 强提醒 · 今天 13:10 提到', true],
+      ],
+      g2: '进行中 · 2 条',
+      doing: [['周一前给客户发正式报价和案例', '周一'], ['帮老王问装修师傅电话', '周日']],
+    }
+  : {
+      title: 'Todo', tabs: [['To confirm', '3'], ['Doing', ''], ['Done', '']], all: 'Accept all 3', none: 'Ignore all',
+      g1: 'Today · 3',
+      items: [
+        ['Send Wang the quote before Wednesday', 'Todo · Mine', 'Wed · said today 14:32', true],
+        ['Lin returns the power bank tomorrow', 'Todo · Owed to me', 'Tomorrow · Lin · said 10:05', true],
+        ['Buy ribs Saturday morning', 'Todo · Mine', 'Sat 08:00 · alarm · said 13:10', true],
+      ],
+      g2: 'Doing · 2',
+      doing: [['Send the client a formal quote with cases', 'Mon'], ['Ask around for a contractor for Wang', 'Sun']],
+    };
+---
+<div class:list={['app', cls, on && 'on']} data-screen="todo">
+  <Chrome lang={lang} part="top" />
+  <div class="a-head"><div class="rail"></div><div class="big">{c.title}</div></div>
+  <div style="display:flex;gap:8px;margin:14px 14px 0">
+    {c.tabs.map(([n, k], i) => <span class:list={['a-chip', i === 0 && 'on']} style="height:34px;padding:0 16px;font-size:14px">{n}{k && ` ${k}`}</span>)}
+  </div>
+  <div style="display:flex;gap:8px;margin:10px 14px 0">
+    <span class="a-pill" style="background:var(--accent);color:#fff;height:34px;padding:0 16px;font-weight:500;font-size:14px">{c.all}</span>
+    <span class="a-pill" style="background:var(--card);color:var(--t2);height:34px;padding:0 16px;font-weight:500;font-size:14px">{c.none}</span>
+  </div>
+  <div style="font-size:12.5px;color:var(--t2);margin:14px 18px 8px">{c.g1}</div>
+  <div class="a-card" style="margin:0 14px;border-radius:22px">
+    {c.items.map(([t, tag, meta], i) => (
+      <div style={`padding:13px 16px;${i ? 'border-top:1px solid var(--sep)' : ''}`}>
+        <div style="font-size:15px;line-height:1.5">{t}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:7px;font-size:12px;color:var(--accent)">
+          <span class="a-tag">{tag}</span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{meta}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+  <div style="font-size:12.5px;color:var(--t2);margin:14px 18px 8px">{c.g2}</div>
+  <div class="a-card" style="margin:0 14px;border-radius:22px">
+    {c.doing.map(([t, d], i) => (
+      <div style={`display:flex;align-items:center;gap:12px;padding:13px 16px;${i ? 'border-top:1px solid var(--sep)' : ''}`}>
+        <span style="width:20px;height:20px;border-radius:50%;border:1.8px solid var(--t3);flex:none"></span>
+        <span style="font-size:15px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{t}</span>
+        <span style="font-size:12px;color:var(--t3)">{d}</span>
+      </div>
+    ))}
+  </div>
+  <span style="position:absolute;right:18px;bottom:90px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#f49a5a,#e9692f);display:grid;place-items:center;box-shadow:0 12px 24px -10px rgba(233,105,47,.8);z-index:5"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 4v14M4 11h14" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+  <Chrome lang={lang} part="bottom" tab={3} />
+</div>

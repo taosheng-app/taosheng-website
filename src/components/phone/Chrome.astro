@@ -1,0 +1,26 @@
+---
+/** 状态栏 + 底部导航 + 底部渐隐：每一屏共用 */
+interface Props { lang: 'zh' | 'en'; tab?: number; time?: string; part: 'top' | 'bottom'; tabs?: boolean }
+const { lang, tab = 0, time = '9:41', part, tabs = true } = Astro.props;
+const names = lang === 'zh' ? ['今天', '问问', '记忆', '待办', '设置'] : ['Today', 'Ask', 'Memory', 'Todo', 'Settings'];
+---
+{part === 'top' ? (
+  <div class="a-status">
+    <span class="tnum">{time}</span>
+    <span class="ic">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor" aria-hidden="true"><path d="M7.5 2.2c2.2 0 4.2.8 5.7 2.2l1.2-1.3C12.6 1.4 10.2.4 7.5.4S2.4 1.4.6 3.1l1.2 1.3c1.5-1.4 3.5-2.2 5.7-2.2zm0 3.4c1.3 0 2.4.5 3.3 1.2l1.2-1.3C10.8 4.4 9.2 3.8 7.5 3.8S4.2 4.4 3 5.5l1.2 1.3c.9-.7 2-1.2 3.3-1.2zm0 3.3c-.5 0-.9.2-1.2.5l1.2 1.4 1.2-1.4c-.3-.3-.7-.5-1.2-.5z"/></svg>
+      <span class="a-batt"><i></i></span>
+    </span>
+  </div>
+) : (
+  <>
+    <div class="a-fade" style={tabs ? undefined : "height:40px"}></div>
+    {tabs && (
+      <div class:list={['a-tabs', lang === 'en' && 'en']}>
+        {names.map((n, i) => <span class:list={[i === tab && 'on']}>{n}</span>)}
+      </div>
+    )}
+    <div class="a-home"></div>
+  </>
+)}

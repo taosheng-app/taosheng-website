@@ -1,0 +1,32 @@
+name: 部署官网
+
+on:
+  push:
+    branches: [main]
+  # 每天早上重新构建一次：App 发版后，页面里写死的版本号、大小、校验值跟着更新（页面打开时也会实时刷新）
+  schedule:
+    - cron: '30 23 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: 发布到 Cloudflare Pages（taosheng-official-site）
+        run: npx wrangler pages deploy dist --project-name=taosheng-official-site --branch=main --commit-dirty=true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

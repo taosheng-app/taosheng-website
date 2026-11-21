@@ -1,0 +1,32 @@
+---
+/** 分享卡片 1200×630，导出为 public/og-cover.jpg（npm run shots） */
+import '../../styles/global.css';
+import '@fontsource/instrument-serif/400.css';
+import Phone from '../../components/phone/Phone.astro';
+import ScreenToday from '../../components/phone/ScreenToday.astro';
+import ScreenNight from '../../components/phone/ScreenNight.astro';
+---
+<html lang="zh-CN">
+  <head><meta charset="utf-8" /><meta name="robots" content="noindex" /><title>og</title>
+    <style>
+      html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+      .og { position: relative; width: 1200px; height: 630px; background: #f6f2ec; overflow: hidden; }
+      .glow { position: absolute; right: -180px; top: -260px; width: 900px; height: 900px; background: radial-gradient(circle, rgba(253,176,116,.5), rgba(253,176,116,0) 62%); }
+      .og-ring { position: absolute; left: 860px; top: 330px; border-radius: 50%; border: 1.5px solid rgba(240,123,46,.25); transform: translate(-50%, -50%); }
+    </style>
+  </head>
+  <body>
+    <div class="og">
+      <div class="glow"></div>
+      <div class="og-ring" style="width:420px;height:420px"></div>
+      <div class="og-ring" style="width:620px;height:620px"></div>
+      <div style="position:absolute;left:80px;top:74px">
+        <div style="display:flex;align-items:center;gap:14px;font-size:24px;font-weight:600"><img src="/logo.svg" width="46" height="46" style="border-radius:13px" alt="" />涛声 TaoSheng</div>
+        <div style="margin-top:46px;font-size:84px;font-weight:700;letter-spacing:-0.035em;line-height:1.06">替你听，<br />替你记，<br /><span style="background:linear-gradient(100deg,#f49a5a,#f07b2e 40%,#d9611a);-webkit-background-clip:text;color:transparent">替你想。</span></div>
+        <div style="margin-top:34px;display:flex;align-items:center;gap:14px;font-size:28px;font-weight:600"><span style="width:34px;height:3px;border-radius:2px;background:#f07b2e"></span>你的 24 小时人生上下文</div>
+      </div>
+      <div style="position:absolute;left:690px;top:92px;transform:rotate(-6deg)"><Phone w={250}><ScreenNight lang="zh" /></Phone></div>
+      <div style="position:absolute;left:880px;top:58px;transform:rotate(4deg)"><Phone w={270}><ScreenToday lang="zh" /></Phone></div>
+    </div>
+  </body>
+</html>

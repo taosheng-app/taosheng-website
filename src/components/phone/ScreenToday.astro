@@ -1,0 +1,117 @@
+---
+import Chrome from './Chrome.astro';
+interface Props { lang: 'zh' | 'en'; class?: string; on?: boolean; id?: string }
+const { lang, class: cls, on, id } = Astro.props;
+const zh = lang === 'zh';
+const c = zh
+  ? {
+      sub: '今天 · 星期五', date: '11月20日', listening: '正在聆听', s1: '52', s1u: '分钟', s1l: '录到人声', s2: '18', s2l: '件事', s3: '2', s3l: '待确认',
+      queue: '1 段录音待转写', organize: '现在整理', model: '模型', done: '本轮整理完成 · 用时 5.84 秒',
+      rhythm: '今日节奏', rhythmText: '提到 6 人 · 灵感 2 · 待办 3 · 会议 1',
+      confirm: '待确认', count: '2 条',
+      p1t: '待办 · 我要做', p1d: '下周三', p1: '下周三之前把报价单发给老王',
+      p2t: '待办 · 别人答应我', p2d: '明天', p2: '小林说明天把充电宝还回来',
+      ignore: '忽略', accept: '接受',
+      tl: '时间线', tln: '18 件事', seg: ['今天', '昨天', '前天'],
+      chips: [['全部', ''], ['有待办', '3'], ['会议', '1'], ['妈妈', '2'], ['老王', '1']],
+      part: '下午 · 6 件',
+      ev: [
+        ['14:32', '报价单和钥匙', '答应下周三前把报价单发给老王；顺口提到钥匙放在玄关第二个抽屉。'],
+        ['13:10', '周六回家吃饭', '妈妈说周六中午回来，想吃糖醋排骨，记得早点去买。'],
+        ['11:05', '新版首页方案评审', '三人过了首屏文案和下载按钮位置，定下周五出第二版。'],
+      ],
+    }
+  : {
+      sub: 'Today · Friday', date: 'Nov 20', listening: 'Listening', s1: '52', s1u: 'min', s1l: 'voice heard', s2: '18', s2l: 'events', s3: '2', s3l: 'to confirm',
+      queue: '1 clip to transcribe', organize: 'Organize', model: 'Model', done: 'Last run done · 5.84 s',
+      rhythm: 'Rhythm', rhythmText: '6 people · 2 ideas · 3 todos · 1 meeting',
+      confirm: 'To confirm', count: '2',
+      p1t: 'Todo · Mine', p1d: 'Wed', p1: 'Send Wang the quote before next Wednesday',
+      p2t: 'Todo · Owed to me', p2d: 'Tmrw', p2: 'Lin will return the power bank tomorrow',
+      ignore: 'Ignore', accept: 'Accept',
+      tl: 'Timeline', tln: '18 events', seg: ['Today', 'Yest.', 'Before'],
+      chips: [['All', ''], ['Todos', '3'], ['Meetings', '1'], ['Mom', '2'], ['Wang', '1']],
+      part: 'Afternoon · 6',
+      ev: [
+        ['14:32', 'The quote and the keys', 'Promised to send Wang the quote before Wednesday; mentioned the keys are in the second hallway drawer.'],
+        ['13:10', 'Lunch at home on Saturday', 'Mom is coming over Saturday noon and wants sweet-and-sour ribs. Buy them early.'],
+        ['11:05', 'Homepage design review', 'Three of us went through the hero copy and download button. Second draft due Friday.'],
+      ],
+    };
+const bars = [3, 5, 4, 9, 14, 7, 4, 3, 6, 11, 16, 9, 5, 3, 4, 7, 12, 6, 3];
+---
+<div class:list={['app', cls, on && 'on']} id={id} data-screen="today">
+  <Chrome lang={lang} part="top" />
+  <div class="a-head" style="display:flex;justify-content:space-between;align-items:flex-end">
+    <div class="rail"></div>
+    <div><div class="sub">{c.sub}</div><div class="big tnum">{c.date}</div></div>
+    <div class="a-iconbtn soft" style="margin-bottom:4px"><svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 2.5a7.5 7.5 0 010 15z" fill="currentColor"/></svg></div>
+  </div>
+
+  <!-- 橙色主卡 -->
+  <div style="margin:14px 14px 0;border-radius:22px;padding:15px 16px 13px;color:#fff;background:linear-gradient(135deg,#f3a466 0%,#ec8a48 45%,#e0683c 100%);box-shadow:0 14px 30px -16px rgba(224,104,60,.7)">
+    <div style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:15.5px">
+      <span style="width:8px;height:8px;border-radius:50%;background:#fff"></span>{c.listening} ›
+      <span class="bars" style="margin-left:auto;display:flex;align-items:center;gap:2.5px;height:18px;opacity:.85" aria-hidden="true">
+        {Array.from({ length: 22 }, (_, i) => <span style={`height:${6 + ((i * 7) % 11)}px;background:#fff;width:2.5px;--t:${0.9 + (i % 4) * 0.2}s;--dl:${-i * 0.11}s`}></span>)}
+      </span>
+    </div>
+    <div style="display:grid;grid-template-columns:1.25fr 1fr 1fr;margin-top:12px">
+      <div><div style="font-size:27px;font-weight:700;line-height:1.1" class="tnum">{c.s1}<span style="font-size:17px;margin-left:2px">{c.s1u}</span></div><div style="font-size:12px;opacity:.85;margin-top:3px">{c.s1l}</div></div>
+      <div><div style="font-size:27px;font-weight:700;line-height:1.1" class="tnum">{c.s2}</div><div style="font-size:12px;opacity:.85;margin-top:3px">{c.s2l}</div></div>
+      <div><div style="font-size:27px;font-weight:700;line-height:1.1" class="tnum">{c.s3}</div><div style="font-size:12px;opacity:.85;margin-top:3px">{c.s3l}</div></div>
+    </div>
+    <div style="height:1px;background:rgba(255,255,255,.28);margin:12px 0 10px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px">
+      <span style="opacity:.9">{c.queue}</span>
+      <span style="display:flex;gap:6px"><span class="a-pill" style="background:#fff;color:#e07035;height:28px">{c.organize}</span><span class="a-pill" style="background:rgba(255,255,255,.22);height:28px">{c.model}</span></span>
+    </div>
+    <div style="font-size:12px;opacity:.82;margin-top:8px">{c.done}</div>
+  </div>
+
+  <!-- 今日节奏 -->
+  <div style="margin:12px 14px 0;height:44px;border-radius:999px;background:var(--card);display:flex;align-items:center;padding:0 7px 0 16px;gap:8px;font-size:12.5px">
+    <span style="color:var(--t2)">{c.rhythm}</span>
+    <span style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1">{c.rhythmText}</span>
+    <span style="display:flex;align-items:flex-end;gap:1.5px;height:18px" aria-hidden="true">{bars.slice(0, 13).map((b) => <i style={`width:2px;height:${b}px;background:var(--accent);opacity:.75;border-radius:1px`}></i>)}</span>
+    <span class="a-iconbtn soft" style="width:30px;height:30px"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></span>
+  </div>
+
+  <!-- 待确认 -->
+  <div class="a-section" style="margin-top:16px"><span style="font-size:14px">{c.confirm}</span><span>{c.count}</span></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 14px 0">
+    {[[c.p1t, c.p1d, c.p1], [c.p2t, c.p2d, c.p2]].map(([tag, d, txt]) => (
+      <div style="background:var(--soft2);border-radius:20px;padding:12px 12px 11px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span class="a-tag" style="background:var(--soft)">{tag}</span><span style="font-size:11.5px;color:var(--accent)">{d}</span></div>
+        <div style="font-size:13.5px;line-height:1.5;margin:8px 0 10px;height:40px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">{txt}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <span class="a-pill" style="background:var(--card);color:var(--accent);height:28px;font-weight:500">{c.ignore}</span>
+          <span class="a-pill" style="background:var(--accent);color:#fff;height:28px">{c.accept}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- 时间线 -->
+  <div class="a-section" style="margin-top:18px;align-items:center">
+    <span style="font-size:14px">{c.tl} · {c.tln}</span>
+    <span style="display:flex;background:var(--sep);border-radius:999px;padding:3px;font-size:12px">
+      {c.seg.map((s, i) => <span style={`padding:4px 11px;border-radius:999px;${i === 0 ? 'background:var(--card);color:var(--text)' : ''}`}>{s}</span>)}
+    </span>
+  </div>
+  <div style="display:flex;gap:7px;margin:12px 0 0 14px;overflow:hidden">
+    {c.chips.map(([n, k], i) => (
+      <span class:list={['a-chip', i === 0 && 'on']}>{i > 2 && <i style="width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.7"></i>}{n}{k && <span class="n">{k}</span>}</span>
+    ))}
+  </div>
+  <div style="font-size:12.5px;color:var(--t2);margin:14px 18px 8px">{c.part}</div>
+  <div class="a-card" style="margin:0 14px;padding:4px 0">
+    {c.ev.map(([tm, title, d], i) => (
+      <div style="display:grid;grid-template-columns:50px 1fr;padding:0 16px">
+        <span class="tnum" style="color:var(--accent);font-size:14px;font-weight:600;padding-top:13px">{tm}</span>
+        <div style={`min-width:0;padding:12px 0;${i ? 'border-top:1px solid var(--sep)' : ''}`}><div style="font-size:15px;font-weight:650">{title}</div><div style="font-size:12.5px;color:var(--t2);line-height:1.55;margin-top:3px">{d}</div></div>
+      </div>
+    ))}
+  </div>
+  <Chrome lang={lang} part="bottom" tab={0} />
+</div>

@@ -10,8 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "wrangler pages deploy dist",
-    "preview:prod": "wrangler pages deploy dist --project-name=taosheng-website"
+    "deploy": "astro build && wrangler pages deploy dist --project-name=taosheng-official-site --branch=main",
+    "deploy:preview": "astro build && wrangler pages deploy dist --project-name=taosheng-official-site --branch=preview",
+    "shots": "node scripts/shots.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
@@ -21,6 +22,7 @@
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
+    "@fontsource/instrument-serif": "^5.3.0",
     "sharp": "^0.34.5",
     "wrangler": "^4.159.0"
   },

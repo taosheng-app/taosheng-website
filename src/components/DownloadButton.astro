@@ -1,0 +1,19 @@
+---
+import { ui, type Lang } from '../data/i18n';
+import { getRelease, mb, APK_DOWNLOAD } from '../data/release';
+interface Props { lang: Lang; variant?: 'primary' | 'accent'; meta?: boolean; class?: string; dark?: boolean }
+const { lang, variant = 'primary', meta = true, class: cls, dark = false } = Astro.props;
+const t = ui[lang];
+const r = await getRelease();
+---
+<div class:list={['flex flex-col items-start gap-3', cls]}>
+  <a href={APK_DOWNLOAD} data-download class:list={['btn h-14 px-7 text-[16px]', variant === 'accent' ? 'btn-accent' : 'btn-primary']}>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.48l1.84-3.18a.38.38 0 00-.66-.38l-1.86 3.22a11.4 11.4 0 00-9.84 0L5.22 5.92a.38.38 0 10-.66.38L6.4 9.48A10.8 10.8 0 001 18h22a10.8 10.8 0 00-5.4-8.52zM7 15.25a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm10 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>
+    {t.download}
+  </a>
+  {meta && (
+    <p class:list={['text-[13px] tnum', dark ? 'text-white/55' : 'text-[var(--color-ink-3)] phase-dim']} data-release-meta>
+      {t.meta(r.version, mb(r.size))} · {t.viaMs}
+    </p>
+  )}
+</div>

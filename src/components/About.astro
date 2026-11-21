@@ -1,0 +1,144 @@
+---
+import Base from '../layouts/Base.astro';
+import { type Lang } from '../data/i18n';
+import { REPO } from '../data/release';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const zh = lang === 'zh';
+const people = ['ethansunqing', 'JunWeiUp', 'SoukNow', 'sheacoding', 'feitian124', 'xhp1211'];
+const T = zh
+  ? {
+      title: '关于涛声 · TaoSheng', desc: '为什么做涛声，它是怎么被 AI 写出来的，设计原则，以及怎么联系我们。',
+      h1: '每天你说几千句话，还记得几句？',
+      story: [
+        '开会时答应的事，转头就忘；朋友随口说的电话号码、约好的时间，过两天想不起来；灵感说过好几次，从来没记下来。',
+        '市面上的方案，要么得买录音硬件，要么把你的声音全部传到别人的服务器上。',
+        '涛声的思路很简单：手机本来就随身，麦克风本来就在。让它安安静静地在后台听，有人说话才录；隔一阵子统一转成文字，认出是谁说的，再交给大模型整理成一件件事。你需要时，打字问一句就能找回来。'
+      ],
+      aiT: '一个 AI 写出来的 App',
+      ai: '涛声的代码几乎全部由 AI 完成：Claude 负责架构、接口约定和全部界面，Codex 负责录音、转写、数据库、推送、备份等底层。人只做一件事——提需求、在手机上实测、说哪里不对。近两百张任务卡和交付说明都公开在仓库里，连踩过的坑也在。',
+      aiLink: '看看任务卡',
+      principlesT: '设计原则',
+      principles: [
+        ['本地优先', '人声检测、声纹和本地转写都在手机完成，声音不必离开设备。'],
+        ['不绑定服务商', '转写和整理模型随时换，支持任意 OpenAI 兼容接口和局域网自建模型。'],
+        ['你自己的数据', '不用注册账号，没有我们的服务器，原录音默认 3 天自动删，随时一键彻底删除。'],
+        ['公开透明', '源码、任务卡、问题记录全部公开，可以自己审计和编译。'],
+      ],
+      contactT: '联系我们',
+      contact: [
+        ['反馈问题', '闪退、后台被杀、功能建议，都可以提 Issue。附上手机型号和系统版本，定位会快很多。', `${REPO}/issues/new`, '提交 Issue'],
+        ['硬件接入', '有录音豆、录音卡或吊坠想接入？欢迎提供协议资料、SDK 和测试样机。', `${REPO}/blob/main/docs/%E7%A1%AC%E4%BB%B6%E6%8E%A5%E5%85%A5%E4%B8%8E%E5%8D%8F%E8%AE%AE%E9%80%82%E9%85%8D.md`, '接入指南'],
+        ['参与贡献', '欢迎提交 PR。第一次提交时，机器人会请你签署贡献者许可协议（CLA）。', `${REPO}/pulls`, '查看 PR'],
+      ],
+      reply: '项目由个人维护，回复可能不及时，谢谢理解。',
+      thanksT: '致谢',
+      thanks: '感谢为涛声贡献过代码的朋友，也感谢 feitian124 搭建了官网的第一版。',
+      licenseT: '许可证',
+      license: '从 0.4.0 起，涛声源码按 FSL-1.1-MIT 公开：个人、学习、研究和公司内部使用都不受影响；不允许拿去做与涛声竞争的商业产品或服务。每个版本发布满两年，自动转为 MIT。0.3.1 及之前的版本永远是 MIT。',
+    }
+  : {
+      title: 'About — TaoSheng', desc: 'Why TaoSheng exists, how AI built it, its design principles, and how to reach us.',
+      h1: 'You say thousands of sentences a day. How many do you remember?',
+      story: [
+        'You promise something in a meeting and forget it by the elevator. A friend mentions a number or a time and two days later it’s gone. An idea comes up again and again and never gets written down.',
+        'The existing options either want you to buy a recorder or upload all your audio to someone else’s server.',
+        'TaoSheng’s idea is simple: your phone is always with you, and it already has a microphone. Let it listen quietly, record only when someone speaks, transcribe in batches, work out who said what, and let an LLM turn it into things you can find later.'
+      ],
+      aiT: 'An app written by AI',
+      ai: 'Almost all of TaoSheng’s code was written by AI: Claude on architecture, interfaces and every screen; Codex on capture, transcription, storage, push and backup. The human files requests, tests on a real phone and says what’s wrong. Nearly two hundred task cards and delivery notes are public in the repository — mistakes included.',
+      aiLink: 'Read the task cards',
+      principlesT: 'Principles',
+      principles: [
+        ['On-device first', 'Voice detection, voiceprints and local transcription run on the phone.'],
+        ['No lock-in', 'Swap transcription and LLM providers any time, including self-hosted ones.'],
+        ['Your data', 'No account, no server of ours, raw audio deleted after 3 days by default.'],
+        ['In the open', 'Source, task cards and issue logs are public. Audit it, build it yourself.'],
+      ],
+      contactT: 'Contact',
+      contact: [
+        ['Report a problem', 'Crashes, background kills, feature ideas — open an issue with your phone model and Android version.', `${REPO}/issues/new`, 'Open an issue'],
+        ['Hardware', 'Have a recorder or pendant to integrate? Protocol docs, SDKs and test units are welcome.', `${REPO}/tree/main/docs/taoecho`, 'Integration spec'],
+        ['Contribute', 'Pull requests welcome. You’ll be asked to sign the CLA on your first one.', `${REPO}/pulls`, 'Pull requests'],
+      ],
+      reply: 'TaoSheng is maintained by one person, so replies may take a while.',
+      thanksT: 'Thanks',
+      thanks: 'Thanks to everyone who contributed code, and to feitian124 for building the first version of this website.',
+      licenseT: 'License',
+      license: 'From 0.4.0 the source is available under FSL-1.1-MIT: personal, educational, research and internal company use are unaffected; competing commercial products or services are not allowed. Each release becomes MIT two years after it ships. Versions up to 0.3.1 remain MIT.',
+    };
+---
+<Base lang={lang} path="/about" title={T.title} description={T.desc}>
+  <section class="pt-32 pb-16 sm:pt-44">
+    <div class="wrap max-w-4xl">
+      <h1 class="reveal text-[clamp(2.3rem,5.6vw,4.4rem)] font-bold leading-[1.1] tracking-[-0.035em]">{T.h1}</h1>
+      <div class="mt-12 space-y-6">
+        {T.story.map((p, i) => <p class:list={['reveal text-[clamp(1.05rem,1.6vw,1.28rem)] leading-[1.95]', i === 2 ? 'text-[var(--color-ink)]' : 'text-[var(--color-ink-2)]']} style={`--d:${i * 60}ms`}>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="wrap">
+      <div class="reveal grid gap-10 rounded-[36px] bg-[var(--color-ink)] p-8 text-white sm:p-14 lg:grid-cols-[1fr_1.3fr]">
+        <h2 class="text-[2rem] font-bold leading-tight tracking-tight sm:text-[2.6rem]">{T.aiT}</h2>
+        <div>
+          <p class="text-[16px] leading-8 text-white/70">{T.ai}</p>
+          <div class="mt-8 flex flex-wrap gap-3 font-mono text-[13px]">
+            <span class="rounded-full bg-white/10 px-4 py-2">Claude · {zh ? '架构与界面' : 'architecture & UI'}</span>
+            <span class="rounded-full bg-white/10 px-4 py-2">Codex · {zh ? '底层' : 'internals'}</span>
+            <span class="rounded-full bg-[var(--color-accent)] px-4 py-2 text-white">{zh ? '人 · 实测与把关' : 'Human · testing & taste'}</span>
+          </div>
+          <a href={`${REPO}/tree/main/docs/%E4%BB%BB%E5%8A%A1%E5%8D%A1`} target="_blank" rel="noopener" class="mt-8 inline-block text-[14px] text-white/70 underline decoration-white/30 underline-offset-4 hover:text-white">{T.aiLink} →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="wrap">
+      <h2 class="h2 reveal">{T.principlesT}</h2>
+      <div class="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        {T.principles.map(([t, d], i) => (
+          <div class="reveal border-t border-[var(--color-ink)] pt-5" style={`--d:${i * 60}ms`}>
+            <p class="text-[18px] font-bold">{t}</p>
+            <p class="mt-2 text-[14.5px] leading-7 text-[var(--color-ink-2)]">{d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="scroll-mt-24 py-16">
+    <div class="wrap">
+      <h2 class="h2 reveal">{T.contactT}</h2>
+      <div class="mt-12 grid gap-4 md:grid-cols-3">
+        {T.contact.map(([t, d, href, cta], i) => (
+          <a href={href} target="_blank" rel="noopener" class="reveal group flex flex-col rounded-[26px] bg-white p-7 transition-transform duration-500 hover:-translate-y-1" style={`--d:${i * 60}ms`}>
+            <p class="text-[19px] font-bold">{t}</p>
+            <p class="mt-3 flex-1 text-[14.5px] leading-7 text-[var(--color-ink-2)]">{d}</p>
+            <span class="mt-6 text-[14px] font-semibold text-[var(--color-accent-deep)]">{cta} <span class="inline-block transition-transform group-hover:translate-x-1">→</span></span>
+          </a>
+        ))}
+      </div>
+      <p class="reveal mt-6 text-[14px] text-[var(--color-ink-3)]">{T.reply}</p>
+    </div>
+  </section>
+
+  <section class="py-16 pb-28">
+    <div class="wrap grid gap-14 lg:grid-cols-2">
+      <div class="reveal">
+        <h2 class="text-[1.8rem] font-bold tracking-tight">{T.thanksT}</h2>
+        <p class="mt-4 text-[15.5px] leading-8 text-[var(--color-ink-2)]">{T.thanks}</p>
+        <ul class="mt-6 flex flex-wrap gap-2">
+          {people.map((p) => <li><a href={`https://github.com/${p}`} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-4 text-[14px] hover:bg-[var(--color-accent-soft)]"><img src={`https://github.com/${p}.png?size=56`} alt="" width="28" height="28" loading="lazy" class="rounded-full bg-[var(--color-paper-2)]" />{p}</a></li>)}
+        </ul>
+      </div>
+      <div class="reveal" style="--d:80ms">
+        <h2 class="text-[1.8rem] font-bold tracking-tight">{T.licenseT}</h2>
+        <p class="mt-4 text-[15.5px] leading-8 text-[var(--color-ink-2)]">{T.license}</p>
+        <a href={`${REPO}/blob/main/LICENSE.md`} target="_blank" rel="noopener" class="mt-5 inline-block text-[14px] font-semibold text-[var(--color-accent-deep)]">LICENSE.md →</a>
+      </div>
+    </div>
+  </section>
+</Base>

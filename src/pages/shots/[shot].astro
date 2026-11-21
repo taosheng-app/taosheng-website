@@ -1,0 +1,29 @@
+---
+/** 高仿真界面导图用：每屏一个 360×800 页面，按 3 倍截图得到 1080×2400。不进站点地图，不被收录。 */
+import '../../styles/global.css';
+import '../../styles/app.css';
+import ScreenToday from '../../components/phone/ScreenToday.astro';
+import ScreenAsk from '../../components/phone/ScreenAsk.astro';
+import ScreenMemory from '../../components/phone/ScreenMemory.astro';
+import ScreenTodo from '../../components/phone/ScreenTodo.astro';
+import ScreenNight from '../../components/phone/ScreenNight.astro';
+export function getStaticPaths() {
+  const names = ['today', 'ask', 'memory', 'todo', 'night', 'night-light'];
+  return ['zh', 'en'].flatMap((lang) => names.map((n) => ({ params: { shot: `${lang}-${n}` }, props: { lang, n } })));
+}
+const { lang, n } = Astro.props as { lang: 'zh' | 'en'; n: string };
+---
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" /><meta name="robots" content="noindex" /><meta name="viewport" content="width=360" /><title>shot</title>
+    <style>html,body{margin:0;background:#000}</style>
+  </head>
+  <body>
+    {n === 'today' && <ScreenToday lang={lang} />}
+    {n === 'ask' && <ScreenAsk lang={lang} />}
+    {n === 'memory' && <ScreenMemory lang={lang} />}
+    {n === 'todo' && <ScreenTodo lang={lang} />}
+    {n === 'night' && <ScreenNight lang={lang} />}
+    {n === 'night-light' && <ScreenNight lang={lang} dark={false} />}
+  </body>
+</html>

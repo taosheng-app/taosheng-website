@@ -1,0 +1,459 @@
+---
+import Base from '../layouts/Base.astro';
+import Phone from './phone/Phone.astro';
+import ScreenToday from './phone/ScreenToday.astro';
+import ScreenAsk from './phone/ScreenAsk.astro';
+import ScreenMemory from './phone/ScreenMemory.astro';
+import ScreenTodo from './phone/ScreenTodo.astro';
+import ScreenNight from './phone/ScreenNight.astro';
+import DownloadButton from './DownloadButton.astro';
+import { home } from '../data/home';
+import { pathFor, type Lang } from '../data/i18n';
+import { REPO } from '../data/release';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = home[lang];
+const l = (p: string) => pathFor(lang, p);
+const zh = lang === 'zh';
+const screenOf = (s: string) => s;
+---
+
+<Base lang={lang} path="/" title={T.title} description={T.desc} stars>
+  <!-- ============ 首屏 ============ -->
+  <section class="hero relative overflow-hidden pt-28 pb-20 sm:pt-36 lg:pb-28">
+    <div class="pointer-events-none absolute inset-0 -z-0" aria-hidden="true">
+      <div class="glow"></div>
+    </div>
+    <div class="wrap relative grid items-center gap-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10">
+      <div>
+        <p class="reveal flex items-center gap-2.5 text-[13px] font-medium text-[var(--color-ink-2)]">
+          <span class="live-dot"></span>{T.hero.live}
+        </p>
+        <h1 class:list={['display mt-6', !zh && 'display-en']}>
+          {T.hero.lines.map((line, i) => (
+            <span class="reveal block" style={`--d:${80 + i * 90}ms`}>
+              {i === 2 ? <span class="hero-accent">{line}</span> : line}
+            </span>
+          ))}
+        </h1>
+        <p class="reveal mt-7 flex items-center gap-3 text-[clamp(1.25rem,2.4vw,1.75rem)] font-semibold tracking-tight" style="--d:330ms">
+          <span class="h-[2px] w-8 rounded bg-[var(--color-accent)]" aria-hidden="true"></span>{T.hero.context}
+        </p>
+        <p class="lead reveal mt-5 max-w-[34rem]" style="--d:400ms">{T.hero.lead}</p>
+        <div class="reveal mt-10 flex flex-col gap-4 sm:flex-row sm:items-start" style="--d:440ms">
+          <DownloadButton lang={lang} />
+          <a href={REPO} target="_blank" rel="noopener" class="btn btn-ghost h-14 px-6 text-[15px]">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 00-3.64 22.4c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 015.77 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0012 .5z"/></svg>
+            {T.hero.source}
+          </a>
+        </div>
+        <ul class="reveal mt-12 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-[var(--color-ink-3)]" style="--d:520ms">
+          {T.hero.trust.map((x) => <li class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="var(--color-accent)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>{x}</li>)}
+        </ul>
+      </div>
+
+      <div class="relative mx-auto w-full max-w-[460px] lg:max-w-none">
+        <div class="rings" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="reveal relative mx-auto w-fit" style="--d:200ms">
+          <Phone class="hero-phone" label={zh ? '涛声「今天」页' : 'TaoSheng Today screen'}>
+            <ScreenToday lang={lang} />
+          </Phone>
+          <!-- 实时转写演示 -->
+          <div class="demo" data-demo={JSON.stringify(T.hero.demo)} aria-live="polite">
+            <div class="flex items-center gap-2 text-[12px]">
+              <span class="demo-who rounded-full bg-[var(--color-ink)] px-2.5 py-1 font-semibold text-white">{T.hero.demo[0].who}</span>
+              <span class="demo-time tnum text-[var(--color-ink-3)]">{T.hero.demo[0].time}</span>
+              <span class="bars ml-auto flex h-4 items-center gap-[2px]" aria-hidden="true">
+                {Array.from({ length: 14 }, (_, i) => <span style={`height:${5 + ((i * 5) % 11)}px;background:var(--color-accent);--t:${0.8 + (i % 4) * 0.18}s;--dl:${-i * 0.09}s`}></span>)}
+              </span>
+            </div>
+            <p class="demo-text caret mt-3 min-h-[4.6em] text-[15px] leading-[1.55] text-[var(--color-ink)]">{T.hero.demo[0].text}</p>
+            <div class="demo-out mt-3 border-t border-[var(--color-line)] pt-3">
+              <p class="text-[11.5px] text-[var(--color-ink-3)]">{T.hero.demoTitle}</p>
+              <div class="demo-chips mt-2 flex flex-col gap-1.5">
+                {T.hero.demo[0].out.map(([k, v]) => <span class="chip-out"><b>{k}</b>{v}</span>)}
+              </div>
+            </div>
+            <p class="mt-3 flex items-center gap-1.5 text-[11px] text-[var(--color-ink-3)]"><svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="2" fill="currentColor"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>{T.hero.demoLocal}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 一天 ============ -->
+  <section id="day" class="relative z-10 py-24 sm:py-32">
+    <div class="wrap">
+      <div class="max-w-3xl">
+        <p class="eyebrow reveal">{T.day.eyebrow}</p>
+        <h2 class="h2 reveal mt-5 phase-ink" style="--d:80ms">{T.day.title}</h2>
+        <p class="lead reveal mt-6 max-w-2xl phase-dim" style="--d:160ms">{T.day.lead}</p>
+      </div>
+
+      <div class="mt-16 grid gap-10 lg:mt-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-20">
+        <!-- 桌面：粘性手机 -->
+        <div class="hidden lg:block">
+          <div class="sticky top-24 flex justify-center">
+            <Phone class="day-phone">
+              <div class="screens" data-screens>
+                <ScreenToday lang={lang} on />
+                <ScreenMemory lang={lang} />
+                <ScreenTodo lang={lang} />
+                <ScreenAsk lang={lang} />
+                <ScreenNight lang={lang} />
+                <div data-screen="night-light" class="app" style="background:transparent"><ScreenNight lang={lang} dark={false} /></div>
+              </div>
+            </Phone>
+          </div>
+        </div>
+
+        <ol class="relative">
+          <span class="timeline-rail" aria-hidden="true"></span>
+          {T.day.moments.map((m, i) => (
+            <li class="moment relative pb-24 pl-10 last:pb-0 lg:min-h-[78vh] lg:pb-0 lg:pt-[14vh]" data-moment={m.screen} data-night={m.night ? '1' : undefined}>
+              <span class="moment-dot" aria-hidden="true"></span>
+              <p class="serif tnum reveal text-[56px] leading-none text-[var(--color-accent)] sm:text-[72px]">{m.t}</p>
+              <h3 class="reveal mt-5 text-[1.65rem] font-bold tracking-tight phase-ink sm:text-[2rem]" style="--d:60ms">{m.title}</h3>
+              <p class="reveal mt-4 max-w-xl text-[16.5px] leading-[1.85] text-[var(--color-ink-2)] phase-dim" style="--d:120ms">{m.body}</p>
+              <ul class="reveal mt-6 flex flex-wrap gap-2" style="--d:180ms">
+                {m.tags.map((x) => <li class="tag">{x}</li>)}
+              </ul>
+              {m.clue && (
+                <div class="clue reveal mt-8 max-w-md" style="--d:240ms">
+                  <p class="flex items-center gap-2 text-[13px] font-semibold"><span class="h-2 w-2 rounded-full bg-[var(--color-accent)]"></span>{T.day.clue.head}</p>
+                  <dl class="mt-4 space-y-2.5 text-[14px]">
+                    {T.day.clue.rows.map(([k, v]) => <div class="grid grid-cols-[5.5em_1fr] gap-3"><dt class="text-[var(--color-ink-3)]">{k}</dt><dd>{v}</dd></div>)}
+                  </dl>
+                  <p class="mt-5 border-t border-[var(--color-line)] pt-4 text-[12.5px] text-[var(--color-ink-3)]">→ {T.day.clue.to}</p>
+                </div>
+              )}
+              <!-- 手机屏：小屏直接跟在文字下面 -->
+              <div class="mt-10 lg:hidden">
+                <Phone class="moment-phone">
+                  {m.screen === 'today' && <ScreenToday lang={lang} />}
+                  {m.screen === 'memory' && <ScreenMemory lang={lang} />}
+                  {m.screen === 'todo' && <ScreenTodo lang={lang} />}
+                  {m.screen === 'ask' && <ScreenAsk lang={lang} />}
+                  {m.screen === 'night' && <ScreenNight lang={lang} />}
+                  {m.screen === 'night-light' && <ScreenNight lang={lang} dark={false} />}
+                </Phone>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 隐私 ============ -->
+  <section id="privacy" class="relative z-10 py-24 sm:py-32">
+    <div class="wrap">
+      <div class="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+        <div>
+          <p class="eyebrow reveal">{T.privacy.eyebrow}</p>
+          <h2 class="h2 reveal mt-5" style="--d:80ms">{T.privacy.title}</h2>
+          <p class="lead reveal mt-6 max-w-lg" style="--d:160ms">{T.privacy.lead}</p>
+        </div>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-10">
+          {T.privacy.stats.map(([n, u, d], i) => (
+            <div class="reveal border-t border-[var(--color-ink)] pt-5" style={`--d:${i * 80}ms`}>
+              <p class="serif tnum text-[56px] leading-none sm:text-[72px]">{n}</p>
+              <p class="mt-3 text-[15px] font-semibold">{u}</p>
+              <p class="mt-1.5 text-[13.5px] leading-6 text-[var(--color-ink-3)]">{d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="flow reveal mt-20">
+        <div class="flow-local">
+          <p class="text-[13px] font-semibold text-[var(--color-accent-deep)]">{T.privacy.flowLocal}</p>
+          <ul class="mt-4 flex flex-wrap gap-2">{T.privacy.flowLocalItems.map((x) => <li class="pill-local">{x}</li>)}</ul>
+          <p class="mt-6 text-[14px] text-[var(--color-ink-2)]">{T.privacy.erase}</p>
+        </div>
+        <div class="flow-line" aria-hidden="true"><span></span></div>
+        <div class="flow-opt">
+          <p class="text-[13px] font-semibold text-[var(--color-ink-3)]">{T.privacy.flowOpt}</p>
+          <ul class="mt-4 flex flex-wrap gap-2">{T.privacy.flowOptItems.map((x) => <li class="pill-opt">{x}</li>)}</ul>
+          <p class="mt-6 text-[14px] leading-7 text-[var(--color-ink-2)]">{T.privacy.flowNote}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 一根绳子 ============ -->
+  <section class="relative z-10 overflow-hidden py-24 sm:py-32">
+    <div class="wrap grid items-center gap-14 lg:grid-cols-[1fr_1fr]">
+      <div class="string-art reveal order-2 lg:order-1" aria-hidden="true">
+        <svg viewBox="0 0 420 420" class="w-full max-w-[420px]">
+          <defs>
+            <linearGradient id="bud" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e9e2d8"/></linearGradient>
+          </defs>
+          <circle cx="210" cy="250" r="150" fill="none" stroke="var(--color-line)" stroke-width="1"/>
+          <circle cx="210" cy="250" r="105" fill="none" stroke="var(--color-line)" stroke-width="1"/>
+          <path class="string" d="M70 20 C 90 160, 150 250, 210 262 C 270 250, 330 160, 350 20" fill="none" stroke="var(--color-ink)" stroke-width="2.2" stroke-linecap="round"/>
+          <g transform="translate(210 262)">
+            <ellipse cx="0" cy="22" rx="30" ry="36" fill="url(#bud)" stroke="#d8cfc3" stroke-width="1.2"/>
+            <rect x="-8" y="48" width="16" height="44" rx="8" fill="url(#bud)" stroke="#d8cfc3" stroke-width="1.2"/>
+            <circle cx="0" cy="18" r="9" fill="#2a2725"/>
+            <circle cx="0" cy="18" r="3" fill="var(--color-accent)"/>
+          </g>
+          <g class="pulse-rings" fill="none" stroke="var(--color-accent)">
+            <circle cx="210" cy="280" r="50" stroke-opacity=".5"/>
+            <circle cx="210" cy="280" r="50" stroke-opacity=".5"/>
+          </g>
+        </svg>
+      </div>
+      <div class="order-1 lg:order-2">
+        <p class="eyebrow reveal">{T.string.eyebrow}</p>
+        <h2 class="h2 reveal mt-5" style="--d:80ms">{T.string.title}</h2>
+        <p class="lead reveal mt-6" style="--d:160ms">{T.string.body}</p>
+        <ul class="reveal mt-8 flex flex-wrap gap-2" style="--d:220ms">{T.string.devices.map((d) => <li class="tag tag-solid">{d}</li>)}</ul>
+        <p class="reveal mt-8 border-l-2 border-[var(--color-accent)] pl-4 text-[14.5px] leading-7 text-[var(--color-ink-2)]" style="--d:280ms">{T.string.note}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 更多 ============ -->
+  <section id="more" class="relative z-10 py-24 sm:py-32">
+    <div class="wrap">
+      <p class="eyebrow reveal">{T.more.eyebrow}</p>
+      <h2 class="h2 reveal mt-5" style="--d:80ms">{T.more.title}</h2>
+      <div class="bento mt-14">
+        {T.more.cards.map((c, i) => (
+          <article class:list={['card reveal', `card-${c.k}`]} style={`--d:${(i % 3) * 70}ms`}>
+            <h3 class="text-[19px] font-bold tracking-tight">{c.t}</h3>
+            <p class="mt-3 text-[14.5px] leading-7 text-[var(--color-ink-2)]">{c.d}</p>
+            {'chips' in c && c.chips && <ul class="mt-5 flex flex-wrap gap-1.5">{c.chips.map((x) => <li class="mini">{x}</li>)}</ul>}
+            {c.k === 'agent' && (
+              <pre class="term mt-5" aria-label="Terminal">{T.more.agentDemo.map((line, j) => <span class:list={['block', j === 0 && 'text-white/50', j === 1 && 'text-[#fdb074]', j === 2 && 'text-white/45', j === 3 && 'text-white']}>{line}</span>)}</pre>
+            )}
+            {c.k === 'battery' && (
+              <div class="mt-6 flex items-end gap-3"><span class="serif tnum text-[64px] leading-none">0.5%</span><span class="pb-2 text-[13px] text-[var(--color-ink-3)]">{zh ? '/ 小时 · 实测' : '/ hour · measured'}</span></div>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 新手指南 ============ -->
+  <section class="relative z-10 py-16 sm:py-24">
+    <div class="wrap">
+      <a href={l('/guide')} class="guide-card reveal group block">
+        <div class="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+          <div>
+            <p class="eyebrow">{T.guide.eyebrow}</p>
+            <h2 class="mt-5 text-[2rem] font-bold leading-tight tracking-tight sm:text-[2.6rem]">{T.guide.title}</h2>
+            <p class="mt-5 max-w-xl text-[16px] leading-8 text-[var(--color-ink-2)]">{T.guide.body}</p>
+            <span class="btn btn-primary mt-8 h-12 px-6 text-[15px]">{T.guide.cta} <span class="transition-transform group-hover:translate-x-1">→</span></span>
+          </div>
+          <ol class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {T.guide.chapters.map((c, i) => <li class="flex items-center gap-3 rounded-2xl bg-white/70 px-4 py-3.5 text-[14.5px] font-medium"><span class="serif tnum w-6 text-[22px] leading-none text-[var(--color-accent)]">{i + 1}</span>{c}</li>)}
+          </ol>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ 常见问题 ============ -->
+  <section id="faq" class="relative z-10 py-24 sm:py-32">
+    <div class="wrap grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+      <h2 class="h2 reveal">{T.faq.title}</h2>
+      <div class="reveal" style="--d:100ms">
+        {T.faq.items.map(([q, a], i) => (
+          <details class="faq" open={i === 0}>
+            <summary><span>{q}</span><i aria-hidden="true"></i></summary>
+            <p>{a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 收尾 ============ -->
+  <section class="relative z-10 pb-24 sm:pb-32">
+    <div class="wrap">
+      <div class="final reveal">
+        <div class="rings rings-final" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="relative z-10 flex flex-col items-center text-center">
+          <img src="/logo.svg" alt="" width="72" height="72" class="rounded-[20px] shadow-[0_20px_40px_-16px_rgba(240,123,46,.8)]" />
+          <h2 class="mt-10 max-w-3xl text-balance text-[2.2rem] font-bold leading-[1.15] tracking-tight text-white sm:text-[3.4rem]">{T.cta.title}</h2>
+          <p class="mt-6 text-[16px] text-white/60">{T.cta.body}</p>
+          <DownloadButton lang={lang} variant="accent" dark class="mt-10 items-center" />
+          <a href={l('/download')} class="mt-6 text-[14px] text-white/60 underline decoration-white/25 underline-offset-4 hover:text-white">{T.cta.install}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .glow {
+    position: absolute; right: -10%; top: -20%; width: 70vw; height: 70vw; max-width: 900px; max-height: 900px;
+    background: radial-gradient(circle at center, rgba(253, 176, 116, 0.38), rgba(253, 176, 116, 0) 62%);
+    filter: blur(10px);
+  }
+  .display-en { font-size: clamp(2.8rem, 7vw, 6rem); }
+  .hero-accent {
+    background: linear-gradient(100deg, #f49a5a 0%, #f07b2e 40%, #d9611a 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  :global(.hero-phone) { --pw: 288; transform: rotate(-2deg); }
+  @media (min-width: 640px) { :global(.hero-phone) { --pw: 330; } }
+  :global(.day-phone) { --pw: 336; }
+  @media (min-width: 1280px) { :global(.day-phone) { --pw: 360; } }
+  :global(.moment-phone) { --pw: 270; }
+
+  .rings { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+  .rings i {
+    position: absolute; left: 50%; top: 50%; width: 520px; height: 520px; margin: -260px 0 0 -260px;
+    border-radius: 50%; border: 1.5px solid rgba(240, 123, 46, 0.35);
+    animation: ring 6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite; opacity: 0;
+  }
+  .rings i:nth-child(2) { animation-delay: 2s; }
+  .rings i:nth-child(3) { animation-delay: 4s; }
+  @keyframes ring { 0% { transform: scale(0.35); opacity: 0; } 15% { opacity: 1; } 100% { transform: scale(1.35); opacity: 0; } }
+
+  .demo {
+    position: absolute; left: -36px; bottom: 9%; width: 272px; padding: 16px 16px 14px;
+    background: rgba(255, 255, 255, 0.86); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 22px;
+    box-shadow: 0 2px 6px rgba(29, 27, 25, 0.06), 0 30px 60px -28px rgba(29, 27, 25, 0.45);
+    animation: drift 8s ease-in-out infinite;
+  }
+  @media (min-width: 640px) { .demo { left: -120px; width: 290px; } }
+  @media (min-width: 1024px) { .demo { left: -150px; } }
+  @media (max-width: 400px) { .demo { left: -12px; width: 250px; } }
+  .demo-out { transition: opacity 0.5s; }
+  .demo.typing .demo-out { opacity: 0; }
+  .chip-out {
+    display: flex; gap: 8px; align-items: baseline; font-size: 13px; line-height: 1.4;
+    opacity: 0; transform: translateY(6px); transition: opacity 0.5s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+  }
+  .chip-out b { flex: none; font-weight: 600; font-size: 11px; color: var(--color-accent-deep); background: var(--color-accent-soft); padding: 2px 8px; border-radius: 999px; }
+  .chip-out.show, :global(.no-js) .chip-out { opacity: 1; transform: none; }
+
+  :global(.timeline-rail) { position: absolute; left: 7px; top: 8px; bottom: 0; width: 1px; background: var(--color-line); }
+  @media (min-width: 1024px) { :global(.timeline-rail) { top: 14vh; } }
+  .moment-dot {
+    position: absolute; left: 0; top: 20px; width: 15px; height: 15px; border-radius: 50%;
+    background: var(--color-paper); border: 2px solid var(--color-accent);
+    transition: background-color 0.4s, box-shadow 0.4s;
+  }
+  @media (min-width: 1024px) { .moment-dot { top: calc(14vh + 20px); } }
+  .moment.active .moment-dot { background: var(--color-accent); box-shadow: 0 0 0 6px rgba(240, 123, 46, 0.18); }
+  :global(body[data-phase="night"]) .moment-dot { background: var(--color-night); }
+  :global(body[data-phase="night"]) .moment.active .moment-dot { background: var(--color-snore); border-color: var(--color-snore); box-shadow: 0 0 0 6px rgba(126, 79, 198, 0.25); }
+  :global(body[data-phase="night"]) .moment[data-night] .serif { color: #b294f0; }
+  .tag { font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--color-line); color: var(--color-ink-2); transition: border-color .9s, color .9s; }
+  :global(body[data-phase="night"]) .tag { border-color: rgba(255,255,255,.14); color: rgba(236,232,244,.75); }
+  .tag-solid { background: #fff; border-color: transparent; color: var(--color-ink); font-weight: 500; }
+  .clue { background: #fff; border-radius: 22px; padding: 20px 22px; box-shadow: 0 30px 60px -36px rgba(29, 27, 25, 0.35); color: var(--color-ink); }
+
+  .flow { display: grid; gap: 18px; align-items: stretch; }
+  @media (min-width: 1024px) { .flow { grid-template-columns: 1fr 90px 1fr; } }
+  .flow-local { background: var(--color-ink); color: #fff; border-radius: 28px; padding: 28px; }
+  .flow-local p:first-child { color: #fdb074; }
+  .flow-local p:last-child { color: rgba(255,255,255,.62); }
+  .pill-local { font-size: 14px; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.1); color: #fff; }
+  .flow-opt { border: 1.5px dashed #d8cfc3; border-radius: 28px; padding: 28px; }
+  .pill-opt { font-size: 14px; padding: 8px 14px; border-radius: 999px; background: #fff; color: var(--color-ink-2); }
+  .flow-line { position: relative; display: none; }
+  @media (min-width: 1024px) { .flow-line { display: block; } }
+  .flow-line span { position: absolute; left: 0; right: 0; top: 50%; border-top: 2px dashed #d8cfc3; }
+  .flow-line span::after { content: ""; position: absolute; right: -2px; top: -6px; border: 5px solid transparent; border-left: 7px solid #d8cfc3; }
+
+  .string { stroke-dasharray: 520; stroke-dashoffset: 520; transition: stroke-dashoffset 2.2s var(--ease-out-expo) 0.2s; }
+  .string-art.in .string { stroke-dashoffset: 0; }
+  .pulse-rings circle { transform-origin: 210px 280px; animation: pr 3.2s ease-out infinite; }
+  .pulse-rings circle:nth-child(2) { animation-delay: 1.6s; }
+  @keyframes pr { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(2.4); opacity: 0; } }
+
+  .bento { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .bento { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) {
+    .bento { grid-template-columns: repeat(6, 1fr); }
+    .card-models { grid-column: span 3; }
+    .card-agent { grid-column: span 3; grid-row: span 2; }
+    .card-push { grid-column: span 3; }
+    .card-backup, .card-skills, .card-battery { grid-column: span 2; }
+  }
+  .card { background: #fff; border-radius: 28px; padding: 28px; border: 1px solid rgba(29, 27, 25, 0.05); transition: transform 0.6s var(--ease-out-expo), box-shadow 0.6s var(--ease-out-expo); }
+  .card.in:hover { transform: translateY(-4px); box-shadow: 0 30px 60px -36px rgba(29, 27, 25, 0.35); }
+  .card-agent { background: linear-gradient(160deg, #221d1a, #14100c); color: #fff; }
+  .card-agent p { color: rgba(255, 255, 255, 0.62); }
+  .mini { font-size: 12.5px; padding: 5px 10px; border-radius: 999px; background: var(--color-paper); color: var(--color-ink-2); }
+  .term { font-family: var(--font-mono); font-size: 13px; line-height: 1.9; white-space: pre-wrap; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 16px 18px; }
+
+  .guide-card { background: linear-gradient(135deg, #fde3cf 0%, #fbeee2 50%, #f6f2ec 100%); border-radius: 36px; padding: clamp(28px, 5vw, 56px); border: 1px solid #f7d7bd; transition: transform .6s var(--ease-out-expo), box-shadow .6s var(--ease-out-expo); }
+  .guide-card:hover { transform: translateY(-3px); box-shadow: 0 40px 80px -50px rgba(217, 97, 26, 0.6); }
+
+  .faq { border-bottom: 1px solid var(--color-line); }
+  .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 0; font-size: 17px; font-weight: 600; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary i { position: relative; flex: none; width: 14px; height: 14px; }
+  .faq summary i::before, .faq summary i::after { content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; border-radius: 2px; background: var(--color-ink-3); transition: transform 0.4s var(--ease-out-expo); }
+  .faq summary i::after { transform: rotate(90deg); }
+  .faq[open] summary i::after { transform: rotate(0); }
+  .faq p { padding: 0 40px 24px 0; color: var(--color-ink-2); line-height: 1.85; font-size: 15.5px; }
+
+  .final { position: relative; overflow: hidden; border-radius: 40px; padding: clamp(56px, 9vw, 112px) 24px; background: radial-gradient(120% 90% at 50% 0%, #2c231d 0%, #14100c 60%); }
+  .rings-final i { border-color: rgba(240, 123, 46, 0.28); width: 700px; height: 700px; margin: -350px 0 0 -350px; }
+  .rings-final { top: 22%; }
+</style>
+
+<script>
+  // 首屏：实时转写演示（打字 → 整理出待办 / 记忆，循环）
+  const demo = document.querySelector<HTMLElement>('[data-demo]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (demo && !reduce) {
+    const items = JSON.parse(demo.dataset.demo!);
+    const who = demo.querySelector<HTMLElement>('.demo-who')!;
+    const time = demo.querySelector<HTMLElement>('.demo-time')!;
+    const text = demo.querySelector<HTMLElement>('.demo-text')!;
+    const chips = demo.querySelector<HTMLElement>('.demo-chips')!;
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    let k = 0;
+    const run = async () => {
+      for (;;) {
+        const it = items[k % items.length];
+        demo.classList.add('typing');
+        who.textContent = it.who; time.textContent = it.time; text.textContent = '';
+        chips.innerHTML = it.out.map(([a, b]: string[]) => `<span class="chip-out"><b>${a}</b>${b}</span>`).join('');
+        // astro 作用域样式：新插入的节点需要同样的作用域属性
+        const scope = [...demo.attributes].find((a) => a.name.startsWith('data-astro-cid'));
+        if (scope) chips.querySelectorAll('*').forEach((n) => n.setAttribute(scope.name, ''));
+        await sleep(500);
+        for (const ch of Array.from(it.text as string)) { text.textContent += ch; await sleep(/[，。,.—]/.test(ch) ? 160 : 42); }
+        await sleep(450);
+        demo.classList.remove('typing');
+        const cs = chips.querySelectorAll('.chip-out');
+        for (const c of cs) { await sleep(320); c.classList.add('show'); }
+        await sleep(3400);
+        k++;
+      }
+    };
+    run();
+  } else {
+    document.querySelectorAll('.chip-out').forEach((c) => c.classList.add('show'));
+  }
+
+  // 一天：滚到哪一刻，就换哪一屏；滚到夜里整页变暗
+  const moments = [...document.querySelectorAll<HTMLElement>('[data-moment]')];
+  const screens = document.querySelector('[data-screens]');
+  const show = (m: HTMLElement) => {
+    moments.forEach((x) => x.classList.toggle('active', x === m));
+    screens?.querySelectorAll(':scope > [data-screen]').forEach((s) => s.classList.toggle('on', (s as HTMLElement).dataset.screen === m.dataset.moment));
+    document.body.dataset.phase = m.dataset.night ? 'night' : 'day';
+  };
+  const io = new IntersectionObserver(
+    (es) => es.forEach((e) => e.isIntersecting && show(e.target as HTMLElement)),
+    { rootMargin: '-45% 0px -45% 0px' },
+  );
+  moments.forEach((m) => io.observe(m));
+  // 离开“一天”区域时恢复白天
+  const day = document.getElementById('day');
+  if (day) new IntersectionObserver(([e]) => { if (!e.isIntersecting) document.body.dataset.phase = 'day'; }).observe(day);
+</script>

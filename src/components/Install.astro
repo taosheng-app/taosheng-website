@@ -1,0 +1,141 @@
+---
+import Base from '../layouts/Base.astro';
+import DownloadButton from './DownloadButton.astro';
+import { pathFor, type Lang } from '../data/i18n';
+import { getRelease, mb, releaseDate, REPO, RELEASES, MS_BASE, CERT_SHA256 } from '../data/release';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const zh = lang === 'zh';
+const r = await getRelease();
+const l = (p: string) => pathFor(lang, p);
+const T = zh
+  ? {
+      title: '安装与校验 · 涛声 TaoSheng', desc: '下载涛声安卓安装包，安装步骤、后台保活、SHA-256 与签名证书校验、备用下载和从源码编译。',
+      h1: '安装涛声', lead: '点一下就从魔搭国内镜像下载，几十秒就好。下面是装好之后要做的几件事。',
+      latest: '最新正式版', released: '发布于', whatsNew: '这一版更新了什么', changelog: '完整更新日志',
+      steps: '四步装好',
+      s: [
+        ['下载', '点上面的按钮，安装包从魔搭国内镜像下载。在微信里打开的，请先点右上角，选「在浏览器打开」。'],
+        ['安装', '打开下载好的 APK。提示“未知来源”时，按提示允许这一次安装。'],
+        ['开箱向导', '跟着向导打开麦克风、通知和电池白名单，填好整理模型，说一句话试试。约 3 分钟。'],
+        ['后台保活', '小米打开自启动、电池无限制；华为荣耀把涛声改成手动管理、三项全开。'],
+      ],
+      guide: '详细步骤见新手指南 →',
+      req: '需要什么',
+      reqRows: [['手机', 'Android 10 及以上，64 位（arm64）。主要在小米 14 Pro 上实测。'], ['转写', '本地转写（免费、离线），或豆包、千问、自定义接口。'], ['大模型', '任意 OpenAI 兼容接口的密钥，默认 DeepSeek。'], ['可选', '坚果云 / WebDAV / S3（备份），任一推送通道。']],
+      verify: '校验安装包', verifyLead: '只认这个签名的安装包。别处下载的改装版可能被动过手脚。',
+      sha: '安装包 SHA-256', cert: '签名证书指纹（SHA-256）', size: '大小',
+      mirrors: '其他下载方式', ms: '魔搭国内镜像', msD: '默认下载源，国内速度最快。', gh: 'GitHub Releases', ghD: '备用下载，含历史版本、差异包和 SHA256SUMS。',
+      src: '从源码编译', srcD: '需要 JDK 21 和 Android SDK Platform 36。源码按 FSL-1.1-MIT 公开：个人、学习、研究和公司内部使用都可以。',
+      update: '以后怎么更新', updateD: 'App 内会自动检查新版本，优先下载几 MB 的差异包，在后台下好、备份好再提醒你，点一下就装。国内走魔搭镜像。',
+    }
+  : {
+      title: 'Install & verify — TaoSheng', desc: 'Download the TaoSheng APK. Install steps, keep-alive, SHA-256 and signing certificate checks, mirrors, and building from source.',
+      h1: 'Install TaoSheng', lead: 'One tap downloads from the ModelScope mirror. Here’s what to do once it’s on your phone.',
+      latest: 'Latest release', released: 'Released', whatsNew: 'What’s new in this release', changelog: 'Full changelog',
+      steps: 'Four steps',
+      s: [
+        ['Download', 'Tap the button above. In WeChat, first tap ··· and choose “Open in browser”.'],
+        ['Install', 'Open the APK. If Android warns about unknown sources, allow this install.'],
+        ['Setup wizard', 'Grant mic, notification and battery permissions, add a digest model, and say something. About 3 minutes.'],
+        ['Keep-alive', 'Xiaomi: enable autostart and unrestricted battery. Huawei/Honor: manage manually, all switches on.'],
+      ],
+      guide: 'Step-by-step in the guide →',
+      req: 'Requirements',
+      reqRows: [['Phone', 'Android 10+, 64-bit (arm64). Mainly tested on a Xiaomi 14 Pro.'], ['Transcription', 'On-device (free, offline), or Doubao, Qwen or a custom endpoint.'], ['LLM', 'Any OpenAI-compatible API key. DeepSeek by default.'], ['Optional', 'WebDAV / S3 for backup, any push channel.']],
+      verify: 'Verify the APK', verifyLead: 'Only trust APKs signed with this certificate.',
+      sha: 'APK SHA-256', cert: 'Signing certificate (SHA-256)', size: 'Size',
+      mirrors: 'Other downloads', ms: 'ModelScope mirror', msD: 'Default source, fastest in mainland China.', gh: 'GitHub Releases', ghD: 'Backup source with older versions, patches and SHA256SUMS.',
+      src: 'Build from source', srcD: 'Requires JDK 21 and Android SDK Platform 36. Source is available under FSL-1.1-MIT: personal, educational, research and internal use are all fine.',
+      update: 'Updating', updateD: 'The app checks for updates, downloads a small delta patch in the background, backs up, then asks you to install with one tap.',
+    };
+const notes = r.notes.split('\n').map((x) => x.trim()).filter(Boolean);
+---
+<Base lang={lang} path="/download" title={T.title} description={T.desc}>
+  <section class="relative overflow-hidden pt-32 pb-16 sm:pt-40">
+    <div class="wrap grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+      <div>
+        <img src="/logo.svg" alt="" width="64" height="64" class="reveal rounded-[18px] shadow-[0_20px_40px_-16px_rgba(240,123,46,.8)]" />
+        <h1 class="reveal mt-8 text-[clamp(2.6rem,6vw,4.8rem)] font-bold leading-[1.05] tracking-[-0.035em]" style="--d:60ms">{T.h1}</h1>
+        <p class="lead reveal mt-6 max-w-xl" style="--d:120ms">{T.lead}</p>
+        <DownloadButton lang={lang} class="reveal mt-10" />
+      </div>
+      <div class="reveal rounded-[28px] bg-white p-7" style="--d:180ms">
+        <p class="text-[13px] text-[var(--color-ink-3)]">{T.latest}</p>
+        <p class="serif tnum mt-1 text-[64px] leading-none">v<span data-release-version>{r.version}</span></p>
+        <p class="mt-3 text-[14px] text-[var(--color-ink-2)]">{r.publishedAt && <>{T.released} {releaseDate(r.publishedAt, lang)} · </>}<span data-release-size>{mb(r.size)}</span> · Android 10+</p>
+        {zh && notes.length > 0 && (
+          <details class="mt-5 border-t border-[var(--color-line)] pt-4">
+            <summary class="cursor-pointer text-[14px] font-semibold">{T.whatsNew}</summary>
+            <div class="mt-3 space-y-2 text-[13.5px] leading-6 text-[var(--color-ink-2)]">{notes.map((n) => <p>{n}</p>)}</div>
+          </details>
+        )}
+        <a href={`${REPO}/blob/main/CHANGELOG.md`} target="_blank" rel="noopener" class="mt-4 inline-block text-[14px] text-[var(--color-accent-deep)] underline decoration-[var(--color-accent)]/30 underline-offset-4">{T.changelog} →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="wrap">
+      <h2 class="h2 reveal">{T.steps}</h2>
+      <ol class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {T.s.map(([t, d], i) => (
+          <li class="reveal rounded-[24px] bg-white p-6" style={`--d:${i * 70}ms`}>
+            <span class="serif tnum text-[48px] leading-none text-[var(--color-accent)]">{i + 1}</span>
+            <p class="mt-5 text-[18px] font-bold">{t}</p>
+            <p class="mt-2 text-[14.5px] leading-7 text-[var(--color-ink-2)]">{d}</p>
+          </li>
+        ))}
+      </ol>
+      <a href={l('/guide')} class="reveal mt-6 inline-block text-[15px] font-semibold text-[var(--color-accent-deep)]">{T.guide}</a>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="wrap grid gap-14 lg:grid-cols-2">
+      <div>
+        <h2 class="text-[1.8rem] font-bold tracking-tight reveal">{T.req}</h2>
+        <dl class="reveal mt-8 divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
+          {T.reqRows.map(([k, v]) => <div class="grid grid-cols-[6.5em_1fr] gap-4 py-4 text-[15px]"><dt class="font-semibold">{k}</dt><dd class="text-[var(--color-ink-2)]">{v}</dd></div>)}
+        </dl>
+        <h2 class="mt-14 text-[1.8rem] font-bold tracking-tight reveal">{T.update}</h2>
+        <p class="reveal mt-4 text-[15.5px] leading-8 text-[var(--color-ink-2)]">{T.updateD}</p>
+      </div>
+      <div id="verify" class="scroll-mt-24">
+        <h2 class="text-[1.8rem] font-bold tracking-tight reveal">{T.verify}</h2>
+        <p class="reveal mt-3 text-[15px] text-[var(--color-ink-2)]">{T.verifyLead}</p>
+        <div class="reveal mt-8 space-y-5">
+          <div><p class="text-[13px] font-semibold">{T.sha}</p><code class="hash" data-release-sha>{r.sha256}</code></div>
+          <div><p class="text-[13px] font-semibold">{T.cert}</p><code class="hash">{CERT_SHA256}</code></div>
+        </div>
+        <h2 class="mt-14 text-[1.8rem] font-bold tracking-tight reveal">{T.mirrors}</h2>
+        <div class="reveal mt-6 grid gap-3">
+          <a class="mirror" href={`${MS_BASE.replace('/resolve/master/', '')}`} target="_blank" rel="noopener"><b>{T.ms}</b><span>{T.msD}</span></a>
+          <a class="mirror" href={RELEASES} target="_blank" rel="noopener"><b>{T.gh}</b><span>{T.ghD}</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 pb-28">
+    <div class="wrap">
+      <div class="reveal rounded-[32px] bg-[var(--color-ink)] p-8 text-white sm:p-12">
+        <h2 class="text-[1.8rem] font-bold tracking-tight">{T.src}</h2>
+        <p class="mt-3 max-w-2xl text-[15px] leading-7 text-white/65">{T.srcD}</p>
+        <pre class="mt-8 overflow-x-auto rounded-2xl bg-white/[0.06] p-5 font-mono text-[13.5px] leading-7 text-white/85">git clone https://github.com/0xCoach/TaoSheng.git
+cd TaoSheng
+echo "sdk.dir=/path/to/android-sdk" &gt; local.properties
+./gradlew assembleDebug</pre>
+        <a href={`${REPO}#-技术架构与开发指南`} target="_blank" rel="noopener" class="mt-6 inline-block text-[14px] text-white/70 underline decoration-white/30 underline-offset-4 hover:text-white">README →</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hash { display: block; margin-top: 6px; padding: 14px 16px; border-radius: 14px; background: #fff; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; word-break: break-all; color: var(--color-ink); user-select: all; }
+  .mirror { display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; border-radius: 18px; background: #fff; transition: transform .4s var(--ease-out-expo), box-shadow .4s; }
+  .mirror:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -28px rgba(29,27,25,.4); }
+  .mirror b { font-size: 16px; }
+  .mirror span { font-size: 14px; color: var(--color-ink-3); }
+</style>

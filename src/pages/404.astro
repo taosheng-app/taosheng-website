@@ -1,5 +1,11 @@
 ---
-import NotFound from '../components/NotFound.astro';
+import Base from '../layouts/Base.astro';
 ---
-
-<NotFound />
+<Base lang="zh" path="/" title="页面不在了 · 涛声" description="页面不存在">
+  <section class="wrap flex min-h-[80vh] flex-col items-start justify-center pt-24">
+    <p class="serif tnum text-[120px] leading-none text-[var(--color-accent)]">404</p>
+    <h1 class="mt-6 text-[2.2rem] font-bold tracking-tight">这句话没录到。</h1>
+    <p class="mt-3 text-[16px] text-[var(--color-ink-2)]">页面不在了，或者地址写错了。 · This page doesn’t exist.</p>
+    <div class="mt-10 flex gap-3"><a href="/" class="btn btn-primary h-12 px-6">回到首页</a><a href="/en/" class="btn btn-ghost h-12 px-6">English</a></div>
+  </section>
+</Base>

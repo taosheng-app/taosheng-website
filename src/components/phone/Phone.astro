@@ -1,0 +1,12 @@
+---
+import '../../styles/app.css';
+/** 手机外框。--pw 为外框宽度（像素数），可用 style 或 class 在不同屏宽下覆盖 */
+interface Props { w?: number; class?: string; style?: string; label?: string }
+const { w, class: cls, style = '', label } = Astro.props;
+---
+<div class:list={['phone', cls]} style={w ? `--pw:${w};${style}` : style || undefined} role={label ? 'img' : undefined} aria-label={label}>
+  <div class="phone-cam"></div>
+  <div class="phone-screen">
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /shots/
+Disallow: /api/
+Sitemap: https://taosheng.app/sitemap.xml

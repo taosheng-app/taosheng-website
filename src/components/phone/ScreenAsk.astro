@@ -1,0 +1,72 @@
+---
+import Chrome from './Chrome.astro';
+interface Props { lang: 'zh' | 'en'; class?: string; on?: boolean }
+const { lang, class: cls, on } = Astro.props;
+const zh = lang === 'zh';
+const c = zh
+  ? {
+      title: '问问', q: '充电宝借给谁了？',
+      a: ['周三下午在公司，你把充电宝借给了', '小林', '，他说“明天下班前还你”', '。昨天上午你又提醒过他一次，他说今天带来', '。'],
+      src: '出处', s: [['11月18日 15:20', '借充电宝给小林'], ['11月19日 10:05', '提醒小林还充电宝']],
+      q2: '上周我答应老王什么了？',
+      a2: ['答应他两件事：下周三之前发报价单', '；周末帮他问问装修师傅的电话', '。'],
+      s2: [['11月14日 16:40', '和老王聊报价'], ['11月15日 12:12', '装修师傅']],
+      ph: '念念不忘，必有回响…',
+    }
+  : {
+      title: 'Ask', q: 'Who has my power bank?',
+      a: ['On Wednesday afternoon at the office you lent it to ', 'Lin', '. He said “I’ll give it back before I leave tomorrow”', '. You reminded him again yesterday morning and he said he’d bring it today', '.'],
+      src: 'Sources', s: [['Nov 18 15:20', 'Lent the power bank to Lin'], ['Nov 19 10:05', 'Reminded Lin']],
+      q2: 'What did I promise Wang last week?',
+      a2: ['Two things: send the quote before next Wednesday', ', and ask around for a renovation contractor’s number over the weekend', '.'],
+      s2: [['Nov 14 16:40', 'Quote talk with Wang'], ['Nov 15 12:12', 'Contractor']],
+      ph: 'Ask your memory…',
+    };
+---
+<div class:list={['app', cls, on && 'on']} data-screen="ask">
+  <Chrome lang={lang} part="top" />
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px 0 18px">
+    <div style="font-size:33px;font-weight:700">{c.title}</div>
+    <div style="display:flex;gap:10px">
+      <span class="a-iconbtn soft" style="width:36px;height:36px"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      <span class="a-iconbtn" style="width:36px;height:36px;color:var(--t2)"><svg width="17" height="17" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.7"/><path d="M9 5v4.2l2.6 1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;margin:18px 14px 0">
+    <div style="background:var(--accent);color:#fff;border-radius:20px 20px 6px 20px;padding:10px 15px;font-size:15px;max-width:78%">{c.q}</div>
+  </div>
+  <div class="a-card" style="margin:12px 14px 0;padding:15px 16px 13px;border-radius:22px">
+    <div style="font-size:14.5px;line-height:1.7">{c.a[0]}<b style="font-weight:650">{c.a[1]}</b>{c.a[2]}<sup class="a-sup">1</sup>{c.a[3]}<sup class="a-sup">2</sup>{c.a[4]}</div>
+    <div style="height:1px;background:var(--sep);margin:12px 0 10px"></div>
+    <div style="font-size:12px;color:var(--t3)">{c.src}</div>
+    {c.s.map(([t, n], i) => (
+      <div style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px">
+        <span style="width:18px;height:18px;border-radius:50%;background:var(--soft);color:var(--accent);font-size:11px;display:grid;place-items:center;flex:none">{i + 1}</span>
+        <span class="tnum" style="color:var(--t3)">{t}</span><span style="color:var(--text)">{n}</span>
+      </div>
+    ))}
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;margin:18px 14px 0">
+    <div style="background:var(--accent);color:#fff;border-radius:20px 20px 6px 20px;padding:10px 15px;font-size:15px;max-width:80%">{c.q2}</div>
+  </div>
+  <div class="a-card" style="margin:12px 14px 0;padding:15px 16px 13px;border-radius:22px">
+    <div style="font-size:14.5px;line-height:1.7">{c.a2[0]}<sup class="a-sup">1</sup>{c.a2[1]}<sup class="a-sup">2</sup>{c.a2[2]}</div>
+    <div style="height:1px;background:var(--sep);margin:12px 0 10px"></div>
+    <div style="font-size:12px;color:var(--t3)">{c.src}</div>
+    {c.s2.map(([t, n], i) => (
+      <div style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px">
+        <span style="width:18px;height:18px;border-radius:50%;background:var(--soft);color:var(--accent);font-size:11px;display:grid;place-items:center;flex:none">{i + 1}</span>
+        <span class="tnum" style="color:var(--t3)">{t}</span><span>{n}</span>
+      </div>
+    ))}
+  </div>
+
+  <div style="position:absolute;left:14px;right:14px;bottom:86px;display:flex;gap:8px;z-index:5">
+    <div style="flex:1;height:46px;border-radius:999px;background:var(--card);display:flex;align-items:center;padding:0 18px;color:var(--t3);font-size:14.5px">{c.ph}</div>
+    <span style="width:46px;height:46px;border-radius:50%;background:var(--soft);color:var(--accent);display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 15V3m0 0L4 8m5-5l5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </div>
+  <Chrome lang={lang} part="bottom" tab={1} />
+  <style>.a-sup{color:var(--accent);font-size:10px;margin-left:1px}</style>
+</div>

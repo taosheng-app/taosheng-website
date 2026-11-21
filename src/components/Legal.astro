@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import { legal } from '../data/legal';
+import { type Lang } from '../data/i18n';
+interface Props { lang: Lang; doc: 'privacy' | 'terms' }
+const { lang, doc } = Astro.props;
+const D = legal[doc][lang];
+---
+<Base lang={lang} path={`/${doc}`} title={D.title} description={D.desc}>
+  <article class="wrap max-w-3xl pt-32 pb-28 sm:pt-40">
+    <h1 class="text-[clamp(2.2rem,5vw,3.6rem)] font-bold tracking-[-0.03em]">{D.h1}</h1>
+    <p class="mt-4 text-[14px] text-[var(--color-ink-3)]">{D.updated}</p>
+    <div class="prose-ts mt-12" set:html={D.html} />
+  </article>
+</Base>

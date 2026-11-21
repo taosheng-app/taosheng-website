@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import { guide } from '../data/guide';
+import { type Lang } from '../data/i18n';
+import { REPO } from '../data/release';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const G = guide[lang];
+---
+<Base lang={lang} path="/guide" title={G.title} description={G.desc}>
+  <section class="pt-32 pb-10 sm:pt-40">
+    <div class="wrap">
+      <p class="eyebrow reveal">{lang === 'zh' ? '新手指南' : 'Guide'}</p>
+      <h1 class="reveal mt-5 text-[clamp(2.4rem,6vw,4.6rem)] font-bold leading-[1.05] tracking-[-0.035em]" style="--d:60ms">{lang === 'zh' ? '从装好，到用顺。' : 'From install to second nature.'}</h1>
+      <p class="lead reveal mt-6 max-w-2xl" style="--d:120ms">{G.lead}</p>
+    </div>
+  </section>
+
+  <!-- 手机：横向章节标签 -->
+  <nav class="guide-tabs sticky top-16 z-30 lg:hidden" aria-label={G.toc}>
+    <div class="flex gap-2 overflow-x-auto px-5 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {G.chapters.map((c, i) => <a href={`#${c.id}`} data-toc={c.id} class="toc-chip"><span class="serif">{i + 1}</span>{c.title}</a>)}
+    </div>
+  </nav>
+
+  <section class="pb-28">
+    <div class="wrap grid gap-12 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-16">
+      <aside class="hidden lg:block">
+        <nav class="sticky top-28" aria-label={G.toc}>
+          <p class="mb-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-3)]">{G.toc}</p>
+          <ol class="space-y-1">
+            {G.chapters.map((c, i) => (
+              <li><a href={`#${c.id}`} data-toc={c.id} class="toc-link"><span class="serif tnum">{String(i + 1).padStart(2, '0')}</span>{c.title}</a></li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+      <div class="min-w-0 max-w-3xl">
+        {G.chapters.map((c, i) => (
+          <article id={c.id} class="chapter" data-chapter={c.id}>
+            <p class="serif tnum text-[44px] leading-none text-[var(--color-accent)]">{String(i + 1).padStart(2, '0')}</p>
+            <h2 class="mt-3 text-[1.9rem] font-bold tracking-tight">{c.title}</h2>
+            <p class="mt-2 text-[15px] text-[var(--color-ink-3)]">{c.summary}</p>
+            <div class="prose-ts mt-8" set:html={c.html} />
+          </article>
+        ))}
+        <div class="mt-16 rounded-[28px] bg-[var(--color-ink)] p-8 text-white sm:p-10">
+          <p class="text-xl font-semibold">{G.help}</p>
+          <p class="mt-3 max-w-xl text-[15px] leading-7 text-white/65">{G.helpBody}</p>
+          <a href={`${REPO}/issues/new`} target="_blank" rel="noopener" class="btn btn-accent mt-6 h-12 px-6 text-[15px]">{lang === 'zh' ? '提一个 Issue' : 'Open an issue'} →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .guide-tabs { background: rgba(246, 242, 236, 0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--color-line); }
+  .toc-chip { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; padding: 8px 14px; border-radius: 999px; background: #fff; font-size: 14px; font-weight: 500; color: var(--color-ink-2); }
+  .toc-chip .serif { color: var(--color-accent); font-size: 17px; line-height: 1; }
+  .toc-chip.on { background: var(--color-ink); color: #fff; }
+  .toc-link { display: flex; gap: 14px; align-items: baseline; padding: 9px 12px; border-radius: 12px; font-size: 15px; color: var(--color-ink-2); transition: background-color .2s, color .2s; }
+  .toc-link .serif { color: var(--color-ink-3); font-size: 17px; width: 22px; }
+  .toc-link:hover { background: rgba(29, 27, 25, 0.05); color: var(--color-ink); }
+  .toc-link.on { background: #fff; color: var(--color-ink); font-weight: 600; box-shadow: 0 10px 30px -20px rgba(29, 27, 25, .5); }
+  .toc-link.on .serif { color: var(--color-accent); }
+  .chapter { padding: 56px 0; border-top: 1px solid var(--color-line); scroll-margin-top: 130px; }
+  .chapter:first-child { border-top: 0; padding-top: 8px; }
+  @media (min-width: 1024px) { .chapter { scroll-margin-top: 96px; } }
+  .chapter :global(.note) { font-size: 14px; color: var(--color-ink-3); }
+</style>
+
+<script>
+  const links = document.querySelectorAll<HTMLElement>('[data-toc]');
+  const io = new IntersectionObserver(
+    (es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const id = (e.target as HTMLElement).dataset.chapter;
+      links.forEach((l) => l.classList.toggle('on', l.dataset.toc === id));
+      const chip = document.querySelector<HTMLElement>(`.toc-chip[data-toc="${id}"]`);
+      chip?.parentElement?.scrollTo({ left: chip.offsetLeft - 20, behavior: 'smooth' });
+    }),
+    { rootMargin: '-30% 0px -60% 0px' },
+  );
+  document.querySelectorAll('[data-chapter]').forEach((c) => io.observe(c));
+</script>
