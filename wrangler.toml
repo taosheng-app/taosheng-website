@@ -1,3 +1,7 @@
 name = "taosheng-official-site"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "dist"
+
+[[kv_namespaces]]
+binding = "STATS"
+id = "5199f04eac2d49d6be7a94e58d38da96"
