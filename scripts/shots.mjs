@@ -7,7 +7,7 @@ const out = 'design/screens';
 mkdirSync(out, { recursive: true });
 const snap = (url, file, w, h, dpr) => execFileSync('node', ['scripts/snap.mjs', url, file, String(w), String(h), '0', '0', '0', String(dpr), '2500'], { stdio: 'inherit' });
 for (const lang of ['zh', 'en'])
-  for (const n of ['today', 'ask', 'memory', 'todo', 'night', 'night-light'])
+  for (const n of ['today', 'ask', 'memory', 'todo', 'night', 'night-light', 'footprint', 'things', 'alarm'])
     snap(`${base}/shots/${lang}-${n}/`, `${out}/${lang}-${n}.png`, 360, 800, 3);
 snap(`${base}/shots/og/`, 'design/og-cover.png', 1200, 630, 1);
 execFileSync('sips', ['-s', 'format', 'jpeg', '-s', 'formatOptions', '88', 'design/og-cover.png', '--out', 'public/og-cover.jpg']);

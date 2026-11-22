@@ -64,3 +64,28 @@
 .a-tabs span.on { background: var(--soft); color: var(--accent); font-weight: 600; }
 .a-home { position: absolute; left: 50%; bottom: 7px; width: 132px; height: 4.5px; margin-left: -66px; border-radius: 4px; background: var(--text); opacity: .7; z-index: 4; }
 .a-fade { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(to bottom, transparent, var(--bg) 70%); z-index: 3; pointer-events: none; }
+
+/* 夜间声音详情：总览条取景框 + 放大后的柱子。进入画面（.on / .zoom-go）时取景框从整夜收到 2:00–2:30，柱子再长出来 */
+.nz-ov { position: relative; overflow: hidden; border-radius: 8px; }
+.nz-frame {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 100%; min-width: 4px; border-radius: 6px;
+  border: 1.5px solid var(--accent); box-shadow: 0 0 0 400px color-mix(in srgb, var(--card) 72%, transparent);
+  transition: left .9s cubic-bezier(.65,0,.35,1) .2s, width .9s cubic-bezier(.65,0,.35,1) .2s;
+}
+.nz-bars { transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(.04); transition: transform .7s cubic-bezier(.16,1,.3,1) .95s; }
+.nz-dot, .nz-chip, .nz-win { opacity: 0; transition: opacity .4s 1.3s; }
+.nz-whole { transition: opacity .3s .5s; }
+.nz-whole, .nz-win { position: absolute; left: 0; top: 0; white-space: nowrap; }
+.app.on .nz-frame, .zoom-go .nz-frame { left: var(--fl); width: var(--fw); }
+.app.on .nz-bars, .zoom-go .nz-bars { transform: none; }
+.app.on .nz-dot, .zoom-go .nz-dot, .app.on .nz-chip, .zoom-go .nz-chip, .app.on .nz-win, .zoom-go .nz-win { opacity: 1; }
+.app.on .nz-whole, .zoom-go .nz-whole { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .nz-frame, .nz-bars, .nz-dot, .nz-chip, .nz-win, .nz-whole { transition: none; } }
+
+/* 强提醒整屏 */
+.app.alarm { background: linear-gradient(180deg, #F59A5B 0%, #E8582A 55%, #C2410C 100%); }
+.alarm-halo { position: absolute; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,.14); animation: alarm-halo 2.2s ease-in-out infinite alternate; }
+.alarm-bell { position: relative; transform-origin: 50% 12%; animation: alarm-swing .42s ease-in-out infinite alternate; }
+@keyframes alarm-halo { from { transform: scale(.85); } to { transform: scale(1.15); } }
+@keyframes alarm-swing { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+@media (prefers-reduced-motion: reduce) { .alarm-halo, .alarm-bell { animation: none; } }

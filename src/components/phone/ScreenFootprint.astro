@@ -1,0 +1,120 @@
+---
+/** 设置 → 线索 → 位置足迹。照 App 的 LocationPage：时间轴按地点上色，停留点下面挂这段时间里的事（StayEvents）。数据虚构。 */
+import Chrome from './Chrome.astro';
+interface Props { lang: 'zh' | 'en'; class?: string; on?: boolean }
+const { lang, class: cls, on } = Astro.props;
+const zh = lang === 'zh';
+const HOME = 'var(--accent)', WORK = '#4A7FD4', CLIENT = 'var(--good)', MOVE = 'var(--t2)';
+const c = zh
+  ? {
+      back: '位置足迹', date: '11月21日 周五 · 今天', day: '这一天', seg: ['时间轴', '路线'],
+      sel: '14:05–15:20 · 星河科技 · 1时15分',
+      stats: [['8时32分', '在家'], ['7时09分', '外出'], ['23.4 km', '移动距离']],
+      stays: '停留',
+      list: [
+        { col: HOME, time: '00:00–08:32 · 8 小时 32 分 · 家', name: '家', addr: '', ev: [], more: '' },
+        { col: WORK, time: '09:18–13:20 · 4 小时 2 分', name: '公司', addr: '', ev: [['10:30', '周会：Q4 冲刺三家重点客户']], more: '' },
+        {
+          col: CLIENT, time: '14:05–15:20 · 1 小时 15 分', name: '星河科技', addr: '科技园路 88 号 · 研发中心 B 座',
+          ev: [['14:12', '王总：预算要等下季度才能定'], ['14:32', '答应下周三前把报价单发给老王'], ['14:51', '约好下周五上门做演示']], more: '还有 1 件',
+        },
+      ],
+      coord: '22.54103, 113.95218 · ±12 米 · 手动',
+    }
+  : {
+      back: 'Places', date: 'Fri, Nov 21 · Today', day: 'The day', seg: ['Timeline', 'Route'],
+      sel: '14:05–15:20 · Starriver Tech · 1h 15m',
+      stats: [['8h 32m', 'Home'], ['7h 09m', 'Out'], ['23.4 km', 'Moved']],
+      stays: 'Stays',
+      list: [
+        { col: HOME, time: '00:00–08:32 · 8h 32m · Home', name: 'Home', addr: '', ev: [], more: '' },
+        { col: WORK, time: '09:18–13:20 · 4h 2m', name: 'Office', addr: '', ev: [['10:30', 'Weekly sync: three key accounts for Q4']], more: '' },
+        {
+          col: CLIENT, time: '14:05–15:20 · 1h 15m', name: 'Starriver Tech', addr: '88 Science Park Rd · R&D Building B',
+          ev: [['14:12', 'Wang: budget won’t be set until next quarter'], ['14:32', 'Promised Wang the quote by next Wed'], ['14:51', 'Booked an on-site demo for next Fri']], more: '1 more',
+        },
+      ],
+      coord: '22.54103, 113.95218 · ±12 m · manual',
+    };
+// 0–24 点时间轴（宽 308）：家 → 路上 → 公司 → 路上 → 星河科技 → 路上（进行中）→ 之后没有记录
+const W = 308;
+const hx = (h: number, m = 0) => ((h * 60 + m) / 1440) * W;
+const spans = [
+  { a: hx(0), b: hx(8, 32), f: HOME },
+  { a: hx(8, 32), b: hx(9, 18), move: true },
+  { a: hx(9, 18), b: hx(13, 20), f: WORK },
+  { a: hx(13, 20), b: hx(14, 5), move: true },
+  { a: hx(14, 5), b: hx(15, 20), f: CLIENT, sel: true },
+  { a: hx(15, 20), b: hx(15, 41), move: true },
+];
+const now = hx(15, 41);
+---
+<div class:list={['app', cls, on && 'on']} data-screen="footprint">
+  <Chrome lang={lang} part="top" time="15:41" />
+  <div style="display:flex;align-items:center;gap:6px;padding:8px 14px 0">
+    <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M13.5 5l-6 6 6 6" stroke="var(--accent)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span style="font-size:19px;font-weight:700">{c.back}</span>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin:12px 14px 0">
+    <span style="color:var(--accent);font-size:22px;padding:0 12px">‹</span>
+    <span style="font-size:15.5px;font-weight:650">{c.date}</span>
+    <span style="color:var(--t3);font-size:22px;padding:0 12px">›</span>
+  </div>
+
+  <div class="a-card" style="margin:10px 14px 0;padding:14px 12px 14px;border-radius:20px">
+    <div style="display:flex;align-items:center;padding:0 2px">
+      <span style="font-size:15.5px;font-weight:650;flex:1">{c.day}</span>
+      <span style="display:flex;padding:2px;border-radius:999px;background:var(--bg);font-size:12px">
+        {c.seg.map((s, i) => <span style={`padding:4px 10px;border-radius:999px;${i === 0 ? 'background:var(--card);color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)' : 'color:var(--t2)'}`}>{s}</span>)}
+      </span>
+    </div>
+    <div class="tnum" style="font-size:13px;color:var(--text);margin:12px 2px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{c.sel}</div>
+    <svg viewBox={`0 0 ${W} 34`} width="100%" style="display:block;border-radius:10px" aria-hidden="true">
+      <defs>
+        <pattern id={`fp-hatch-${lang}`} width="6" height="34" patternUnits="userSpaceOnUse"><line x1="-2" y1="34" x2="32" y2="0" stroke="var(--t2)" stroke-opacity=".6" stroke-width="1.5" /></pattern>
+        <clipPath id={`fp-clip-${lang}`}><rect x="0" y="0" width={W} height="34" rx="10" /></clipPath>
+      </defs>
+      <g clip-path={`url(#fp-clip-${lang})`}>
+        <rect x="0" y="0" width={W} height="34" fill="var(--sep)" />
+        {spans.map((s) => s.move
+          ? <g opacity=".35"><rect x={s.a} y="0" width={s.b - s.a} height="34" fill={MOVE} fill-opacity=".25" /><rect x={s.a} y="0" width={s.b - s.a} height="34" fill={`url(#fp-hatch-${lang})`} /></g>
+          : <rect x={s.a} y="0" width={s.b - s.a} height="34" fill={s.f} opacity={s.sel ? 1 : 0.35} />)}
+        <rect x={hx(14, 5)} y="1" width={hx(15, 20) - hx(14, 5)} height="32" fill="none" stroke="var(--text)" stroke-width="2" />
+        <line x1={now} x2={now} y1="0" y2="34" stroke="var(--crit)" stroke-width="2" />
+      </g>
+    </svg>
+    <div class="tnum" style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin:4px 2px 0">
+      {['0', '6', '12', '18', '24'].map((h) => <span>{h}</span>)}
+    </div>
+    <div style="display:flex;margin-top:14px">
+      {c.stats.map(([v, l]) => <div style="flex:1;text-align:center"><div class="tnum" style="font-size:15.5px;font-weight:650">{v}</div><div style="font-size:11.5px;color:var(--t2);margin-top:1px">{l}</div></div>)}
+    </div>
+  </div>
+
+  <div style="font-size:13px;color:var(--t2);margin:16px 18px 8px">{c.stays}</div>
+  <div class="a-card" style="margin:0 14px;padding:2px 16px;border-radius:20px">
+    {c.list.map((s, i) => (
+      <div style={`padding:12px 0;${i ? 'border-top:1px solid var(--sep)' : ''}`}>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t2)">
+          <i style={`width:8px;height:8px;border-radius:50%;background:${s.col}`}></i><span class="tnum">{s.time}</span>
+          <span style="margin-left:auto;color:var(--t3);font-size:15px">›</span>
+        </div>
+        <div style="font-size:15.5px;font-weight:650;margin-top:3px">{s.name}</div>
+        {s.addr && <div style="font-size:12.5px;color:var(--t2);margin-top:1px">{s.addr}</div>}
+        {s.addr && <div class="tnum" style="font-size:11px;color:var(--t3);margin-top:1px">{c.coord}</div>}
+        {s.ev.length > 0 && <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">
+          {s.ev.map(([t, e]) => (
+            <div style="display:flex;align-items:center;gap:8px">
+              <i style="width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none"></i>
+              <span class="tnum" style="font-size:11.5px;color:var(--t3)">{t}</span>
+              <span style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{e}</span>
+            </div>
+          ))}
+          {s.more && <span style="font-size:11.5px;color:var(--accent);padding-left:13px">{s.more}</span>}
+        </div>}
+      </div>
+    ))}
+  </div>
+  <Chrome lang={lang} part="bottom" tabs={false} />
+</div>

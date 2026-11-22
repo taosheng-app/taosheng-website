@@ -1,0 +1,80 @@
+---
+/** 记忆 → 按类 → 寻物。照 App 的 ThingsUi：搜索框、看法筛选、待确认横幅、一样东西一张卡。数据虚构。 */
+import Chrome from './Chrome.astro';
+interface Props { lang: 'zh' | 'en'; class?: string; on?: boolean }
+const { lang, class: cls, on } = Astro.props;
+const zh = lang === 'zh';
+const BLUE = '#3A8FB7';
+const c = zh
+  ? {
+      title: '记忆', byDay: '按天', byType: '按类',
+      caps: ['重点', '寻物', '灵感', '关键信息', '决定', '知识', '卡片'],
+      search: '找东西，或搜地方：书柜、抽屉…',
+      timing: '物品记录随时间线整理更新；急用时可点“现在整理”，也可以手动记下。',
+      filters: ['全部', '按地方', '带走了', '借出去的'],
+      pending: '有 2 条位置等你确认',
+      items: [
+        { n: '钥匙', tag: ['放着', BLUE], line: '玄关第二个抽屉', meta: '今天 14:20 说的', badge: '有新位置待确认' },
+        { n: '充电宝', tag: ['借出', 'var(--warn)'], line: '借给 小林 · 今天借的', meta: '今天 15:20 说的', ret: '已还' },
+        { n: '护照', tag: ['放着', BLUE], line: '书柜第二层的文件袋', meta: '10月12日 说的' },
+        { n: '水杯', tag: ['带走了', 'var(--t2)'], line: '带走了 · 最后在 餐桌', meta: '昨天 08:10 说的' },
+      ],
+    }
+  : {
+      title: 'Memory', byDay: 'Day', byType: 'Type',
+      caps: ['Starred', 'Things', 'Ideas', 'Key info', 'Decisions', 'Knowledge', 'Cards'],
+      search: 'Find a thing, or search a place…',
+      timing: 'Updated as your timeline is organized; tap “Organize now” if it’s urgent, or add one yourself.',
+      filters: ['All', 'By place', 'Taken', 'Lent out'],
+      pending: '2 new spots to confirm',
+      items: [
+        { n: 'Keys', tag: ['Here', BLUE], line: 'Hallway, second drawer', meta: 'Said today 14:20', badge: 'New spot to confirm' },
+        { n: 'Power bank', tag: ['Lent', 'var(--warn)'], line: 'Lent to Lin · today', meta: 'Said today 15:20', ret: 'Returned' },
+        { n: 'Passport', tag: ['Here', BLUE], line: 'Folder on the second bookshelf', meta: 'Said Oct 12' },
+        { n: 'Water bottle', tag: ['Taken', 'var(--t2)'], line: 'Taken · last seen on the dining table', meta: 'Said yesterday 08:10' },
+      ],
+    };
+---
+<div class:list={['app', cls, on && 'on']} data-screen="things">
+  <Chrome lang={lang} part="top" time="21:06" />
+  <div class="a-head" style="display:flex;justify-content:space-between;align-items:center;padding-right:14px">
+    <div class="rail"></div>
+    <div class="big">{c.title}</div>
+    <span style="display:flex;background:var(--card);border-radius:999px;padding:3px;font-size:13.5px"><span class="a-pill" style="height:26px;color:var(--t2);font-weight:500">{c.byDay}</span><span class="a-pill" style="background:var(--soft);color:var(--accent);height:26px;font-weight:600">{c.byType}</span></span>
+  </div>
+
+  <div style="display:flex;gap:7px;margin:14px 0 0 14px;overflow:hidden;white-space:nowrap">
+    {c.caps.map((x, i) => <span class:list={['a-chip', i === 1 && 'on']} style="height:32px;padding:0 14px;font-size:13.5px;flex:none">{x}</span>)}
+  </div>
+
+  <div style="margin:12px 14px 0;background:var(--card);border-radius:16px;padding:13px 16px;font-size:14.5px;color:var(--t3);display:flex;align-items:center;gap:8px">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{c.search}</span>
+  </div>
+  <div style="font-size:11.5px;color:var(--t3);line-height:1.5;margin:8px 18px 0">{c.timing}</div>
+  <div style="display:flex;gap:6px;margin:8px 14px 0">
+    {c.filters.map((f, i) => <span style={`font-size:12px;font-weight:500;padding:6px 12px;border-radius:999px;${i === 0 ? 'background:var(--soft);color:var(--accent)' : 'color:var(--t2)'}`}>{f}</span>)}
+  </div>
+  <div style="display:flex;align-items:center;margin:10px 14px 0;padding:12px 16px;border-radius:18px;background:var(--soft);color:var(--accent);font-size:13.5px;font-weight:500">
+    <span style="flex:1">{c.pending}</span><span style="font-size:17px">›</span>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;margin:10px 14px 0">
+    {c.items.map((t) => (
+      <div class="a-card" style="padding:13px 16px 12px 18px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:16px;font-weight:650;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{t.n}</span>
+          <span style={`font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:999px;color:${t.tag[1]};background:color-mix(in srgb, ${t.tag[1]} 13%, transparent)`}>{t.tag[0]}</span>
+        </div>
+        <div style="font-size:14.5px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{t.line}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:5px;font-size:11.5px">
+          <span style="color:var(--t3);flex:1">{t.meta}</span>
+          {t.badge && <span style={`color:${BLUE};font-weight:500`}>{t.badge}</span>}
+          {t.ret && <span style="border:1px solid var(--sep);border-radius:999px;padding:3px 12px;color:var(--text);font-size:12px">{t.ret}</span>}
+        </div>
+      </div>
+    ))}
+  </div>
+  <span style="position:absolute;right:18px;bottom:90px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#f49a5a,#e9692f);display:grid;place-items:center;box-shadow:0 12px 24px -10px rgba(233,105,47,.8);z-index:5"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 4v14M4 11h14" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+  <Chrome lang={lang} part="bottom" tab={2} />
+</div>

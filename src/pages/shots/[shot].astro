@@ -7,8 +7,11 @@ import ScreenAsk from '../../components/phone/ScreenAsk.astro';
 import ScreenMemory from '../../components/phone/ScreenMemory.astro';
 import ScreenTodo from '../../components/phone/ScreenTodo.astro';
 import ScreenNight from '../../components/phone/ScreenNight.astro';
+import ScreenFootprint from '../../components/phone/ScreenFootprint.astro';
+import ScreenThings from '../../components/phone/ScreenThings.astro';
+import ScreenAlarm from '../../components/phone/ScreenAlarm.astro';
 export function getStaticPaths() {
-  const names = ['today', 'ask', 'memory', 'todo', 'night', 'night-light'];
+  const names = ['today', 'ask', 'memory', 'todo', 'night', 'night-light', 'footprint', 'things', 'alarm'];
   return ['zh', 'en'].flatMap((lang) => names.map((n) => ({ params: { shot: `${lang}-${n}` }, props: { lang, n } })));
 }
 const { lang, n } = Astro.props as { lang: 'zh' | 'en'; n: string };
@@ -23,7 +26,10 @@ const { lang, n } = Astro.props as { lang: 'zh' | 'en'; n: string };
     {n === 'ask' && <ScreenAsk lang={lang} />}
     {n === 'memory' && <ScreenMemory lang={lang} />}
     {n === 'todo' && <ScreenTodo lang={lang} />}
-    {n === 'night' && <ScreenNight lang={lang} />}
-    {n === 'night-light' && <ScreenNight lang={lang} dark={false} />}
+    {n === 'night' && <ScreenNight lang={lang} on />}
+    {n === 'night-light' && <ScreenNight lang={lang} dark={false} on />}
+    {n === 'footprint' && <ScreenFootprint lang={lang} />}
+    {n === 'things' && <ScreenThings lang={lang} />}
+    {n === 'alarm' && <ScreenAlarm lang={lang} />}
   </body>
 </html>

@@ -7,7 +7,7 @@ export interface Chapter { id: string; title: string; summary: string; html: str
 export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: string; toc: string; help: string; helpBody: string; chapters: Chapter[] }> = {
   zh: {
     title: '新手指南 · 涛声 TaoSheng',
-    desc: '涛声使用手册：安装与开箱、转写和大模型怎么选、后台保活、声纹认人、专题录音、待办提醒、夜间睡眠、通话录音、推送备份与智能体。',
+    desc: '涛声使用手册：安装与开箱、转写和大模型怎么选、后台保活、声纹认人、专题录音、待办提醒、寻物、位置足迹、夜间睡眠、通话录音、推送备份与智能体。',
     lead: '一份手册讲清楚每个功能怎么配。不知道从哪开始，就按顺序看前三章。',
     toc: '目录',
     help: '还是没弄明白？',
@@ -112,6 +112,45 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 </ul>`,
       },
       {
+        id: 'things', title: '寻物', summary: '随口一句记下东西放哪，借出去的也记得。',
+        html: `
+<ul>
+<li>说话时提到“钥匙放玄关第二个抽屉了”“充电宝借给小林了”，整理时会生成寻物确认卡，和待办一起出现在今天页的「待确认」里，点「记下」就入库。</li>
+<li>在 <span class="path">记忆 → 按类 → 寻物</span> 看全部东西。看法有四种：全部、按地方（同一个抽屉、柜子里的归在一起）、带走了、借出去的。</li>
+<li>右下角的按钮：点一下打字，按住说话。几样东西可以一起说，比如“护照放书柜第二层了，充电宝借给老王了”，会拆成几条让你确认。</li>
+<li>点开一样东西能看它的经过：每次放在哪、谁说的、原话是什么；可以改名、记个新位置，借出去的点「已还回来了」。</li>
+<li>物品记录随时间线整理更新；急用时在今天页点「现在整理」。搜不到时，去问问里问一句，会从原话里帮你找。</li>
+</ul>`,
+      },
+      {
+        id: 'footprint', title: '位置足迹', summary: '去过哪、待了多久，每个地点下挂着当时的事。',
+        html: `
+<h3>打开：设置 → 线索 → 位置足迹</h3>
+<ol>
+<li>打开「记录全天位置」。它跟着收音服务，约每 5 分钟记一个点，只存在手机本地；收音没开时足迹也不记。</li>
+<li>定位权限选<strong>始终允许</strong>。只给“使用时允许”时，手机重启或系统拉起收音后可能记不到位置。</li>
+<li>手机下拉菜单里的「位置信息」总开关也要开着。</li>
+</ol>
+<h3>地名</h3>
+<ul>
+<li>「显示地名」打开后，会把停留处的坐标发给手机系统的地理服务查地址；填了高德 Key 则发给高德。查过的地方存在本机，不重复查。</li>
+<li>国内建议填高德 Web 服务 Key，地名更准。</li>
+<li>点一个停留点或「最后位置」可以改名字，比如把写字楼名改成客户公司名；方圆约 150 米内以后都用这个名字。打开「这里是家」，时间轴就按这里算“在家”。</li>
+</ul>
+<h3>看一天</h3>
+<ul>
+<li>「时间轴」按地点分段上色，斜纹是在路上，灰色是没有记录；点一段看几点到几点、在哪。「路线」按经纬度画点和连线，没有地图底图。</li>
+<li>在一个地方待够 10 分钟才算一次停留，更短的路过不会单独列出。</li>
+<li>每个停留点下面列出这段时间里整理出的事，点开能看原话；事件卡片上也会标“📍 在哪”。</li>
+</ul>
+<h3>用起来</h3>
+<ul>
+<li>在问问里按地点问：“这周去了哪些地方，各聊了什么？”“上次在星河科技答应了什么？”</li>
+<li><span class="path">设置 → 整理 → 推送通道 → 每日足迹</span>：每天定时推当天去过哪、各待多久；自定义接口另附结构化数据和定位点。位置会推到这个通道，注意保管。</li>
+<li>某一天不想留，在页面底部点「清空这一天」。</li>
+</ul>`,
+      },
+      {
         id: 'sleep', title: '夜间睡眠', summary: '记录几点睡、几点起，鼾声、咳嗽和梦话。',
         html: `
 <h3>打开</h3>
@@ -170,7 +209,7 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
   },
   en: {
     title: 'Getting started — TaoSheng',
-    desc: 'The TaoSheng guide: install and first run, choosing transcription and LLM, keeping it alive in the background, voiceprints, topics, todos, sleep tracking, call recordings, push, backup and AI agents.',
+    desc: 'The TaoSheng guide: install and first run, choosing transcription and LLM, keeping it alive in the background, voiceprints, topics, todos, things, places, sleep tracking, call recordings, push, backup and AI agents.',
     lead: 'Everything from install to daily use in one place. Not sure where to begin? Read the first three chapters in order.',
     toc: 'Contents',
     help: 'Still stuck?',
@@ -267,6 +306,45 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <li>Add by voice from the notification, a long-press on the app icon, or the widget.</li>
 <li>Week/month calendar views; move overdue items to today in one tap; add to your phone calendar.</li>
 <li><strong>Alarm reminders</strong> ring and vibrate full-screen on the lock screen until you respond. The app lists the system switches needed the first time.</li>
+</ul>`,
+      },
+      {
+        id: 'things', title: 'Things', summary: 'Say where you put something; it remembers, loans included.',
+        html: `
+<ul>
+<li>Mention “keys are in the second hallway drawer” or “lent the power bank to Lin” and the digest creates a confirmation card, shown with todos under “To confirm” on Today. Tap “Save”.</li>
+<li>See everything in <span class="path">Memory → Type → Things</span>, viewed as All, By place (one drawer or cabinet per card), Taken, or Lent out.</li>
+<li>The button at the bottom right: tap to type, hold to speak. Several things at once work — “passport on the second bookshelf, power bank lent to Wang” is split into separate cards to confirm.</li>
+<li>Open a thing to see its history — every spot, when and the original words. Rename it, record a new spot, or tap “Returned” for loans.</li>
+<li>Records update as your timeline is organized; tap “Organize now” on Today if it’s urgent. Can’t find it? Ask — it searches what you said.</li>
+</ul>`,
+      },
+      {
+        id: 'footprint', title: 'Places', summary: 'Where you went, how long you stayed, and what was said there.',
+        html: `
+<h3>Turn it on: Settings → Context → Places</h3>
+<ol>
+<li>Turn on “Record location all day”. It runs with the listening service, records a point about every five minutes, and keeps it on the phone. No listening, no places.</li>
+<li>Set location permission to <strong>Allow all the time</strong>. With “only while using”, it may miss locations after a reboot.</li>
+<li>Keep the system Location switch on.</li>
+</ol>
+<h3>Place names</h3>
+<ul>
+<li>With “Show place names” on, stay coordinates are sent to the system geocoder — or to AMap if you add a key — and results are cached on the phone.</li>
+<li>In mainland China, an AMap Web Service key gives better names.</li>
+<li>Tap a stay or “Last location” to rename it, for example to the client’s company; the name applies within about 150 m. Mark “This is home” to count it as home.</li>
+</ul>
+<h3>Your day</h3>
+<ul>
+<li>The timeline colors each place, hatches travel and greys out gaps; tap a segment for times and place. “Route” draws points by coordinates, without a base map.</li>
+<li>Ten minutes in one place counts as a stay; shorter stops aren’t listed.</li>
+<li>Each stay lists what was organized during it, with the original words; event cards show “📍 where”.</li>
+</ul>
+<h3>Putting it to work</h3>
+<ul>
+<li>Ask by place: “Where did I go this week and what did we talk about?”</li>
+<li><span class="path">Settings → Digest → Push channels → Daily places</span> sends each day’s places and durations; custom endpoints also get structured data and points. Locations go to that channel, so keep it private.</li>
+<li>Don’t want a day kept? “Clear this day” is at the bottom.</li>
 </ul>`,
       },
       {

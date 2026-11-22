@@ -6,17 +6,23 @@ import ScreenAsk from './phone/ScreenAsk.astro';
 import ScreenMemory from './phone/ScreenMemory.astro';
 import ScreenTodo from './phone/ScreenTodo.astro';
 import ScreenNight from './phone/ScreenNight.astro';
+import ScreenFootprint from './phone/ScreenFootprint.astro';
+import ScreenThings from './phone/ScreenThings.astro';
+import ScreenAlarm from './phone/ScreenAlarm.astro';
 import DownloadButton from './DownloadButton.astro';
 import { home } from '../data/home';
-import { pathFor, type Lang } from '../data/i18n';
-import { REPO } from '../data/release';
+import { pathFor, ui, type Lang } from '../data/i18n';
+import { REPO, getRelease, mb } from '../data/release';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const T = home[lang];
 const l = (p: string) => pathFor(lang, p);
 const zh = lang === 'zh';
-const screenOf = (s: string) => s;
+const r = await getRelease();
+const F = T.footprint, K = T.things, D = T.todo;
+// 中文标题按逗号分句，每句不拆行（避免“终 / 于有了地方”这种断法）
+const clauses = (t: string) => (zh ? t.split(/(?<=，)/) : [t]);
 ---
 
 <Base lang={lang} path="/" title={T.title} description={T.desc} stars>
@@ -41,12 +47,15 @@ const screenOf = (s: string) => s;
           <span class="h-[2px] w-8 rounded bg-[var(--color-accent)]" aria-hidden="true"></span>{T.hero.context}
         </p>
         <p class="lead reveal mt-5 max-w-[34rem]" style="--d:400ms">{T.hero.lead}</p>
-        <div class="reveal mt-10 flex flex-col gap-4 sm:flex-row sm:items-start" style="--d:440ms">
-          <DownloadButton lang={lang} />
-          <a href={REPO} target="_blank" rel="noopener" class="btn btn-ghost h-14 px-6 text-[15px]">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 00-3.64 22.4c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 015.77 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0012 .5z"/></svg>
-            {T.hero.source}
-          </a>
+        <div class="reveal mt-10 max-w-[31rem]" style="--d:440ms">
+          <div class="flex gap-3">
+            <DownloadButton lang={lang} meta={false} block class="min-w-0 flex-1 sm:flex-none" />
+            <a href={REPO} target="_blank" rel="noopener" class="btn btn-ghost h-14 shrink-0 gap-2 px-5 text-[15px] sm:px-6" aria-label={T.hero.source}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 00-3.64 22.4c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 015.77 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0012 .5z"/></svg>
+              <span class:list={[!zh && 'max-sm:sr-only']}>{T.hero.source}</span>
+            </a>
+          </div>
+          <p class="mt-3.5 text-[13px] tnum text-[var(--color-ink-3)]" data-release-meta>{ui[lang].meta(r.version, mb(r.size))} · {ui[lang].viaMs}</p>
         </div>
         <ul class="reveal mt-12 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-[var(--color-ink-3)]" style="--d:520ms">
           {T.hero.trust.map((x) => <li class="flex items-center gap-2"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="var(--color-accent)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>{x}</li>)}
@@ -100,6 +109,7 @@ const screenOf = (s: string) => s;
                 <ScreenToday lang={lang} on />
                 <ScreenMemory lang={lang} />
                 <ScreenTodo lang={lang} />
+                <ScreenFootprint lang={lang} />
                 <ScreenAsk lang={lang} />
                 <ScreenNight lang={lang} />
                 <div data-screen="night-light" class="app" style="background:transparent"><ScreenNight lang={lang} dark={false} /></div>
@@ -134,6 +144,7 @@ const screenOf = (s: string) => s;
                   {m.screen === 'today' && <ScreenToday lang={lang} />}
                   {m.screen === 'memory' && <ScreenMemory lang={lang} />}
                   {m.screen === 'todo' && <ScreenTodo lang={lang} />}
+                  {m.screen === 'footprint' && <ScreenFootprint lang={lang} />}
                   {m.screen === 'ask' && <ScreenAsk lang={lang} />}
                   {m.screen === 'night' && <ScreenNight lang={lang} />}
                   {m.screen === 'night-light' && <ScreenNight lang={lang} dark={false} />}
@@ -142,6 +153,200 @@ const screenOf = (s: string) => s;
             </li>
           ))}
         </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 足迹 ============ -->
+  <section id="footprint" class="relative z-10 py-24 sm:py-32">
+    <div class="wrap">
+      <div class="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-end">
+        <div>
+          <p class="eyebrow reveal">{F.eyebrow}</p>
+          <h2 class="h2 reveal mt-5" style="--d:80ms">{clauses(F.title).map((x) => <span class="inline-block">{x}</span>)}</h2>
+        </div>
+        <p class="lead reveal max-w-xl lg:justify-self-end" style="--d:160ms">{F.lead}</p>
+      </div>
+
+      <div class="fp-grid mt-14 lg:mt-20">
+        <!-- 一次拜访：时间线 -->
+        <div class="fp-visit reveal">
+          <div class="fp-map" aria-hidden="true">
+            <svg viewBox="0 0 400 150" preserveAspectRatio="xMidYMid meet" class="h-full w-full">
+              <path class="fp-route" d="M30 120 C 90 120, 110 70, 160 70 S 240 112, 290 92 S 350 40, 372 34" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9"/>
+              <circle cx="30" cy="120" r="7" fill="#fff" stroke="var(--color-accent)" stroke-width="3"/>
+              <circle cx="160" cy="70" r="7" fill="#4A7FD4"/>
+              <circle class="fp-pin" cx="372" cy="34" r="9" fill="#34a853"/>
+              <circle class="fp-pulse" cx="372" cy="34" r="9" fill="none" stroke="#34a853" stroke-width="2"/>
+            </svg>
+          </div>
+          <ol class="fp-steps">
+            {F.visit.map(([t, x], i) => (
+              <li class:list={[i === 0 && 'first', i === F.visit.length - 1 && 'last']}><span class="tnum">{t}</span><p>{x}</p></li>
+            ))}
+          </ol>
+        </div>
+        <!-- 三步 -->
+        <div class="grid gap-4">
+          {F.steps.map((st, i) => (
+            <article class="fp-step reveal" style={`--d:${i * 80}ms`}>
+              <span class="serif tnum fp-k">{st.k}</span>
+              <div>
+                <h3 class="text-[18px] font-bold tracking-tight">{st.t}</h3>
+                <p class="mt-2 text-[14.5px] leading-7 text-[var(--color-ink-2)]">{st.d}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+        <!-- 问问 -->
+        <div class="fp-ask reveal" style="--d:120ms">
+          <p class="fp-q">{F.q}</p>
+          <div class="fp-a">
+            <p class="text-[14px] font-semibold">{F.aHead}</p>
+            <ul class="mt-3 space-y-3">
+              {F.a.map(([k, v], i) => (
+                <li class="grid grid-cols-[auto_1fr] gap-x-3 text-[14px] leading-6">
+                  <span class="mt-[9px] h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]"></span>
+                  <span><b class="font-semibold">{k}</b><span class="fp-dim">{zh ? "：" : ": "}{v}</span><sup class="fp-sup">{i + 1}</sup></span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="reveal mt-10 flex max-w-4xl items-start gap-3 text-[14px] leading-7 text-[var(--color-ink-3)]">
+        <svg class="mt-1.5 flex-none" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="2" fill="currentColor"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+        <span>{F.privacy} <a href={l('/guide') + '#footprint'} class="text-[var(--color-accent-deep)] underline decoration-[var(--color-accent)]/30 underline-offset-4">{F.guide} →</a></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 寻物 ============ -->
+  <section id="things" class="relative z-10 overflow-hidden py-24 sm:py-32">
+    <div class="wrap grid items-center gap-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12">
+      <div>
+        <p class="eyebrow reveal">{K.eyebrow}</p>
+        <h2 class="h2 reveal mt-5" style="--d:80ms">{clauses(K.title).map((x) => <span class="inline-block">{x}</span>)}</h2>
+        <p class="lead reveal mt-6 max-w-xl" style="--d:160ms">{K.lead}</p>
+        <ul class="mt-10 space-y-6">
+          {K.points.map(([t, d], i) => (
+            <li class="reveal grid grid-cols-[28px_1fr] gap-3" style={`--d:${200 + i * 70}ms`}>
+              <span class="mt-1 grid h-7 w-7 place-items-center rounded-full bg-[#3A8FB7]/12 text-[#3A8FB7]"><svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div><h3 class="text-[17px] font-bold tracking-tight">{t}</h3><p class="mt-1.5 text-[14.5px] leading-7 text-[var(--color-ink-2)]">{d}</p></div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="things-stage reveal" style="--d:120ms">
+        <Phone class="things-phone" label={zh ? '涛声「寻物」页' : 'TaoSheng Things screen'}>
+          <ScreenThings lang={lang} />
+        </Phone>
+        <!-- 随口一句 → 确认卡 -->
+        <div class="th-float th-say">
+          <p class="text-[11.5px] text-[var(--color-ink-3)]">{K.sayAt}</p>
+          <p class="mt-1 text-[15px] leading-6">“{K.say}”</p>
+          <div class="th-pending">
+            <div class="flex items-center justify-between"><span class="th-tag">{K.tag}</span><span class="tnum text-[11.5px] text-[var(--color-ink-3)]">14:20</span></div>
+            <p class="mt-2 text-[15px] font-medium">{K.pendingLine[0]} <span class="text-[#3A8FB7]">→ {K.pendingLine[1]}</span></p>
+            <div class="mt-3 grid grid-cols-2 gap-2 text-[13px] font-semibold"><span class="th-btn">{K.ignore}</span><span class="th-btn th-btn-on">{K.keep}</span></div>
+          </div>
+        </div>
+        <!-- 抽屉 -->
+        <div class="th-float th-drawer" aria-label={K.drawer}>
+          <div class="drawer-box">
+            <div class="drawer-tray">
+              {K.inside.map(([n, t]) => <div class="drawer-item"><i></i><span class="flex-1">{n}</span><span class="tnum text-[11px] text-[var(--color-ink-3)]">{t}</span></div>)}
+            </div>
+            <div class="drawer-front">
+              <span class="drawer-handle"></span>
+              <div class="flex items-baseline justify-between gap-3"><b class="text-[14.5px] font-semibold">{K.drawer}</b><span class="text-[11.5px] text-[var(--color-ink-3)]">{K.count}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 待办：小组件 · 日历 · 强提醒 ============ -->
+  <section id="todo" class="relative z-10 py-24 sm:py-32">
+    <div class="wrap">
+      <div class="max-w-3xl">
+        <p class="eyebrow reveal">{D.eyebrow}</p>
+        <h2 class="h2 reveal mt-5" style="--d:80ms">{clauses(D.title).map((x) => <span class="inline-block">{x}</span>)}</h2>
+        <p class="lead reveal mt-6 max-w-2xl" style="--d:160ms">{D.lead}</p>
+      </div>
+      <div class="td-grid mt-14 lg:mt-20">
+        <!-- 1 桌面小组件 -->
+        <article class="td-tile reveal">
+          <div class="td-vis td-home" aria-hidden="true">
+            <div class="td-clock"><span class="tnum">{D.widget.time}</span><small>{D.widget.date}</small></div>
+            <div class="td-widget">
+              <i class="td-dot"></i>
+              <div class="min-w-0 flex-1"><b>{D.widget.status}</b><small>{D.widget.sub}</small></div>
+              {D.widget.btns.map((b, i) => (
+                <span class:list={['td-btn', i === 0 && 'on']} title={b}>
+                  {i === 0 && <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="4" stroke="currentColor" stroke-width="1.8"/><path d="M10 7v6M7 10h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>}
+                  {i === 1 && <svg width="17" height="17" viewBox="0 0 20 20"><path d="M10 2.8l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 8.1l5-.7z" fill="currentColor"/></svg>}
+                  {i === 2 && <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><rect x="4" y="2.5" width="12" height="15" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 7h5M7.5 10.5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>}
+                  {i === 3 && <svg width="16" height="16" viewBox="0 0 20 20"><rect x="5" y="4" width="3.2" height="12" rx="1.4" fill="currentColor"/><rect x="11.8" y="4" width="3.2" height="12" rx="1.4" fill="currentColor"/></svg>}
+                  <em>{b}</em>
+                </span>
+              ))}
+            </div>
+            <div class="td-sheet">
+              <span class="td-grab"></span>
+              <b class="text-[15px]">{D.widget.sheet}</b>
+              <small class="mt-1 block text-[11.5px] text-[var(--color-ink-3)]">{D.widget.sheetSub}</small>
+              <span class="bars mt-4 flex h-6 items-center justify-center gap-[3px]">
+                {Array.from({ length: 22 }, (_, i) => <span style={`height:${6 + ((i * 7) % 15)}px;background:var(--color-accent);--t:${0.7 + (i % 5) * 0.16}s;--dl:${-i * 0.07}s`}></span>)}
+              </span>
+              <p class="mt-3 text-center text-[13px] leading-5 text-[var(--color-ink-2)]">“{D.widget.said}”</p>
+              <span class="td-done">{D.widget.done}</span>
+            </div>
+          </div>
+          <h3 class="mt-6 text-[19px] font-bold tracking-tight">{D.tiles[0].t}</h3>
+          <p class="mt-2 text-[14.5px] leading-7 text-[var(--color-ink-2)]">{D.tiles[0].d}</p>
+        </article>
+
+        <!-- 2 日历 -->
+        <article class="td-tile reveal" style="--d:80ms">
+          <div class="td-vis td-cal" aria-hidden="true">
+            <div class="td-card">
+              <div class="flex items-center"><b class="text-[15px]">{D.cal.month}</b><span class="ml-1 text-[var(--color-ink-3)]">⌄</span><span class="ml-auto text-[18px] tracking-[10px] text-[var(--color-ink-3)]">‹›</span></div>
+              <div class="td-week">
+                {D.cal.days.map((d, i) => (
+                  <span class:list={['td-day', d === D.cal.sel && 'sel', i >= 5 && 'wkd']}>
+                    <small>{D.cal.wk[i]}</small><b class="tnum">{d}</b>
+                    <span class="td-dots">
+                      {d === D.cal.pendingDay && <i class="hollow"></i>}
+                      {Array.from({ length: Math.min(3, D.cal.dots[d] ?? 0) }, () => <i class:list={[d === D.cal.overdueDay && 'red']}></i>)}
+                    </span>
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div class="td-over"><i></i><b>{D.cal.overdue} ›</b><span>{D.cal.move}</span></div>
+            <p class="td-head"><b>{D.cal.head}</b><span>{D.cal.cap}</span></p>
+            <div class="td-card td-list">
+              {D.cal.items.map(([t, time, bell]) => (
+                <div class="td-row"><i class="td-check"></i><span class="flex-1">{t}</span>{bell && <span class="td-bell tnum">🔔 {time}</span>}</div>
+              ))}
+              <div class="td-pend"><span class="flex-1">{D.cal.pending[0]}</span><span class="td-ok">{D.cal.pending[1]}</span><span class="td-no">{D.cal.pending[2]}</span></div>
+            </div>
+          </div>
+          <h3 class="mt-6 text-[19px] font-bold tracking-tight">{D.tiles[1].t}</h3>
+          <p class="mt-2 text-[14.5px] leading-7 text-[var(--color-ink-2)]">{D.tiles[1].d}</p>
+        </article>
+
+        <!-- 3 强提醒 -->
+        <article class="td-tile reveal" style="--d:160ms">
+          <div class="td-vis td-alarm" aria-hidden="true">
+            <Phone class="alarm-phone"><ScreenAlarm lang={lang} /></Phone>
+          </div>
+          <h3 class="mt-6 text-[19px] font-bold tracking-tight">{D.tiles[2].t}</h3>
+          <p class="mt-2 text-[14.5px] leading-7 text-[var(--color-ink-2)]">{D.tiles[2].d}</p>
+        </article>
       </div>
     </div>
   </section>
@@ -390,6 +595,117 @@ const screenOf = (s: string) => s;
   .guide-card { background: linear-gradient(135deg, #fde3cf 0%, #fbeee2 50%, #f6f2ec 100%); border-radius: 36px; padding: clamp(28px, 5vw, 56px); border: 1px solid #f7d7bd; transition: transform .6s var(--ease-out-expo), box-shadow .6s var(--ease-out-expo); }
   .guide-card:hover { transform: translateY(-3px); box-shadow: 0 40px 80px -50px rgba(217, 97, 26, 0.6); }
 
+
+  /* 足迹 */
+  .fp-grid { display: grid; gap: 16px; }
+  @media (min-width: 1024px) { .fp-grid { grid-template-columns: 1.05fr 1fr; grid-template-rows: auto auto; } .fp-visit { grid-row: span 2; } }
+  .fp-visit { display: flex; flex-direction: column; background: #fff; border-radius: 28px; overflow: hidden; border: 1px solid rgba(29,27,25,.05); }
+  .fp-map { flex: 1; min-height: 170px; padding: 18px 22px; background:
+      linear-gradient(rgba(29,27,25,.035) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(90deg, rgba(29,27,25,.035) 1px, transparent 1px) 0 0 / 28px 28px, #fbf8f4; }
+  .fp-route { stroke-dashoffset: 400; transition: stroke-dashoffset 2.4s var(--ease-out-expo) .3s; }
+  .fp-visit.in .fp-route { stroke-dashoffset: 0; }
+  .fp-pulse { transform-origin: 372px 34px; animation: fpp 2.4s ease-out infinite; }
+  @keyframes fpp { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(3); opacity: 0; } }
+  .fp-steps { padding: 22px 26px 26px; }
+  .fp-steps li { position: relative; display: grid; grid-template-columns: 52px 1fr; gap: 14px; padding: 9px 0 9px 22px; font-size: 15px; }
+  .fp-steps li::before { content: ""; position: absolute; left: 4px; top: 0; bottom: 0; width: 1.5px; background: var(--color-line); }
+  .fp-steps li.first::before { top: 50%; } .fp-steps li.last::before { bottom: 50%; }
+  .fp-steps li::after { content: ""; position: absolute; left: 0; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 0 3px #fff; }
+  .fp-steps li.first::after, .fp-steps li.last::after { background: #34a853; }
+  .fp-steps span { color: var(--color-ink-3); font-size: 13.5px; padding-top: 1px; }
+  .fp-steps li.first p, .fp-steps li.last p { color: var(--color-ink-3); }
+  .fp-step { display: grid; grid-template-columns: 48px 1fr; gap: 10px; background: #fff; border-radius: 24px; padding: 22px 24px; border: 1px solid rgba(29,27,25,.05); }
+  .fp-k { font-size: 30px; line-height: 1; color: var(--color-accent); }
+  .fp-ask { background: linear-gradient(160deg, #221d1a, #14100c); color: #fff; border-radius: 28px; padding: 24px; }
+  @media (min-width: 1024px) { .fp-ask { grid-column: 2; } }
+  .fp-q { margin-left: auto; width: fit-content; max-width: 90%; background: var(--color-accent); color: #fff; padding: 10px 16px; border-radius: 20px 20px 6px 20px; font-size: 14.5px; font-weight: 500; }
+  .fp-a { margin-top: 14px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 6px 20px 20px 20px; padding: 16px 18px; }
+  .fp-dim { color: rgba(255,255,255,.62); }
+  .fp-sup { display: inline-grid; place-items: center; width: 16px; height: 16px; margin-left: 4px; border-radius: 50%; background: rgba(240,123,46,.25); color: #fdb074; font-size: 10px; vertical-align: 2px; }
+
+  /* 寻物 */
+  .things-stage { position: relative; display: flex; flex-direction: column; align-items: center; }
+  @media (min-width: 640px) { .things-stage { padding: 0 0 40px; } }
+  :global(.things-phone) { --pw: 270; }
+  @media (min-width: 640px) { :global(.things-phone) { --pw: 310; } }
+  .th-float { position: absolute; background: rgba(255,255,255,.9); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border: 1px solid rgba(255,255,255,.9); border-radius: 22px; box-shadow: 0 2px 6px rgba(29,27,25,.06), 0 30px 60px -28px rgba(29,27,25,.45); }
+  .th-say { position: relative; order: -1; align-self: flex-start; z-index: 2; width: min(300px, 88%); margin-bottom: -18px; padding: 14px 14px 14px 16px; animation: drift 8s ease-in-out infinite; }
+  .th-pending { margin-top: 12px; background: var(--color-accent-soft); border-radius: 16px; padding: 12px; }
+  .th-tag { font-size: 11px; font-weight: 600; color: #3A8FB7; background: rgba(58,143,183,.13); padding: 2px 9px; border-radius: 999px; }
+  .th-btn { display: grid; place-items: center; height: 32px; border-radius: 999px; background: #fff; color: var(--color-ink-2); }
+  .th-btn-on { background: var(--color-accent); color: #fff; }
+  .th-drawer { position: relative; align-self: flex-end; z-index: 2; width: min(280px, 82%); margin-top: -96px; padding: 12px; animation: drift 9s ease-in-out -3s infinite; }
+  @media (min-width: 640px) {
+    .th-say { position: absolute; left: calc(50% - 340px); top: 4%; width: 250px; margin: 0; }
+    .th-drawer { position: absolute; right: calc(50% - 330px); bottom: 0; width: 250px; margin: 0; }
+  }
+  @media (min-width: 1024px) {
+    :global(.things-phone) { transform: translateX(40px); }
+    .th-say { left: -24px; top: 6%; width: 236px; }
+    .th-drawer { right: 0; }
+  }
+  @media (min-width: 1280px) { :global(.things-phone) { transform: translateX(56px); } .th-drawer { right: -44px; } }
+  .drawer-box { position: relative; }
+  .drawer-tray { background: #f3eee7; border-radius: 14px 14px 0 0; padding: 10px 10px 4px; box-shadow: inset 0 6px 10px -6px rgba(29,27,25,.25);
+    display: grid; gap: 6px; max-height: 0; overflow: hidden; opacity: .4; transition: max-height 1s var(--ease-out-expo) .5s, opacity .6s .5s, padding .6s .5s; padding-top: 0; padding-bottom: 0; }
+  .things-stage.in .drawer-tray { max-height: 160px; opacity: 1; padding-top: 10px; padding-bottom: 8px; }
+  .drawer-item { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 10px; padding: 7px 10px; font-size: 13.5px; box-shadow: 0 1px 2px rgba(29,27,25,.06); }
+  .drawer-item i { width: 6px; height: 6px; border-radius: 50%; background: #3A8FB7; }
+  .drawer-front { position: relative; background: linear-gradient(180deg, #fff, #f7f3ee); border: 1px solid #ece4da; border-radius: 12px; padding: 18px 14px 12px; }
+  .drawer-handle { position: absolute; left: 50%; top: 7px; width: 44px; height: 5px; margin-left: -22px; border-radius: 4px; background: #d9cfc2; }
+
+  /* 待办 */
+  .td-grid { display: grid; gap: 28px; }
+  @media (min-width: 900px) { .td-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+  .td-vis { position: relative; height: 440px; border-radius: 28px; overflow: hidden; }
+  .td-home { background: radial-gradient(120% 80% at 20% 0%, #ffd2ad 0%, #f7a46d 38%, #c45a2a 100%); padding: 22px 16px; }
+  .td-clock { color: #fff; text-align: center; margin-top: 6px; }
+  .td-clock span { display: block; font-size: 54px; line-height: 1; font-weight: 300; letter-spacing: -.02em; }
+  .td-clock small { display: block; margin-top: 6px; font-size: 13px; opacity: .85; }
+  .td-widget { display: flex; align-items: center; gap: 6px; margin-top: 26px; padding: 10px 8px 10px 14px; border-radius: 22px; background: rgba(255,255,255,.9);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 16px 30px -16px rgba(80,30,0,.5); }
+  .td-dot { width: 8px; height: 8px; flex: none; border-radius: 50%; background: var(--color-accent); margin-right: 4px; }
+  .td-widget b { display: block; font-size: 14px; } .td-widget small { display: block; font-size: 10.5px; color: var(--color-ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .td-btn { position: relative; flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: #f4efe9; color: var(--color-ink-2); }
+  .td-btn em { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .td-btn.on { background: var(--color-accent); color: #fff; }
+  .td-btn.on::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid var(--color-accent); animation: tdp 1.8s ease-out infinite; }
+  @keyframes tdp { 0% { transform: scale(.85); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+  .td-sheet { position: absolute; left: 10px; right: 10px; bottom: 0; padding: 12px 18px 18px; border-radius: 26px 26px 0 0; background: #fff; box-shadow: 0 -16px 40px -20px rgba(60,20,0,.45);
+    transform: translateY(105%); transition: transform 1s var(--ease-out-expo) .6s; }
+  .td-tile.in .td-sheet { transform: none; }
+  .td-grab { display: block; width: 36px; height: 4.5px; margin: 0 auto 12px; border-radius: 3px; background: #e2dbd2; }
+  .td-done { display: grid; place-items: center; height: 42px; margin-top: 14px; border-radius: 999px; background: var(--color-accent); color: #fff; font-size: 14.5px; font-weight: 600; }
+
+  .td-cal { background: #ece6de; padding: 16px 14px; box-shadow: inset 0 0 0 1px rgba(29,27,25,.04); }
+  .td-card { background: #fff; border-radius: 20px; padding: 14px 12px 12px; }
+  .td-week { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); margin-top: 10px; }
+  .td-day { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 64px; border-radius: 16px; }
+  .td-day small { font-size: 11px; color: var(--color-ink-3); } .td-day b { font-size: 16px; font-weight: 550; margin-top: 1px; }
+  .td-day.wkd b { color: var(--color-ink-3); }
+  .td-day.sel { background: var(--color-accent); box-shadow: 0 10px 18px -8px rgba(240,123,46,.8); margin: 0 2px; }
+  .td-day.sel small { color: rgba(255,255,255,.85); } .td-day.sel b { color: #fff; font-weight: 700; }
+  .td-dots { display: flex; gap: 3px; height: 7px; padding-top: 3px; align-items: center; }
+  .td-dots i { width: 4px; height: 4px; border-radius: 50%; background: var(--color-accent); }
+  .td-dots i.red { background: #e5484d; } .td-dots i.hollow { width: 5px; height: 5px; background: none; border: 1.2px solid var(--color-accent); }
+  .td-day.sel .td-dots i { background: #fff; }
+  .td-over { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 11px 12px 11px 14px; border-radius: 18px; background: rgba(229,72,77,.08); color: #e5484d; font-size: 14px; }
+  .td-over i { width: 8px; height: 8px; border-radius: 50%; background: #e5484d; } .td-over b { flex: 1; font-weight: 600; }
+  .td-over span { background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; }
+  .td-head { display: flex; align-items: baseline; gap: 8px; margin: 16px 4px 8px; } .td-head b { font-size: 20px; color: var(--color-accent); } .td-head span { font-size: 13px; color: var(--color-ink-2); }
+  .td-list { padding: 4px 12px; }
+  .td-row { display: flex; align-items: center; gap: 12px; padding: 11px 2px; font-size: 14px; border-bottom: 1px solid #ece8e3; }
+  .td-check { width: 19px; height: 19px; flex: none; border-radius: 50%; border: 1.8px solid #b9b2a9; }
+  .td-bell { font-size: 11.5px; color: var(--color-accent); background: var(--color-accent-soft); padding: 2px 8px; border-radius: 999px; }
+  .td-pend { display: flex; align-items: center; gap: 6px; margin: 8px 0 6px; padding: 9px 10px; border: 1.3px dashed rgba(240,123,46,.8); border-radius: 14px; font-size: 13.5px; }
+  .td-ok { background: var(--color-accent); color: #fff; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600; }
+  .td-no { background: #f4f2ef; color: var(--color-ink-2); border-radius: 999px; padding: 3px 10px; font-size: 12px; }
+
+  .td-alarm { background: linear-gradient(160deg, #2a211c, #15110e); display: grid; place-items: center; }
+  :global(.alarm-phone) { --pw: 182; }
+
   .faq { border-bottom: 1px solid var(--color-line); }
   .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 0; font-size: 17px; font-weight: 600; }
   .faq summary::-webkit-details-marker { display: none; }
@@ -453,6 +769,9 @@ const screenOf = (s: string) => s;
     { rootMargin: '-45% 0px -45% 0px' },
   );
   moments.forEach((m) => io.observe(m));
+  // 小屏的夜间声音图不在轮播里：滚到眼前再放大
+  const zio = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('zoom-go'); zio.unobserve(e.target); } }), { threshold: 0.5 });
+  document.querySelectorAll('[data-zoom]').forEach((el) => { if (!el.closest('[data-screens]')) zio.observe(el); });
   // 离开“一天”区域时恢复白天
   const day = document.getElementById('day');
   if (day) new IntersectionObserver(([e]) => { if (!e.isIntersecting) document.body.dataset.phase = 'day'; }).observe(day);

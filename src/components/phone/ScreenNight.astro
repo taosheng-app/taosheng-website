@@ -7,48 +7,75 @@ const c = zh
   ? {
       title: '昨晚', sub: '11月20日早上醒来', trend: '趋势',
       grid: [['上床', '23:18'], ['约入睡', '23:41'], ['起床', '07:05'], ['睡了', '7小时24分']],
-      conf: '可信度：好', mapT: '夜里的声音和动静', hint: '点圆点回听 · 双指或双击放大 · 长按看几点几分多响',
-      legend: [['鼾声', 'var(--snore)'], ['梦话', 'var(--good)'], ['咳嗽', 'var(--warn)'], ['醒了', 'var(--t2)']],
+      conf: '可信度：好', mapT: '夜里的声音和动静', hint: '拖上面的取景框换时段 · 双指或双击放大 · 点圆点回听', whole: '整夜', loudest: '最响',
+      legend: [['鼾声', 'var(--snore)'], ['中断', 'var(--crit)'], ['最响', 'var(--accent)'], ['梦话', 'var(--good)'], ['咳嗽', 'var(--warn)'], ['醒了', 'var(--t2)']],
       rows: [
-        ['鼾声', '3 段 · 共 22 分', 'var(--snore)'],
+        ['鼾声', '3 段 · 共 1 小时 4 分', 'var(--snore)'],
         ['你的梦话', '03:12 “把那个箱子搬到阳台……”', 'var(--good)'],
         ['疑似咳嗽/清嗓', '2 次', 'var(--warn)'],
         ['醒了', '04:52 · 1 次', 'var(--t2)'],
       ],
-      tryT: '试试看', tryS: '标上昨晚的情况，几晚后就能对比', tags: ['侧睡', '开了加湿器', '喝了酒', '+ 自定义'],
       note: '由手机录音自动统计，仅供参考，不是医疗检查。',
-      hours: ['0点', '2点', '4点', '6点'],
     }
   : {
       title: 'Last night', sub: 'Woke up Nov 20', trend: 'Trends',
       grid: [['In bed', '23:18'], ['Asleep', '23:41'], ['Up', '07:05'], ['Slept', '7h 24m']],
-      conf: 'Confidence: good', mapT: 'Sounds through the night', hint: 'Tap a dot to listen · pinch to zoom · long-press for time and loudness',
-      legend: [['Snore', 'var(--snore)'], ['Talk', 'var(--good)'], ['Cough', 'var(--warn)'], ['Awake', 'var(--t2)']],
+      conf: 'Confidence: good', mapT: 'Sounds through the night', hint: 'Drag the frame above · pinch or double-tap to zoom · tap a dot to listen', whole: 'Whole night', loudest: 'Loudest',
+      legend: [['Snore', 'var(--snore)'], ['Pause', 'var(--crit)'], ['Loudest', 'var(--accent)'], ['Talk', 'var(--good)'], ['Cough', 'var(--warn)'], ['Awake', 'var(--t2)']],
       rows: [
-        ['Snoring', '3 stretches · 22 min', 'var(--snore)'],
+        ['Snoring', '3 stretches · 1h 4m', 'var(--snore)'],
         ['You talked in your sleep', '03:12 “move that box to the balcony…”', 'var(--good)'],
         ['Cough / throat clearing', '2 times', 'var(--warn)'],
         ['Awake', '04:52 · once', 'var(--t2)'],
       ],
-      tryT: 'Try it', tryS: 'Tag the night, compare after a few', tags: ['Side sleeping', 'Humidifier on', 'Had a drink', '+ Custom'],
       note: 'Estimated from phone audio. For reference only, not a medical test.',
-      hours: ['0:00', '2:00', '4:00', '6:00'],
     };
-// 声音地图：23:00 → 07:30，宽 300
-const W = 300, H = 92, t0 = 23 * 60, span = 8.5 * 60;
-const x = (h: number, m: number) => (((h < 12 ? h + 24 : h) * 60 + m - t0) / span) * W;
-const bars = Array.from({ length: 100 }, (_, i) => {
-  const n = Math.sin(i * 1.7) * 0.5 + Math.sin(i * 0.37) * 0.5;
-  return 4 + Math.abs(n) * 9 + (i % 9 === 0 ? 6 : 0);
+// 声音详情：整夜 23:00 → 07:30 的总览条（滑块），下面放大看 02:00–02:30。照 App 的 NightZoomView / NightMap 画。
+const W = 308;
+const t0 = 23 * 60, span = 8.5 * 60;
+const tm = (h: number, m: number) => (h < 12 ? h + 24 : h) * 60 + m - t0;
+const snoreN = [[tm(1, 8), tm(1, 37)], [tm(2, 3), tm(2, 26)], [tm(4, 18), tm(4, 30)]];
+const inside = (v: number, rs: number[][]) => rs.some(([a, b]) => v >= a && v <= b);
+// 总览：每 3px 一根
+const ov = Array.from({ length: W / 3 }, (_, i) => {
+  const v = (i * 3 + 1) / W * span;
+  const n = Math.abs(Math.sin(i * 1.7) * 0.5 + Math.sin(i * 0.37) * 0.5);
+  const sn = inside(v, snoreN);
+  return { x: i * 3, h: sn ? 13 + n * 9 : 3 + n * 6, f: sn ? 'var(--snore)' : 'var(--t3)', o: sn ? 0.85 : 0.4 };
 });
-const snore = [[1, 8], [1, 14], [1, 19], [1, 25], [1, 31], [1, 37], [4, 18], [4, 24], [4, 29], [5, 55], [6, 2]];
-const dots = [
-  ...snore.map(([h, m], i) => ({ cx: x(h, m), cy: 26 + (i % 3) * 7, r: 3.6, f: 'var(--snore)' })),
-  { cx: x(3, 12), cy: 20, r: 5, f: 'var(--good)' },
-  { cx: x(2, 6), cy: 34, r: 4, f: 'var(--warn)' },
-  { cx: x(5, 41), cy: 30, r: 4, f: 'var(--warn)' },
-  { cx: x(4, 52), cy: 18, r: 4, f: 'var(--t2)' },
+const ovBand = [
+  ...snoreN.map(([a, b]) => ({ a, b, f: 'var(--snore)' })),
+  { a: tm(3, 12), b: tm(3, 13), f: 'var(--good)' },
+  { a: tm(2, 46), b: tm(2, 47), f: 'var(--warn)' },
+  { a: tm(5, 41), b: tm(5, 42), f: 'var(--warn)' },
+  { a: tm(4, 52), b: tm(4, 58), f: 'var(--t2)' },
 ];
+const ox = (v: number) => (v / span) * W;
+const zA = tm(2, 0), zB = tm(2, 30);
+const frame = { l: (zA / span) * 100, w: ((zB - zA) / span) * 100 };
+// 细看：30 分钟，每根 18 秒（3px）
+const N = 100, PH = 112, BY = 118, BH = 8;
+const sn1 = [10, 45], brk = [45, 47], loud = 47, sn2 = [48, 86];
+const det = Array.from({ length: N }, (_, i) => {
+  const wob = Math.abs(Math.sin(i * 2.3) * 0.6 + Math.sin(i * 0.9) * 0.4);
+  let h = 0.07 + wob * 0.1, f = 'var(--t3)', o = 0.38;
+  if ((i >= sn1[0] && i < sn1[1]) || (i >= sn2[0] && i < sn2[1])) {
+    h = 0.42 + wob * 0.32 + (i % 4 === 0 ? 0.08 : 0); f = 'var(--snore)'; o = 0.8;
+    const edge = Math.min(i - (i < 46 ? sn1[0] : sn2[0]), (i < 46 ? sn1[1] : sn2[1]) - i);
+    if (edge < 4) h *= 0.55 + edge * 0.12;
+  }
+  if (i >= brk[0] && i < brk[1]) { h = 0.05; }
+  if (i === loud) { h = 0.98; f = 'var(--accent)'; o = 0.9; }
+  return { x: i * 3, h: Math.max(2, h * PH), f, o };
+});
+const bgLine = Array.from({ length: 51 }, (_, i) => `${(i / 50) * W},${(PH - (0.1 + Math.sin(i * 0.45) * 0.025 + Math.sin(i * 1.3) * 0.012) * PH).toFixed(1)}`).join(' ');
+const detBand = [
+  { a: sn1[0] * 3, b: sn1[1] * 3, f: 'var(--snore)' },
+  { a: brk[0] * 3, b: brk[1] * 3 + 1, f: 'var(--crit)' },
+  { a: sn2[0] * 3, b: sn2[1] * 3, f: 'var(--snore)' },
+];
+const marks = [{ x: 21 * 3, f: 'var(--snore)' }, { x: loud * 3 + 1, f: 'var(--accent)', sel: true }, { x: 71 * 3, f: 'var(--snore)' }];
+const ticks = [[0, '2:00'], [10, '2:10'], [20, '2:20'], [30, '2:30']] as const;
 ---
 <div class:list={['app', dark && 'dark', cls, on && 'on']} data-screen="night">
   <Chrome lang={lang} part="top" time="7:12" />
@@ -68,19 +95,39 @@ const dots = [
   </div>
   <div style="display:flex;align-items:center;gap:6px;margin:10px 18px 0;font-size:12px;color:var(--t2)"><i style="width:7px;height:7px;border-radius:50%;background:var(--good)"></i>{c.conf}</div>
 
-  <div class="a-card" style="margin:12px 14px 0;padding:14px 12px 12px;border-radius:20px">
+  <div class="a-card nz" data-zoom style="margin:12px 14px 0;padding:12px 12px 12px;border-radius:20px">
     <div style="font-size:14px;font-weight:600;padding:0 4px">{c.mapT}</div>
-    <svg viewBox={`0 0 ${W} ${H + 18}`} width="100%" style="display:block;margin-top:10px" aria-hidden="true">
-      <rect x={x(23, 41)} y="2" width={x(7, 5) - x(23, 41)} height={H - 4} rx="8" fill="rgba(126,79,198,.10)" />
-      {bars.map((b, i) => <rect x={i * 3} y={H - 10 - b} width="1.6" height={b} rx=".8" fill="var(--t3)" opacity=".55" />)}
-      {dots.map((d) => <circle cx={d.cx} cy={d.cy} r={d.r} fill={d.f} />)}
-      <line x1={x(4, 52)} x2={x(4, 52)} y1="24" y2={H - 10} stroke="var(--t2)" stroke-dasharray="2 3" stroke-width="1" />
-      {c.hours.map((h, i) => <text x={x(i * 2, 0)} y={H + 14} font-size="10" fill="var(--t3)" text-anchor="middle">{h}</text>)}
+    <div style="display:flex;align-items:center;gap:6px;height:34px;padding:0 4px;margin-top:2px">
+      <span class="nz-range tnum" style="flex:1;font-size:13.5px;color:var(--t2);position:relative;height:18px">
+        <span class="nz-whole">{c.whole}</span><span class="nz-win">2:00:00–2:30:00</span>
+      </span>
+      <span class="a-chip nz-chip" style="height:26px;padding:0 10px;font-size:12.5px;background:var(--bg)">{c.whole}</span>
+      <span class="a-chip" style="height:26px;padding:0 10px;font-size:12.5px;background:var(--soft);color:var(--accent);font-weight:600">{c.loudest} 2:14</span>
+    </div>
+    <div class="nz-ov">
+      <svg viewBox={`0 0 ${W} 34`} width="100%" style="display:block" aria-hidden="true">
+        {ov.map((b) => <rect x={b.x} y={26 - b.h} width="2.1" height={b.h} rx=".9" fill={b.f} opacity={b.o} />)}
+        <rect x="0" y="28" width={W} height="5" rx="2.5" fill="var(--sep)" />
+        {ovBand.map((e) => <rect x={ox(e.a)} y="28" width={Math.max(3, ox(e.b) - ox(e.a))} height="5" rx="2.5" fill={e.f} />)}
+      </svg>
+      <i class="nz-frame" style={`--fl:${frame.l.toFixed(2)}%;--fw:${frame.w.toFixed(2)}%`}></i>
+    </div>
+    <svg viewBox={`0 0 ${W} 128`} width="100%" style="display:block;margin-top:10px;overflow:visible" aria-hidden="true">
+      <g class="nz-bars">{det.map((b) => <rect x={b.x} y={PH - b.h} width="2.1" height={b.h} rx=".9" fill={b.f} opacity={b.o} />)}</g>
+      <polyline points={bgLine} fill="none" stroke="var(--t3)" stroke-opacity=".7" stroke-width="1" />
+      <line x1={loud * 3 + 1} x2={loud * 3 + 1} y1="0" y2={PH} stroke="var(--text)" stroke-opacity=".5" stroke-width="1" />
+      <rect x="0" y={BY} width={W} height={BH} rx={BH / 2} fill="var(--sep)" />
+      {detBand.map((e) => <rect x={e.a} y={BY} width={e.b - e.a} height={BH} rx={BH / 2} fill={e.f} />)}
+      <rect x={brk[0] * 3 - 2} y={BY - 2} width={(brk[1] - brk[0]) * 3 + 5} height={BH + 4} rx={BH} fill="none" stroke="var(--text)" stroke-width="1.3" />
+      {marks.map((m) => <circle class="nz-dot" cx={m.x} cy="5" r={m.sel ? 4.5 : 3.5} fill={m.f} opacity={m.sel ? 1 : 0.75} />)}
     </svg>
-    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--t2);margin:6px 4px 0">
+    <div style="position:relative;height:16px;margin-top:4px">
+      {ticks.map(([m, t]) => <span class="tnum" style={`position:absolute;left:${Math.min(Math.max((m / 30) * 100, 0), 92)}%;${m ? 'transform:translateX(-40%);' : ''}font-size:11px;color:var(--t3)`}>{t}</span>)}
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--t2);margin:8px 4px 0">
       {c.legend.map(([n, col]) => <span style="display:flex;align-items:center;gap:4px"><i style={`width:7px;height:7px;border-radius:50%;background:${col}`}></i>{n}</span>)}
     </div>
-    <div style="font-size:11px;color:var(--t3);margin:8px 4px 0">{c.hint}</div>
+    <div style="font-size:11px;color:var(--t3);margin:7px 4px 0">{c.hint}</div>
   </div>
 
   <div class="a-card" style="margin:10px 14px 0;border-radius:20px">
@@ -93,10 +140,6 @@ const dots = [
     ))}
   </div>
 
-  <div style="margin:14px 18px 0"><span style="font-size:14px;font-weight:600">{c.tryT}</span><span style="font-size:12px;color:var(--t3);margin-left:8px">{c.tryS}</span></div>
-  <div style="display:flex;flex-wrap:wrap;gap:7px;margin:9px 14px 0">
-    {c.tags.map((t, i) => <span class="a-chip" style={i === 0 ? 'background:var(--soft);color:var(--accent)' : ''}>{t}</span>)}
-  </div>
   <div style="font-size:11px;color:var(--t3);margin:14px 18px 0">{c.note}</div>
   <Chrome lang={lang} part="bottom" tabs={false} />
 </div>
