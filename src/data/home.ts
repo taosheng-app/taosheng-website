@@ -136,7 +136,7 @@ export const home = {
       items: [
         ['涛声要钱吗？', '不要。App 免费，源码公开。云端转写和大模型按你自己账号下服务商的价格计费；用本地转写，转写这部分一分钱不花。'],
         ['需要买录音硬件吗？', '不需要，手机麦克风就够。USB、有线领夹麦插上就自动用；蓝牙耳机、大疆 Mic 在 设置 → 记录 → 录音管理 →「录音输入」里打开一次，以后连上就用，断开自动切回手机。'],
-        ['支持哪些手机？', 'Android 10 及以上、64 位（arm64）手机，近几年的手机基本都是。主要在小米 14 Pro 上实测；华为、荣耀、鸿蒙（含卓易通）有专门的保活引导。'],
+        ['支持哪些手机？', 'Android 10 及以上、64 位（arm64）手机，近几年的手机基本都是。主要在小米 14 Pro 上实测；华为、荣耀、鸿蒙（含卓易通）有专门的保活引导。骁龙 8 Gen 1、8+ Gen 1、8 Gen 2、8 Gen 3、8 至尊版、8 至尊版第 5 代会自动下载对应的 NPU 模型，本机识别更快（目前只在 8 Gen 3 上实测）；其他手机用 CPU 识别，照样能用。'],
         ['录音会上传到你们的服务器吗？', '不会，我们没有服务器。只有你主动开启云端转写、大模型整理、推送或备份时，数据才会发往你自己配置的服务。'],
         ['可以完全离线用吗？', '转写可以，下载本地 SenseVoice 模型即可。整理需要大模型，可以填局域网自建模型的地址，让转写和整理全程不出你自己的设备。'],
         ['费电吗？', '只在有人说话时录，安静时不录，实测约 0.5%/小时。夜间睡眠在没充电且电量低于 30% 时会提醒一次。'],
@@ -285,7 +285,7 @@ export const home = {
       items: [
         ['Does it cost anything?', 'No. The app is free and the source is public. Cloud transcription and LLM calls are billed by your own providers; with on-device transcription, that part costs nothing.'],
         ['Do I need recording hardware?', 'No, the phone mic is enough. USB and wired mics are used as soon as you plug them in; turn on Bluetooth earbuds or a DJI Mic once under Settings → Capture → Recording → Input, and it switches back to the phone when they disconnect.'],
-        ['Which phones are supported?', 'Android 10+ on 64-bit (arm64) phones, which covers almost every recent phone. It is mainly tested on a Xiaomi 14 Pro, with keep-alive guides for Huawei, Honor and HarmonyOS.'],
+        ['Which phones are supported?', 'Android 10+ on 64-bit (arm64) phones, which covers almost every recent phone. It is mainly tested on a Xiaomi 14 Pro, with keep-alive guides for Huawei, Honor and HarmonyOS. Snapdragon 8 Gen 1 through 8 Elite Gen 5 download a matching NPU model for faster on-device transcription (only tested on 8 Gen 3); other phones use the CPU.'],
         ['Is my audio uploaded to your servers?', 'No — we don’t have servers. Data only leaves your phone when you turn on cloud transcription, an LLM, push channels or backup that you configured yourself.'],
         ['Can it run fully offline?', 'Transcription can, with the on-device SenseVoice model. The digest needs an LLM, but you can point it at a self-hosted model on your LAN.'],
         ['Battery?', 'It records only when someone speaks: about 0.5% per hour in testing. Sleep tracking reminds you once if you’re below 30% and not charging.'],
