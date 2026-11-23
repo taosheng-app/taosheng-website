@@ -3,8 +3,10 @@ name: 部署官网
 on:
   push:
     branches: [main]
-  # 每天早上重新构建一次：App 发版后，页面里写死的版本号、大小、校验值跟着更新（页面打开时也会实时刷新）
   schedule:
+    # 每小时看一次 App 有没有发新版（或改了更新日志），有才重建；没变化几秒就结束
+    - cron: '17 * * * *'
+    # 每天早上无条件重建一次，兜底
     - cron: '30 23 * * *'
   workflow_dispatch:
 
@@ -13,7 +15,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      need: ${{ steps.decide.outputs.need }}
+      version: ${{ steps.decide.outputs.version }}
+      new_release: ${{ steps.decide.outputs.new_release }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 对比 App 最新版和线上版本
+        id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/release-check.mjs decide
+
   deploy:
+    needs: check
+    # 推送、手动触发、每日兜底一定部署；每小时的检查只在版本有变化时部署
+    if: github.event_name != 'schedule' || github.event.schedule == '30 23 * * *' || needs.check.outputs.need == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,3 +54,21 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  review:
+    # App 发了新正式版：开一个 Issue，列出这一版改动，提醒核对指南和首页
+    needs: [check, deploy]
+    if: needs.check.outputs.new_release == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 开“核对官网”Issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/release-check.mjs issue "${{ needs.check.outputs.version }}"

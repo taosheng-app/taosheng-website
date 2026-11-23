@@ -25,12 +25,12 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <blockquote>只认官方签名的安装包。签名证书指纹和 SHA-256 校验值见 <a href="/download#verify">安装与校验</a>，别处下载的改装版可能被动过手脚。</blockquote>
 <h3>开箱向导（约 3 分钟）</h3>
 <ol>
-<li><strong>打开必要权限</strong>：麦克风、通知、电池白名单。每一项都会先说明用途，再弹系统确认。同时后台会自动下载本机转写模型（约 170～330 MB，用流量时会提醒）。</li>
+<li><strong>打开必要权限</strong>：麦克风、通知、电池白名单。每一项都会先说明用途，再弹系统确认。同时后台会自动下载本机转写模型（约 170～330 MB，用流量时会提醒）。转写默认就用本机识别，免费、录音不出手机；跳过向导的，开始聆听后连上 WiFi 也会自动准备。</li>
 <li><strong>配置整理模型</strong>：点「去 DeepSeek 获取密钥」，在网页里创建密钥并复制，回到涛声会自动识别剪贴板并测试。也可以先选“以后再说”。</li>
 <li><strong>说句话试试</strong>：模型装好后说一句话，当场就能看到转写和整理出的事件、待办。</li>
-<li><strong>其他设置（可选）</strong>：向导最后会问要不要现在设置后台保活、备份、推送、足迹。建议先把<a href="#background">后台保活</a>设好。</li>
+<li><strong>其他设置（可选）</strong>：向导最后会问要不要现在设置后台保活、云端备份、推送、足迹。建议先把<a href="#background">后台保活</a>设好。</li>
 </ol>
-<p>换手机的老用户：在向导第一页点「换手机了？从备份恢复」。</p>
+<p>不用另外设置，涛声每晚会自动备份到手机的 Download（下载）/TaoSheng 文件夹。换手机的老用户：在向导第一页点「换手机了？从备份恢复」；同一台手机重装的，看<a href="#sync">找回以前的备份</a>。</p>
 <h3>四个页面各管什么</h3>
 <table>
 <tr><th>今天</th><td>收音状态、今日节奏、待确认的事、按时间排好的事件；放大镜可以搜原话和事件。</td></tr>
@@ -47,7 +47,7 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <h3>转写：设置 → 记录 → 语音转写</h3>
 <table>
 <tr><th>方式</th><td>适合谁</td></tr>
-<tr><th>本地转写</th><td>最在意隐私、不想花钱。SenseVoice 模型在手机上完全离线识别，骁龙手机可用 NPU 加速。首次使用时下载模型。</td></tr>
+<tr><th>本机识别（默认）</th><td>最在意隐私、不想花钱。SenseVoice 模型在手机上完全离线识别，只在说话停顿处切段，照常区分说话人。骁龙 8 Gen 1 到 8 至尊版第 5 代会自动下载对应的 NPU 模型加速（目前只在 8 Gen 3 上实测过），用不了就自动改用 CPU。</td></tr>
 <tr><th>豆包语音</th><td>想要更快更准。填豆包语音 API Key；有火山方舟 Agent Plan 套餐的，也可以填套餐的专属 Key。</td></tr>
 <tr><th>阿里百炼千问</th><td>多人对话多，需要服务端直接区分说话人。</td></tr>
 <tr><th>自定义接口</th><td>有自己的转写服务。支持 OpenAI 兼容接口，可逐句返回时间和说话人。</td></tr>
@@ -58,6 +58,7 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <li>内置豆包、通义、Kimi、智谱等十多家服务商，一键切换，可查余额、低额提醒。</li>
 <li>任意 OpenAI 兼容接口都能填，支持自定义请求头（内置 OpenCode Go），也支持局域网自建模型。</li>
 <li>配置多个模型时，主模型断网、宕机或欠费，会自动切到备用模型。</li>
+<li>「整理前先思考」默认打开：分条更准、不容易切碎，费用约为不开时的 3～5 倍。想省钱可以在 <span class="path">设置 → 整理 → 整理模型</span> 里关掉。</li>
 <li>思考模型、慢模型也能用：边生成边接收，太久没动静会自动把一批切小。</li>
 </ul>
 <blockquote>想全程不出自己的设备：转写选本地，整理填局域网自建模型的地址。</blockquote>`,
@@ -165,6 +166,7 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <h3>早上看什么</h3>
 <ul>
 <li>今天页“今日节奏”里点“昨晚”：几点上床、约几点入睡、几点起、醒了几次。</li>
+<li>半夜醒来看了手机、放下又睡着，只记成“醒了一次”，并写明看了多久手机，比如“醒了（看手机 6 分）”。比平时早醒很多、闹钟还没响时，会先等一等看你会不会睡回去。</li>
 <li>声音地图上点圆点回听；双指或双击放大，长按看几点几分、有多响。</li>
 <li>拿不准的声音最多问你 3 段“是 / 不是”，越用越准。</li>
 <li>睡前标上“侧睡”“开了加湿器”等情况，几晚后就能对比；每周一有周报。</li>
@@ -200,10 +202,17 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <p>配置好同步文件夹后，在推送通道里点「复制给智能体」，把复制的内容粘贴给 Claude Code、Codex 等，它就能只读你的记忆库。想收回权限，删掉网盘的应用密码即可。</p>
 <h3>备份：设置 → 通用 → 备份恢复</h3>
 <ul>
-<li>备份到坚果云、WebDAV（Nextcloud、群晖等）或 S3 兼容存储（阿里云、腾讯云、R2 等），也可以只备份到本机文件夹。</li>
+<li><strong>默认已经在备份</strong>：没设过备份的，每晚自动备份到 Download（下载）/TaoSheng，保留 7 份，内容和手动备份一样完整（含各项密钥）。它能防卸载重装、清除数据，防不了手机丢失或损坏。</li>
+<li>建议再开一个云端备份：坚果云、WebDAV（Nextcloud、群晖等）或 S3 兼容存储（阿里云、腾讯云、R2 等）。</li>
 <li>可以设口令加密，保留 3 / 7 / 30 天版本，增量备份。</li>
 <li>换手机时在开箱向导第一页选「从备份恢复」，连设置和密钥一起恢复。</li>
-</ul>`,
+</ul>
+<h3 id="restore">找回以前的备份（同一台手机重装后）</h3>
+<ol>
+<li>打开 <span class="path">设置 → 通用 → 备份恢复</span>，点「找回以前的备份」。</li>
+<li>在弹出的页面里打开 Download/TaoSheng，选日期最新的那个文件夹。</li>
+<li>点「从本机文件夹恢复全部」。</li>
+</ol>`,
       },
     ],
   },
@@ -227,12 +236,12 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <blockquote>Only trust the officially signed APK. The certificate fingerprint and SHA-256 are on <a href="/en/download#verify">Install &amp; verify</a>.</blockquote>
 <h3>Setup wizard (about 3 minutes)</h3>
 <ol>
-<li><strong>Permissions</strong>: microphone, notifications and battery whitelist, each explained before Android asks. The on-device transcription model (170–330 MB) downloads in the background; you’re warned on mobile data.</li>
+<li><strong>Permissions</strong>: microphone, notifications and battery whitelist, each explained before Android asks. The on-device transcription model (170–330 MB) downloads in the background; you’re warned on mobile data. On-device transcription is the default — free, and audio never leaves the phone.</li>
 <li><strong>Digest model</strong>: tap “Get a DeepSeek key”, create and copy a key, and TaoSheng picks it up from the clipboard and tests it. You can skip this for now.</li>
 <li><strong>Say something</strong>: once the model is ready, speak a sentence and see the transcript, events and todos appear.</li>
 <li><strong>Optional</strong>: keep-alive, backup, push and places. Set up <a href="#background">keep-alive</a> first.</li>
 </ol>
-<p>Switching phones? Tap “Restore from backup” on the wizard’s first page.</p>
+<p>TaoSheng backs up every night to Download/TaoSheng on your phone, no setup needed. Switching phones? Tap “Restore from backup” on the wizard’s first page. Reinstalled on the same phone? See <a href="#sync">Backup</a>.</p>
 <h3>The four tabs</h3>
 <table>
 <tr><th>Today</th><td>Listening status, the day’s rhythm, things to confirm and the timeline. The magnifier searches lines and events.</td></tr>
@@ -249,7 +258,7 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <p>TaoSheng works in two steps: <strong>transcribe</strong> speech to text, then let an <strong>LLM organize</strong> it into events, todos and memories. You choose each independently.</p>
 <h3>Transcription: Settings → Capture → Transcription</h3>
 <table>
-<tr><th>On-device</th><td>Most private and free. SenseVoice runs fully offline, with NPU acceleration on Snapdragon.</td></tr>
+<tr><th>On-device (default)</th><td>Most private and free. SenseVoice runs fully offline and still separates speakers. Snapdragon 8 Gen 1 through 8 Elite Gen 5 get an NPU model automatically (only tested on 8 Gen 3); otherwise it falls back to the CPU.</td></tr>
 <tr><th>Doubao</th><td>Faster and more accurate. Use a Doubao speech API key, or a Volcengine Agent Plan key.</td></tr>
 <tr><th>Alibaba Qwen</th><td>Lots of multi-person conversation; the service separates speakers itself.</td></tr>
 <tr><th>Custom</th><td>Your own OpenAI-compatible service, with per-line timing and speakers.</td></tr>
@@ -260,6 +269,7 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <li>A dozen built-in providers (Doubao, Qwen, Kimi, Zhipu…) with one-tap switching and balance alerts.</li>
 <li>Any OpenAI-compatible endpoint, custom headers, or a self-hosted model on your LAN.</li>
 <li>With several models configured, it fails over automatically when the main one is down or out of credit.</li>
+<li>“Think before digesting” is on by default: better-split events at roughly 3–5× the cost. Turn it off in <span class="path">Settings → Digest → Digest model</span>.</li>
 </ul>
 <blockquote>Fully on your own devices: on-device transcription plus a LAN-hosted model.</blockquote>`,
       },
@@ -355,6 +365,7 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <li>Starts when you fall asleep, ends when you unlock, unplug or dismiss your alarm.</li>
 <li>The sleep window follows your last two weeks automatically, or set it yourself. Add naps, night shifts and daytime sleep.</li>
 <li>Sharing a room? Turn on “Someone else in the room” and snoring is labeled “in the bedroom”.</li>
+<li>Woke up, checked your phone and fell back asleep? That counts as one wake-up, with the screen time noted, not the end of the night.</li>
 <li>In the morning, open “Last night”: tap dots to replay, pinch to zoom, answer up to three yes/no questions to improve accuracy.</li>
 <li>Tag nights (“side sleeping”, “humidifier on”) to compare; weekly report every Monday; a one-page PDF for your doctor over 7/30/90 days.</li>
 </ul>
@@ -378,7 +389,8 @@ export const guide: Record<'zh' | 'en', { title: string; desc: string; lead: str
 <h3>Copy for agent</h3>
 <p>With a sync folder set up, tap “Copy for agent” and paste into Claude Code or Codex for read-only access to your memory. Revoke by deleting the app password.</p>
 <h3>Backup: Settings → General → Backup</h3>
-<p>WebDAV, Nutstore, S3-compatible storage or a local folder; passphrase encryption; 3/7/30-day versions. Restore everything on a new phone from the setup wizard.</p>`,
+<p>By default TaoSheng backs up every night to Download/TaoSheng (7 copies, keys included). That survives a reinstall but not a lost phone, so add WebDAV, Nutstore or S3-compatible storage too; passphrase encryption and 3/7/30-day versions are available. Restore on a new phone from the setup wizard.</p>
+<p>Reinstalled on the same phone: <span class="path">Settings → General → Backup → Find earlier backups</span>, open Download/TaoSheng, pick the newest folder, then tap “Restore all from local folder”.</p>`,
       },
     ],
   },

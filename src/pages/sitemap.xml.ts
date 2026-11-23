@@ -1,4 +1,4 @@
-const paths = ['/', '/guide', '/download', '/about', '/privacy', '/terms'];
+const paths = ['/', '/guide', '/download', '/changelog', '/about', '/privacy', '/terms'];
 const SITE = 'https://taosheng.app';
 export function GET() {
   const urls = paths.flatMap((p) => {

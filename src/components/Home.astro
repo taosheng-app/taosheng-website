@@ -13,6 +13,7 @@ import DownloadButton from './DownloadButton.astro';
 import { home } from '../data/home';
 import { pathFor, ui, type Lang } from '../data/i18n';
 import { REPO, getRelease, mb } from '../data/release';
+import { getChangelog, shortHeadline } from '../data/changelog';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -23,6 +24,7 @@ const r = await getRelease();
 const F = T.footprint, K = T.things, D = T.todo;
 // 中文标题按逗号分句，每句不拆行（避免“终 / 于有了地方”这种断法）
 const clauses = (t: string) => (zh ? t.split(/(?<=，)/) : [t]);
+const news = (await getChangelog())[0];
 ---
 
 <Base lang={lang} path="/" title={T.title} description={T.desc} stars>
@@ -33,6 +35,13 @@ const clauses = (t: string) => (zh ? t.split(/(?<=，)/) : [t]);
     </div>
     <div class="wrap relative grid items-center gap-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10">
       <div>
+        {news && (
+          <a href={`${l('/changelog')}#v${news.version}`} class="news-pill reveal mb-6" data-news={news.version}>
+            <span class="news-tag tnum">v{news.version}</span>
+            <span class="news-text">{zh ? shortHeadline(news.headline) : 'See what’s new'}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        )}
         <p class="reveal flex items-center gap-2.5 text-[13px] font-medium text-[var(--color-ink-2)]">
           <span class="live-dot"></span>{T.hero.live}
         </p>
@@ -495,6 +504,10 @@ const clauses = (t: string) => (zh ? t.split(/(?<=，)/) : [t]);
 </Base>
 
 <style>
+  .news-pill { display: inline-flex; max-width: 100%; align-items: center; gap: 10px; padding: 5px 14px 5px 5px; border-radius: 999px; background: rgba(255, 255, 255, 0.72); border: 1px solid var(--color-line); font-size: 13px; color: var(--color-ink-2); transition: border-color .2s, color .2s; }
+  .news-pill:hover { border-color: var(--color-accent); color: var(--color-ink); }
+  .news-tag { flex: none; padding: 2px 9px; border-radius: 999px; background: var(--color-accent-soft); color: var(--color-accent-deep); font-weight: 600; font-size: 12px; }
+  .news-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .glow {
     position: absolute; right: -10%; top: -20%; width: 70vw; height: 70vw; max-width: 900px; max-height: 900px;
     background: radial-gradient(circle at center, rgba(253, 176, 116, 0.38), rgba(253, 176, 116, 0) 62%);
